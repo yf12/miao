@@ -1,0 +1,62 @@
+.sp{
+    color: red;
+    
+  }
+  
+  .fake:hover{
+    color: red;
+  }
+  
+  .fake:focus{
+    color: blue;
+  }
+  
+  .fake:active{
+    color: green;
+  }
+  
+  
+  .ekaf :link{
+    color: pink;
+  }
+  
+  .ekaf :visited{
+    color: orange
+  } 
+  
+  .tell{
+      color:yellow;
+  }
+
+  .down{
+      font-size:30px;
+  }
+
+  .first :nth-child(n+4):nth-last-child(n+4){
+    color:red;
+  }
+  
+  .second :nth-child(-n+25){
+    color:red;
+  }
+  
+  .second :nth-child(n+65){
+    color:green;
+  }
+  
+  .second :nth-child(n+35):nth-last-child(n+51){
+    color:blue;
+  }
+
+  .third :nth-child(2n+4){
+      color:yellow;
+  }  
+  .third :nth-child(3n+6){
+    color:yellow;
+  }
+  .third :nth-child(5n+10){
+    color:yellow;
+  }
+  .third :nth-child(7n+14){
+    color:yellow;
+  }
