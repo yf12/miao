@@ -3,12 +3,12 @@
     
   }
   
-  p.a:hover{
-    color: red;
-  }
-  
   p.a:focus{
     color: blue;
+  }
+
+  p.a:hover{
+    color: red;
   }
   
   p.a:active{
