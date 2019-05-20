@@ -1,0 +1,39 @@
+div{
+    background-color: rgb(221,221,221);
+    display:inline-block;
+    width: 200px;
+    height: 120px;
+    border-radius:52px 60px;
+    position:relative;
+  }
+  
+  span{
+    background-color: white;
+    width: 100px;
+    height: 100px;
+    border-radius:50%;
+    position:absolute;
+    top:10px;
+    left:8px;
+    font-size: 0px;
+  }
+  
+  input:checked + label div{
+    background-color:rgb(110,221,94);
+    width: 200px;
+    height: 120px;
+    border-radius:52px 60px;
+    position:relative;
+  }
+  
+  input:checked + label div span{
+    background-color: white;
+    width: 100px;
+    height: 100px;
+    border-radius:50%;
+    position:absolute;
+    content:"iiii";
+    top:10px;
+    left:92px;
+    font-size: 0px;
+  }

@@ -1,0 +1,16 @@
+div{
+    width: 100px;
+    height: 100px;
+    background-image: url("https://abs.twimg.com/a/1557861269/img/animations/web_heart_animation_edge.png?tdsourcetag=s_pctim_aiomsg");
+    background-position: 0px 0px;
+    transition:background-position 0.3s steps(1);
+  }
+  
+  div:hover{
+    width: 100px;
+    height: 100px;
+    background-image: url("https://abs.twimg.com/a/1557861269/img/animations/web_heart_animation_edge.png?tdsourcetag=s_pctim_aiomsg");
+    background-position: -2800px 0;
+    transition:background-position 1s steps(28) ;
+    
+  }

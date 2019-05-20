@@ -1,0 +1,48 @@
+html,body{
+    height: 100%;
+  }
+  
+  header{
+    height: 8%;
+  }
+  
+  main{
+    height: 92%;
+  }
+  
+  div.header{
+    height: 100%;
+  }
+  
+  sidebar{
+    display: block;
+    width: 10%;
+    height: 100%;
+    display:inline-block;
+  }
+  
+  div.module1{
+    width: 100%;
+    height: 16%;
+    border:5px solid rgb(173,136,236);
+    box-sizing:border-box;
+    border-bottom:none;
+  }
+  
+  div.module2{
+    width: 100%;
+    height: 84%;
+    border:5px solid rgb(173,136,236);
+    box-sizing:border-box;
+  }
+  
+  div.subject{
+    display:inline-block;
+    width: 90%;
+    height: 100%;
+    margin-left:-5px;
+    border-top:5px solid rgb(173,136,236);
+    box-sizing:border-box;
+  }
+  
+  
