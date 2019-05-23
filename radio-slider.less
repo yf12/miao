@@ -1,0 +1,237 @@
+.slider{
+    width: 700px;
+    height: 260px;
+    position:relative;
+    margin-left:30px;
+  }
+  
+  .slider img{
+    opacity:0;
+    height: 100%;
+    width: 100%;
+    transition:1s;
+    position:absolute;
+    left: 0;
+  }
+  
+  section{
+    display:inline-block;
+    z-index:5;
+    height: 5px;
+    width: 10px;
+    position: relative;
+  }
+  
+  input:checked + img{
+    opacity:1;
+  }
+  
+  div.indicators{
+    position:relative;
+  }
+  
+  div.indicators label{
+    display:inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius:50%;
+    background-color: rgba(0,0,0,0.06);
+    position:absolute;
+    top:230px;
+    left:620px;
+    z-index:1;
+  }
+  
+  .slider label span{
+    display:inline-block;  
+    width: 6px;
+    height: 6px;
+    border-radius:50%;
+    background-color: rgba(0,0,0,0.08);
+    position:absolute;
+    top:3px;
+    left:3px;
+  }
+  
+  label:hover span{
+    display:inline-block;  
+    width: 6px;
+    height: 6px;
+    border-radius:50%;
+    background-color:white;
+    position:absolute;
+    top:3px;
+    left:3px;
+  }
+  
+  input:nth-of-type(1):checked ~ .indicators > section:nth-child(1) span,
+  input:nth-of-type(2):checked ~ .indicators > section:nth-child(2) span,
+  input:nth-of-type(3):checked ~ .indicators > section:nth-child(3) span,
+  input:nth-of-type(4):checked ~ .indicators > section:nth-child(4) span,
+  input:nth-of-type(5):checked ~ .indicators > section:nth-child(5) span{
+    background-color:white;
+  }
+  
+  .ca{
+    position:absolute;
+    top:110px;
+  }
+  
+  .cb{
+    position:absolute;
+    top:110px;
+    left:670px;
+  }
+  
+  .c1{
+    display:inline-block;
+    width: 24px;
+    height: 24px;
+    border:3px solid rgb(209,209,209);
+    border-right:none;
+    border-top:none;
+    transform:rotate(45deg);
+    position:absolute;
+    top:7px;
+    left:9px;
+  }
+  
+  .c2{
+    display:inline-block;
+    width: 24px;
+    height: 24px;
+    border:3px solid rgb(209,209,209);
+    border-right:none;
+    border-top:none;
+    transform:rotate(225deg);
+    position:absolute;
+    top:7px;
+    left:-5px;
+  }
+  
+  .d1{
+    display: block;
+    width: 30px;
+    height: 40px;
+    background-color: rgb(121,121,121);
+    position:relative;
+  }
+  
+  .d2{
+    display: block;
+    width: 30px;
+    height: 40px;
+    background-color: rgb(121,121,121);
+    position:relative;
+  }
+  
+  input:nth-of-type(1):checked ~ .ca{
+    position:absolute;
+    top:-50px;
+    label:nth-of-type(5){
+      opacity:1;
+    }
+    label:nth-of-type(-n+4){
+      opacity:0;
+    }
+  }
+  
+  input:nth-of-type(2):checked ~ .ca{
+    position:absolute;
+    top:110px;
+    label:nth-of-type(1){
+      opacity:1;
+    }
+    label:nth-of-type(n+2){
+      opacity:0;
+    }
+  }
+  
+  input:nth-of-type(3):checked ~ .ca{
+    position:absolute;
+    top:70px;
+    label{
+      opacity:0;
+    }
+    label:nth-of-type(2){
+      opacity:1;
+    }
+  }
+  
+  input:nth-of-type(4):checked ~ .ca{
+    position:absolute;
+    top:30px;
+    label{
+      opacity:0;
+    }
+    label:nth-of-type(3){
+      opacity:1;
+    }
+  }
+  
+  input:nth-of-type(5):checked ~ .ca{
+    position:absolute;
+    top:-10px;
+    label{
+      opacity:0;
+    }
+    label:nth-of-type(4){
+      opacity:1;
+    }
+  }
+  
+  input:nth-of-type(1):checked ~ .cb{
+    position:absolute;
+    top:70px;
+    label{
+      opacity:0;
+    }
+    label:nth-of-type(2){
+      opacity:1;
+    }
+  }
+  
+  input:nth-of-type(2):checked ~ .cb{
+    position:absolute;
+    top:30px;
+    label{
+      opacity:0;
+    }
+    label:nth-of-type(3){
+      opacity:1;
+    }
+  }
+  
+  input:nth-of-type(3):checked ~ .cb{
+    position:absolute;
+    top:-10px;
+    label{
+      opacity:0;
+    }
+    label:nth-of-type(4){
+      opacity:1;
+    }
+  }
+  
+  input:nth-of-type(4):checked ~ .cb{
+    position:absolute;
+    top:-50px;
+    label{
+      opacity:0;
+    }
+    label:nth-of-type(5){
+      opacity:1;
+    }
+  }
+  
+  input:nth-of-type(5):checked ~ .cb{
+    position:absolute;
+    top:110px;
+    label{
+      opacity:0;
+    }
+    label:nth-of-type(1){
+      opacity:1;
+    }
+  }
+  
