@@ -1,0 +1,172 @@
+html,body{
+    width: 100%;
+    height: 100%;
+}
+
+*{
+    margin:0px;
+    font-size: 0;
+}
+
+.head{
+    background-image: url('https://mobike.com/cn/assets/themes/moby/img/landing/hero-bg-1.jpg');
+    background-size: cover;
+}
+.a{
+    display:inline-block;
+    width: calc((100% - 6px)/4);
+    height: 100%;
+    margin-right: 2px;
+}
+.a1{
+    background-image: url('https://mobike.com/cn/assets/themes/moby/img/promo-01.jpg');
+    background-size: cover;
+}
+.a2{
+    background-image: url('https://mobike.com/cn/assets/themes/moby/img/promo-02.jpg');
+    background-size: cover;
+}
+.a3{
+    background-image: url('https://mobike.com/cn/assets/themes/moby/img/promo-03.jpg');
+    background-size: cover;
+}
+.a4{
+    background-image: url('https://mobike.com/cn/assets/themes/moby/img/promo-04.jpg');
+    background-size: cover;
+    margin-right: 0px;
+}
+
+header{
+    width: 100%;
+    height: 80%;
+    margin-bottom:2px;
+}
+.head{
+    width: 100%;
+    height: 100%;
+}
+
+.body{
+    width: 100%;
+    height: 33.3%; 
+}
+
+footer{
+    width: 1000px;
+    height: 50%;
+    margin:auto;
+    margin-top:20px;
+}
+
+.footer1{
+    width: 100%;
+    height: 25%;
+    border-bottom: 1px solid silver;
+    display:flex;
+}
+
+.f{
+    display:inline-block;
+    width: 20%;
+    height: 100%;
+    font-size: 20px;
+    flex:1;
+    text-align:center;
+}
+
+.f1{
+    background-color: red;
+}
+
+.f2{
+    background-color: yellow;
+}
+
+.f3{
+    background-color:green;
+}
+
+.footer2{
+    width: 100%;
+    height: 245px;
+    display:flex;
+}
+
+.mobike{
+    flex-grow:1;
+}
+
+.intro{
+    flex-grow: 3;
+    display:flex;
+    margin-top: 45px;
+}
+
+.in{
+    flex:1;
+}
+
+li{
+    list-style:none;
+    font-size: 20px;
+    line-height: 30px;
+}
+
+
+@media(max-width:1000px){
+    header{
+        width: 100%;
+        height: 66.7%;
+    }
+    .head{
+        width: 100%;
+        height: 100%;
+    }
+    .body{
+        width: 100%;
+        height: 66.6%; 
+    }
+    .a{
+        display:inline-block;
+        width: calc((100% - 2px)/2);
+        height: 50%;
+    }
+    .a2{
+        margin-right:0;
+    }
+}
+
+@media (max-width:650px){
+    header{
+        width: 100%;
+        height: 66.7%;
+    }
+    .head{
+        width: 100%;
+        height: 100%;
+    }
+    .body{
+        width: 100%;
+        height: 133.2%; 
+    }
+    .a{
+        width: 100%;
+        height: 25%;
+    }
+    .footer1{
+        display:block;
+        margin:0;
+    }
+    .f1{
+        width: 240px;
+        height: 90px;  
+    }
+    .f2{
+        width:calc(100% - 240px);
+        height: 90px;
+    }
+    .f3{
+        width: 240px;
+        height: calc(100% - 90px);
+    }
+} 

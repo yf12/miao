@@ -1,0 +1,71 @@
+button{
+    width: 160px;
+    height: 47px;
+    background-color: rgb(255,61,46);
+    border: none;
+    position: relative;
+    margin: 150px;
+    border-radius: 4px;
+    color:white;
+    font-size: 16px;
+  }
+  
+  button::after {
+    content: attr(data-balloon);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 82px;
+    height: 28px;
+    line-height: 28px;
+    background-color: rgb(40, 36, 22);
+    color: white;
+    border-radius: 3px;
+    font-size: 12px;
+    opacity: 1;
+  }
+  
+  button::before {
+    content:'';
+    width: 0px;
+    top: 0;
+    left: 0;
+    position: absolute;
+    transform: translate(-190%,150%) rotate(270deg);
+    border: 230px solid;
+    border-width: 7px 6px;
+    border-color: rgb(40, 38, 31) transparent transparent transparent;
+    opacity: 1;
+}
+
+  [data-balloon-pos="up"]::before{
+      transform: translate(600%,-102%);
+  }
+
+  [data-balloon-pos="up"]::after{
+    transform: translate(50%,-150%);
+  }
+
+  [data-balloon-pos="left"]::after{
+      transform: translate(-120%,30%);
+  }
+
+  [data-balloon-pos="left"]::before{
+      transform: translate(-131%,120%) rotate(270deg);
+  } 
+
+  [data-balloon-pos="right"]::before{
+    transform: translate(1260%,98%) rotate(90deg);
+  }
+
+  [data-balloon-pos="right"]::after{
+    transform: translate(200%,30%);
+  }
+
+  [data-balloon-pos="down"]::before{
+    transform: translate(560%,308%) rotate(180deg);
+  }
+
+  [data-balloon-pos="down"]::after{
+    transform: translate(40%,200%);
+  }

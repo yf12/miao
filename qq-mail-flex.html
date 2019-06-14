@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>QQ邮箱</title>
+  <style>
+    html,body{
+    height: 100%;
+    margin:0;
+    }
+
+    body{
+    display: flex; 
+    flex-direction: column;
+    }
+
+    header{
+    height: 67px;
+    background-color: pink;
+    }
+
+    main{
+    background-color: lightblue;
+    flex-grow: 1;
+    display: flex;
+    }
+
+    sidebar{
+    width: 167px;
+    background-color: orange;
+    display:flex;
+    flex-direction: column;
+    }
+
+    .subject{
+    background-color: red;
+    flex-grow: 1;
+    }
+
+    .module1{
+    height: 100px;
+    background-color: white;
+    }
+
+    .module2{
+    background-color: purple;
+    flex-grow: 1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header">QQ邮箱</div>
+  </header>
+  <main>
+    <sidebar>
+      <div class="module1">cc</div>
+      <div class="module2">dd</div>
+    </sidebar>
+    <div class="subject">eee</div>
+  </main>
+</body>
+</html>
