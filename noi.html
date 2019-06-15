@@ -501,14 +501,166 @@
     console.log(max)
 </script>
 
-<script type="x" id="ch0105/06"></script>
+<script type="x" id="ch0105/06">
+    var n = +prompt('请输入n')
+    var score = +prompt('请输入')
+    var max = score
+    var min = score
+    for(var i = 2;i <= n; i++) {
+        score = +prompt ('请输入')
+        if(score > max) {
+            max = score
+        }
+        if(score < min) {
+            min = score
+        }
+    }
+    console.log(max - min)
+</script>
 
-<script type="x" id="ch0105/07"></script>
+<script type="x" id="ch0105/07">
+    var n = +prompt('请输入n')
+    var sumgold = sumsilver = sumcopper = 0
+    for(var i = 1;i <= n; i++) {
+        var gold = +prompt('第' + i + '天金牌')
+        var silver = +prompt('第' + i + '天银牌')
+        var copper = +prompt('第' + i + '天铜牌')
+        sumgold += gold
+        sumsilver += silver
+        sumcopper += copper
+    }
+    console.log(sumgold)
+    console.log(sumsilver)
+    console.log(sumcopper)
+    console.log(sumgold + sumsilver + sumcopper)
+</script>
 
-<script type="x" id="ch0105/08"></script>
+<script type="x" id="ch0105/08">
+    var n = +prompt('请输入n')
+    var sum = (n - 2) * 180
+    var sumless = 0
+    for(var i = 1;i <= (n - 1); i++) {
+        var angle = +prompt('请输入度数')
+        sumless = sumless + angle
+    }
+    console.log(sum - sumless)
+</script>
 
-<script type="x" id="ch0105/09"></script>
+<script type="x" id="ch0105/09">
+    var m = +prompt('请输入m')
+    var n = +prompt('请输入n')
+    var sum = 0
+    for(var i = m;i <= n; i++) {
+        if (i % 2 !==0) {
+            sum = sum +i
+        }
+    }
+    console.log(sum)
+</script>
 
-<script type="x" id="ch0105/10"></script>
+<script type="x" id="ch0105/10">
+    var m = +prompt('请输入m')
+    var n = +prompt('请输入n')
+    var sum = 0
+    for(var i = m;i <= n; i++) {
+        if (i % 17 ===0) {
+            sum = sum +i
+        }
+    }
+    console.log(sum)
+</script>
 
-<script type="x" id="ch0105/11"></script>
+<script type="x" id="ch0105/11">
+    var n = +prompt('请输入n')
+    var sum1 = 0
+    var sum5 = 0
+    var sum10 = 0
+    for(var i = 1;i <= n ; i++) {
+        var t = +prompt('请输入t')
+        if(t === 1) {
+            sum1++
+        }
+        else if(t === 5) {
+            sum5++
+        }
+        else if(t === 10) {
+            sum10++
+        }
+    }
+    console.log(sum1,sum5,sum10)
+</script>
+
+<script type="x" id="ch0105/12">
+    var n = +prompt('请输入n')
+    var m = +prompt('请输入m')
+    var sum = 0
+    for(var i = 1;i <= n ; i++) {
+        var t = +prompt('请输入t')
+        if(t === m) sum++
+    }
+    console.log(sum)
+</script>
+
+<script type="x" id="ch0105/13">
+    var a = +prompt('请输入a')
+    var n = +prompt('请输入n')
+    var sum = 1
+    for(var i = 1;i <= n ; i++) {
+        sum = sum * a
+    }
+    console.log(sum)
+</script>
+
+<script type="x" id="ch0105/14">
+    var x = +prompt('请输入x')
+    var n = +prompt('请输入n')
+    for(var i = 1;i <= n ; i++) {
+        x = x * (1 + 0.1 / 100)
+    }
+    console.log(x.toFixed(4))
+</script>
+
+<script type="x" id="ch0105/15">
+    var r = +prompt('请输入r')
+    var m = +prompt('请输入m')
+    var y = +prompt('请输入y')
+    for(var i = 1;i <= y ; i++) {
+        m = m * (1 + r / 100)
+    }
+    console.log(Math.floor(m))
+</script>
+
+<script type="x" id="ch0105/16">
+    var n = +prompt('请输入n')
+    var k = +prompt('请输入k')
+    var price = 200
+    if(n >= 200) {
+        console.log(1)
+    }
+    else {
+        var year
+        for (var i = 2;i < 999;i++) {
+        var price = price * (1 + k / 100)
+        var sum = n * i
+        if(sum >= price) {
+            year = i
+            break
+        }
+    }
+    if(year <= 20) {
+            console.log (year)
+        }
+        else {
+            console.log ('Imposible')
+        }
+
+    }
+</script>
+
+<script type="x" id="ch0105/17"></script>
+
+<script type="x" id="ch0105/18"></script>
+
+<script type="x" id="ch0105/19"></script>
+
+<script type="x" id="ch0105/20"></script>
