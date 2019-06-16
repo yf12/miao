@@ -991,6 +991,7 @@
     var n = +prompt('请输入m')
     var n = +prompt('请输入n')
     var x = +prompt('请输入x')
+    
 </script>
 
 <script type="x" id="ch0105/38">var n = +prompt('请输入n')</script>
@@ -1008,14 +1009,152 @@
     console.log(sum)
 </script>
 
-<script type="x" id="ch0105/40">var n = +prompt('请输入n')</script>
+<script type="x" id="ch0105/40">
+    var n = +prompt('请输入n')
+    var counter = 0,a = 1, recount = 0
+    for(var q = 1;q <= n;q++){
+        var t = q
+        for(var i = 1;i < 9;i++) {
+            a = 10 * a
+            if((q / a) >= 1) {
+                counter++
+            }
+        }
+        for(var j = 0;j < (counter + 1);j++) {
+            if((t % 10) === 1) {
+                recount++
+            }
+            t = Math.floor(t / 10)
+        }
+        counter = 0
+        a = 1
+    }
+    console.log(recount)
+</script>
 
-<script type="x" id="ch0105/41">var n = +prompt('请输入n')</script>
+<script type="x" id="ch0105/41">
+    var l = +prompt('请输入l')
+    var r = +prompt('请输入r')
+    var counter = 0,a = 1, recount = 0
+    for(var q = l;q <= r;q++){
+        var t = q
+        for(var i = 1;i < 9;i++) {
+            a = 10 * a
+            if((q / a) >= 1) {
+                counter++
+            }
+        }
+        for(var j = 0;j < (counter + 1);j++) {
+            if((t % 10) === 2) {
+                recount++
+            }
+            t = Math.floor(t / 10)
+        }
+        counter = 0
+        a = 1
+    }
+    console.log(recount)
+</script>
 
-<script type="x" id="ch0105/42">var n = +prompt('请输入n')</script>
+<script type="x" id="ch0105/42">
+    var h = +prompt('请输入h')
+    var w = +prompt('请输入w')
+    var m = prompt('请输入符号')
+    var n = +prompt('请输入n')
+    var str = m
+    if(n === 1) {
+        for(var i = 0;i < h;i++) {
+            for(var j = 1;j < w;j++) {
+                str += m
+            }
+            console.log(str)
+            str = m
+        }
+        i = 0
+        j = 0
+        str = m
+    }
+    else {
+        for(j = 1;j < w;j++) {
+            str += m
+        }
+        console.log(str)
+        str = m
+        for(i = 2;i < h;i++) {
+            for(var j = 2;j < w;j++) {
+            str = str + '\0'
+            }
+        str = str + m
+        console.log(str)
+        str = m
+        }
+        for(j = 1;j < w;j++) {
+            str += m
+        }
+        console.log(str)
+    }  
+</script>
 
-<script type="x" id="ch0105/43">var n = +prompt('请输入n')</script>
+<script type="x" id="ch0105/43">
+    var n = +prompt('请输入n')
+    var count1 = 0,count2 = 0,i1 = 1,j1 = 1
+    for(var i = 1;i < n;i++) {
+        for(var j = 1;j < n;j++) {
+            if((i * j) === n) {
+                for(i1 = 1;i1 <= i;i1++) {
+                    if(i % i1 === 0) {
+                        count1++
+                    }
+                }
+                for(j1 = 1;j1 <= j;j1++) {
+                    if(j % j1 === 0) {
+                        count2++
+                    }
+                }
+                if((count1 === 2) && (count2 === 2)) {
+                    console.log(j)
+                    break
+                }
+                count1 = 0
+                count2 = 0
+                i1 = 1
+                j1 = 1
+            }
+        }
+    }
+</script>
 
-<script type="x" id="ch0105/44">var n = +prompt('请输入n')</script>
+<script type="x" id="ch0105/44">
+    var n = +prompt('请输入n')
+    var counter = 0,judge = 0
+    for(var i = 1;i < 110000;i++) {
+        for(var j = 1;j <= i;j++) {
+            if((i % j) === 0 ) {
+                judge++
+            }
+        }
+        if(judge === 2) {
+            counter++
+        }
+        judge = 0
+        if(counter === n) {
+            console.log(i)
+            break
+        }
+    }
+</script>
 
-<script type="x" id="ch0105/45">var n = +prompt('请输入n')</script>
+<script type="x" id="ch0105/45">
+    var n = +prompt('请输入n')
+    var sum = 0,count = 0
+    for(var i = 1;i < n;i++) {
+        for(var j = 0;j < i;j++) {
+            sum = sum + i
+            count++
+            if(count === n) {
+                console.log(sum)
+                break
+            }
+        }
+    }
+</script>

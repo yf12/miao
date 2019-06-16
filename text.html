@@ -1,5 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+  <script>
+    var q = +prompt('请输入n')
+        var t = q
+        var counter = 0,a = 1, recount = 0,sum = 0
+        for(var i = 1;i < 9;i++) {
+            a = 10 * a
+            if((q / a) >= 1) {
+                counter++
+            }
+        }
+        for(var j = 0;j < (counter + 1);j++) {
+            if((t % 10) === 1) {
+                recount++
+            }
+            t = Math.floor(t / 10)
+        }
+        console.log(recount)
+  </script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
