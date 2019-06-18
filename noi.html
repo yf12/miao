@@ -1008,7 +1008,26 @@
     console.log(n)
 </script>
 
-<script type="x" id="ch0105/38">var n = +prompt('请输入n')</script>
+<script type="x" id="ch0105/38">
+    var n = +prompt('请输入n')
+    for(var i = 0;i < n;i++) {
+        var m = +prompt('请输入m')
+            var y = m
+            if(m === 0) {
+                var e = prompt('请输入e') 
+                console.log(0)
+            }
+            else {
+                for(var j = 0;j <= m;j++) {
+                    var t = +prompt('请输入t')
+                    if(j !== m) {
+                        console.log(y * t)
+                        y= y - 1
+                    }
+                }
+            }
+    }
+</script>
 
 <script type="x" id="ch0105/39">
     var n = +prompt('请输入n')
@@ -1287,5 +1306,61 @@
     }    
 </script>
 
-<script id="weekday">
+<!-- <script id="weekday">
+</script> -->
+
+<script type="x" id="complete-number">
+    var n = +prompt('请输入n')
+    var sum = 0
+    for(var i = 1;i < n;i++) {
+        if((n % i) === 0) {
+            sum = sum + i
+        }
+    }
+    if(sum === n) console.log('YES')
+    else console.log('NO')
+</script>
+
+<script type="x" id="complete-numbers">
+    for(var i = 1;i < 1000;i++) {
+        var sum = 0
+        for(var j = 1;j < i;j++) {
+            if((i % j) === 0) {
+                sum = sum + j
+            }
+        }
+        if(sum === i) console.log(i)
+    }
+</script>
+
+<script type="x" id="prime">
+    var n = +prompt('请输入n')
+    var counter = 0
+    for(var i = 1;i <= n;i++) {
+        if((n % i) === 0) {
+            counter++
+        }
+    }
+    if(counter === 2) console.log('YES')
+    else console.log('NO')
+</script>
+
+<script type="x" id="primes">
+    for(var i = 2;i < 100;i++) {
+        var counter = 0
+        for(var j = 1;j <= i;j++) {
+            if((i % j) === 0) {
+                counter++
+            }
+        }
+        if(counter === 2) console.log(i)
+    }
+</script>
+
+<script type="x" id="itob">
+    var n = prompt('请输入n')
+    console.log(String(n))
+</script>
+
+<script id="lcf&lcm">
 </script>
