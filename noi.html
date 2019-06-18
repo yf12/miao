@@ -419,8 +419,7 @@
     var delta = b * b - 4 * a * c
     if (delta > 0) {
         var s_delta = Math.sqrt(delta)
-        console.log('x1=' + ((-b + s_delta) / 2 * a).toFixed(5))
-        console.log('x2=' + ((-b - s_delta) / 2 * a).toFixed(5))
+        console.log('x1=' + ((-b + s_delta) / 2 * a).toFixed(5) + ';' + 'x2=' + ((-b - s_delta) / 2 * a).toFixed(5))
     }
     else if (delta === 0) {
        var s_delta = Math.sqrt(delta)
@@ -428,8 +427,7 @@
     }
     else {
        var s_delta = Math.sqrt(-1 * delta)
-       console.log('x1=' + (-b / (2 * a)).toFixed(5) + '+' + (s_delta / (2 * a)).toFixed(5) + 'i')
-       console.log('x2=' + (-b / (2 * a)).toFixed(5) + '-' + (s_delta / (2 * a)).toFixed(5) + 'i')
+       console.log('x1=' + (-b / (2 * a)).toFixed(5) + '+' + (s_delta / (2 * a)).toFixed(5) + 'i' + ';' + 'x2=' + (-b / (2 * a)).toFixed(5) + '-' + (s_delta / (2 * a)).toFixed(5) + 'i')
     }
 </script>
 
@@ -710,8 +708,8 @@
         h = h / 2
         sum = sum + c + h
     }
-    console.log(sum - h)
-    console.log(h)
+    console.log((sum - h).toFixed(4))
+    console.log(h.toFixed(7))
 </script>
 
 <script type="x" id="ch0105/21">
@@ -984,14 +982,30 @@
         sum = sum + x
         x = x * c 
     }
-    console.log(sum)
+    console.log(sum.toFixed(2))
 </script>
 
 <script type="x" id="ch0105/37">
-    var n = +prompt('请输入m')
+    var m = +prompt('请输入m')
     var n = +prompt('请输入n')
     var x = +prompt('请输入x')
-    
+    var r = Math.ceil(m / n) 
+    while(x > r) {
+        x = x - r
+        for(i = 0; ;i++) {
+            var sum = 0
+            if((m - sum) >= n) {
+                sum = sum + n
+                n = n + 1
+            }
+            else {
+                break
+            }
+        }
+        sum = 0
+        r = Math.ceil(m / n)
+    }
+    console.log(n)
 </script>
 
 <script type="x" id="ch0105/38">var n = +prompt('请输入n')</script>
@@ -1157,4 +1171,121 @@
             }
         }
     }
+</script>
+
+<script type="x" id="7">
+    var n = +prompt('请输入n')
+    var counter = 0,a = 1,re = 0
+    var t = n
+    for(var i = 1;i < 9;i++) {
+        a = 10 * a
+        if((n / a) >= 1) {
+            counter++
+        }
+    }
+    for(var j = 0;j < (counter + 1);j++) {
+        if((t % 10) === 7) re++
+        t = Math.floor(t / 10)
+    }
+    if((n % 7) === 0) re++
+    if(re > 0) console.log('YES')
+    else console.log('NO')
+</script>
+
+<script type="x" id="sort">
+    var m = []
+    var a,b
+    for(var i = 0;i < 3;i++) {
+        m[i] = +prompt('请输入')
+    }
+    for(var j = 0;j < 2;j++) {
+        for(var l = 0;l < (2 - j);l++) {
+            if(m[l] > m[l + 1]) {
+                a = m[l]
+                m[l] = m[l + 1]
+                m[l + 1] = a
+            }
+        }
+    }
+    for(var k = 0;k < 3;k++) {
+        console.log(m[k])
+    }
+</script>
+
+<script type="x" id="narcissistic">
+    var n = +prompt('请输入n') 
+    var counter = 0,a = 1
+    var t = n,v = 1,sum = 0
+    for(var i = 1;i < 9;i++) {
+        a = 10 * a
+        if((n / a) >= 1) {
+            counter++
+        }
+    }
+    for(var j = 0;j < (counter + 1);j++) {
+        var y = t % 10
+        t = Math.floor(t / 10)
+        for (var k = 0;k < (counter + 1);k++) {
+            v = v * y
+        }
+        sum = sum + v
+        v = 1
+    }
+    if(n === sum) {
+        console.log('YES')
+    }
+    else {
+        console.log('NO')
+    }
+</script>
+
+<script type="x" id="narcissistics">
+    for(var n = 0;n < 1000;n++) {      
+        var counter = 0,a = 1  
+        var t = n,v = 1,sum = 0
+        for(var i = 1;i < 9;i++) {
+            a = 10 * a
+            if((n / a) >= 1) {
+                counter++
+            }
+        }
+        for(var j = 0;j < (counter + 1);j++) {
+            var y = t % 10
+            t = Math.floor(t / 10)
+            for (var k = 0;k < (counter + 1);k++) {
+                v = v * y
+            }
+            sum = sum + v
+            v = 1
+        }
+        if(n === sum) {
+            console.log(n)
+        }
+    }
+</script>
+
+<script type="x" id="palindrom">
+    var n = +prompt('请输入n')
+    var counter = 0,a = 1,sum = 0
+    var t = n
+    for(var i = 1;i < 15;i++) {
+        a = 10 * a
+        if(((n / a) >= 1) || ((n / a) <= -1)) {
+            counter++
+        }
+    }
+    if(n > 0) {
+        for(var j = counter;j >= 0;j--) {        
+            sum = sum + (t % 10) * Math.pow(10,j)
+            t = Math.floor(t / 10)
+        }
+        if(sum === n) console.log('YES')
+        else console.log('NO')
+    }
+    else if(n  === 0) {
+        console.log('YES')
+    }    
+</script>
+
+<script id="weekday">
 </script>

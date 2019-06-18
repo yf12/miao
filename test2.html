@@ -1,9 +1,7 @@
-<script>
+<script type="text">
     var n = 21
     var m = Math.round(n / 2)
     var count1 = 0,count2 = 0,i1 = 1,j1 = 1
-    console.log('1');
-    
     for(var i = 1;i <= m;i++) {
         for(var j = m;j < n;j++) {
             if((i * j) === n) {
@@ -27,5 +25,92 @@
                 j1 = 1
             }
         }
+    }
+</script>
+
+<script type="text">
+  let m = +prompt() // 体力 5
+  let n = +prompt() // 战斗力 2
+  let x = +prompt() // 能量点 10
+
+  while (x >= 0) {
+    let t = m / n  // 每个能量元素恢复的体力值不超过当前的战斗力
+    let r = Math.ceil(t) // 需要消耗的能量点
+    x = x - r; // 减去消耗的能量点
+    if (x < 0) break  // 如果能量点小于 0 , 则无法充满最大体力, 结束循环
+    let days = m // 体力充满, 可以连续战斗五天
+
+    while (days > 0) {
+      if (Math.floor(days / n) > 0) n += 1; // 如果最大连续战斗天数 大于战斗力 则战斗力可以+1
+      days = days - n
+      if (days < n) break;
+    }
+  }
+  console.log(n);
+</script>
+
+<script type="text">
+        //雇佣兵
+    var ti = 0;
+    var N, X, M, i, d;
+    M = Number(prompt('体力最大值M：'));
+    N = Number(prompt('战斗力N:'));
+    X = Number(prompt('能量元素X:'));
+
+    while (X >= 0) {
+      //战力恢复机制
+      while (ti < M) {
+        X = X - 1;
+        ti = ti + N;
+      }
+      //战力充满
+      ti = M;
+      //去吧，皮卡丘~
+      for (i = 1; i <= M; i++) {
+        d = Math.floor(M / N);
+        N = N + d;
+      }
+       //体力归零
+       ti = 0;
+    }
+    console.log(N);
+</script>
+
+<script>
+    var m = +prompt('请输入m')
+    var n = +prompt('请输入n')
+    var x = +prompt('请输入x')
+    var r = Math.ceil(m / n) 
+    while(x > r) {
+        x = x - r
+        for(i = 0; ;i++) {
+            var sum = 0
+            if((m - sum) >= n) {
+                sum = sum + n
+                n = n + 1
+            }
+            else {
+                break
+            }
+        }
+        sum = 0
+        r = Math.ceil(m / n)
+    }
+    console.log(n)
+</script>
+
+<script type="text">
+    var n = +prompt('请输入n')
+    var counter = 0,a = 1
+    var t = n
+    for(var i = 1;i < 9;i++) {
+        a = 10 * a
+        if((n / a) >= 1) {
+            counter++
+        }
+    }
+    for(var j = 0;j < (counter + 1);j++) {
+        console.log(t % 10)
+        t = Math.floor(t / 10)
     }
 </script>
