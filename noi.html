@@ -1307,6 +1307,7 @@
 </script>
 
 <!-- <script id="weekday">
+
 </script> -->
 
 <script type="x" id="complete-number">
@@ -1362,5 +1363,31 @@
     console.log(String(n))
 </script>
 
-<script id="lcf&lcm">
+<script type="x" id="lcf&lcm">
+    var m = +prompt('请输入m')
+    var n = +prompt('请输入n')
+    var max = 0,min = 0
+    for(var i = 1;i <= m;i++) {
+        if(m % i === 0) {
+            for(var j = 1;j <= n;j++) {
+                if(n % j === 0) {
+                    if(i === j) {
+                        if(i > max) max = i
+                    }
+                }
+            }
+        }
+    }
+    console.log(max)
+    for(var k = m; ;k++) {
+        if(k % m === 0 && k % n === 0) {
+            console.log(k)
+            break
+        }
+    }
+</script>
+
+<script type="x" id="sqrt">
+    var n = +prompt('请输入n')
+    console.log(Math.sqrt(n).toFixed(3))
 </script>
