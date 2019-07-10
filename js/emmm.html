@@ -1,0 +1,81 @@
+<script>
+    var isValidSudoku = function(board) {
+        
+        for(let i = 0;i < 9;i++) {
+            let map = {}
+            for(let j = 0;j < 9;j++) {
+                if(board[i][j] in map && board[i][j] !== '.') return false
+                else map[board[i][j]] = true
+            }
+        }
+        for(let i = 0;i < 9;i++) {
+            let map = {}
+            for(let j = 0;j < 9;j++) {
+                if(board[j][i] in map && board[j][i] !== '.') return false
+                else map[board[j][i]] = true
+            }
+        }
+        var r = 0
+        for(let k = 0; k < 3; k ++) {
+            var l = 0
+            for(let m = r; m < (3 + r); m++) {
+                let map = {}
+                for(let n = l; n < (3 + l); n++) {
+                    if(board[m][n] in map && board[m][n] !== '.') return false
+                    else map[board[m][n]] = true
+                }
+                l += 3
+            }
+            r += 3
+        }
+    
+        return true
+    }
+    
+    isValidSudoku(
+    [
+        [".",".",".",".","5",".",".","1","."],
+        [".","4",".","3",".",".",".",".","."],
+        [".",".",".",".",".","3",".",".","1"],
+        ["8",".",".",".",".",".",".","2","."],
+        [".",".","2",".","7",".",".",".","."],
+        [".","1","5",".",".",".",".",".","."],
+        [".",".",".",".",".","2",".",".","."],
+        [".","2",".","9",".",".",".",".","."],
+        [".",".","4",".",".",".",".",".","."]
+    ])
+</script>
+
+<script>
+    var isValidSudoku = function(board) {
+    
+        for(let i = 0;i < 9;i++) {
+            let map = {}
+            for(let j = 0;j < 9;j++) {
+                if(board[i][j] in map && board[i][j] !== '.') return false
+                else map[board[i][j]] = true
+            }
+        }
+        for(let i = 0;i < 9;i++) {
+            let map = {}
+            for(let j = 0;j < 9;j++) {
+                if(board[j][i] in map && board[j][i] !== '.') return false
+                else map[board[j][i]] = true
+            }
+        }
+        return true
+    }
+    isValidSudoku(
+    [
+        [".",".",".",".","5",".",".","1","."],
+        [".","4",".","3",".",".",".",".","."],
+        [".",".",".",".",".","3",".",".","1"],
+        ["8",".",".",".",".",".",".","2","."],
+        [".",".","2",".","7",".",".",".","."],
+        [".","1","5",".",".",".",".",".","."],
+        [".",".",".",".",".","2",".",".","."],
+        [".","2",".","9",".",".",".",".","."],
+        [".",".","4",".",".",".",".",".","."]
+    ])
+</script>
+

@@ -1,16 +1,1346 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    你有没有见过他
-    你有没有见过在花室赏鱼的那个他
-    哈哈哈哈哈
-    111
-    22
-</body>
-</html>
+<script type = "text">  //633
+    var judgeSquareSum = function(c) {
+        n = Math.floor(Math.sqrt(c))
+        for(let i = 0;i <= n;i++) {
+            var t = c - i * i
+            var d = Math.floor(Math.sqrt(t))
+            if(d * d === t) return true
+        }
+        return false
+    }
+    judgeSquareSum(3)
+</script>
+
+<script type = "text"> //633 和137 双指针 类似做法 
+    var judgeSquareSum = function(c) {
+        var a = 0
+        var b = Math.floor(Math.sqrt(c))
+        while(a <= b) {
+            if(a * a + b * b === c) {
+                return true
+            }
+            else if(a * a + b * b < c) a++
+            else b-- 
+        }
+        return false 
+    }
+    judgeSquareSum(3)
+</script>
+//有序序列，求和为一个数的可以从两头开始向中间移动
+
+<script type = "text">
+    var hammingWeight = function(n) {
+        var count = 0
+        while(n != 0) {
+            n = n & (n - 1)
+            count++
+        }
+        return count
+    }
+    hammingWeight(11111111111111111111111111111101)
+</script>
+
+<script type = "text">
+    var hammingWeight = function(n) {
+        debugger
+        var count = 0
+        while(n > 0) {
+            if(n % 2 === 1) count++
+            n = (n - n % 2) /2
+        }
+        return count
+    }
+    hammingWeight(4394967293)
+    hammingWeight(000000111111111111111111111101)
+</script>
+
+<script type = "text">  //求1之间最大间隔
+    var binaryGap = function(n) {
+        debugger
+        var ary = []
+        var num1 = []
+        var count = 0,max = 0
+        while(n > 0) {
+            ary.unshift(n % 2)
+            n = (n - n % 2) / 2
+        }
+        for(let i = 0;i < ary.length;i++) {
+            if(ary[i] === 1) num1.push(i)
+            count++
+        }
+        for(let j = 0;j < (num1.length - 1);j++) {
+            var compare = num1[j + 1] - num1[j]
+            if (compare > max) max = compare
+        }
+        return max
+    }
+    binaryGap(22)
+</script>
+
+<script type = "text"> //?????没懂
+    var minMoves2 = function(nums) {
+        nums.sort((a,b) => a - b)
+        var sum = 0
+        var medium = Math.floor(nums.length / 2)
+        for(let k = 0;k < nums.length;k++) {
+            sum = sum + Math.abs(nums[k] - nums[medium])
+        }
+        return sum
+    }
+    minMoves2([1,56,2,77,975,66])
+</script>
+
+<script type = "text">
+    var minMoves = function(nums) {
+        var min = Infinity
+        for(let i = 0;i < nums.length;i++) {
+            if(nums[i] < min) min = nums[i]
+        }
+        var sum = 0
+        for(let i = 0;i < nums.length;i++) {
+            if(nums[i] > min) sum = sum + nums[i] - min
+        }
+        return sum
+    }
+    minMoves([5,12,3,12])
+</script>
+
+<script type = "text">  //数组中元素最大和 53
+    var maxSubArray = function(nums) {
+        var sum = 0,max = -Infinity
+        if(nums.length == 1) return nums[0]
+        else {
+            for(let i = 0;i < nums.length;i++) {
+                sum = sum + nums[i]
+                if(sum > max) max = sum
+                if(sum < 0) sum = 0
+            }
+            return max
+        }
+    }
+    maxSubArray([-2,1,-3,4,-1,2,1,-5,4])
+</script>
+
+<script type = "text">
+    var longestCommonPrefix = function(strs) {
+        var j = 0,count = 0
+        var str = ""
+        for(var i = 0;i < strs.length;i++) {
+            while(a[i][j] === a[i + 1][j]) {
+                count++
+            }
+            if(count === strs.length) {
+                str += a[i][j]
+                j++
+            }
+            else return str
+        }
+    }
+</script>
+
+<script type = "text">  //字符串中相同字符
+    var longestCommonPrefix = function(strs) {
+        if(strs.length == 0) return ""
+        else {
+            var j = 0
+            var str = ''
+            while(j < strs[0].length) {
+                var char = strs[0][j]
+                for(let i = 1;i < strs.length;i++) {
+                    if(strs[i][j] !== char) return str
+                }
+                str = str + strs[0][j]
+                j++
+            }
+            return str
+        }
+    }
+    longestCommonPrefix(["0"])
+</script>
+
+<script type = "text">  //A => 1
+    var titleToNumber = function(s) {
+        var t = 1,sum = 0
+        for(i = s.length - 1;i >= 0;i--) {
+            sum = sum + (s.charCodeAt(i) - 64) * t
+            t = t * 26
+        }
+        return sum
+    }
+    titleToNumber("AZZ")
+</script>
+
+<script type = "text"> //1 => A
+    var convertToTitle = function(n) {
+        var str = ''
+        while(n > 0) {
+            t = n % 26
+            if(t === 0) t = 26
+            str = String.fromCharCode(t + 64) + str
+            n = (n - t) / 26
+        }
+        return str
+    }
+    convertToTitle(1378)
+</script>
+
+<script type = "text">
+    var isValid = function(s) {
+        if (s.length % 2 !== 0) return false
+        for(let i = 0;i < s.length;i++) {
+
+        }
+    }
+</script>
+
+40 123 91
+41 125 93
+
+<script type = "text">
+    var search = function(nums, target) {
+        var left = 0,right = nums.length
+            while(left < right) {
+                var mid = Math.floor((left + right) / 2)
+                if(nums[mid] === target) return mid
+                else if(nums[mid] < target) {
+                    left = mid + 1
+                }
+                else {
+                    right = mid
+                }
+            }
+            return -1
+    }
+    search([-1,0,3,5,9,12],12)
+</script>
+
+<script type = "text">  //糖果种类
+    var distributeCandies = function(candies) {
+        candies.sort((a, b) => a - b)
+        var n = candies.length
+        var t = candies[0]
+        var count = 1
+        for(i = 1;i < n;i++) {
+            if(candies[i] !== t) {
+                count++
+                t = candies[i]
+            }
+        }
+        return count > (n / 2) ? (n / 2) : count
+    }
+    distributeCandies([2,6,7,2,4,3,5,3])
+</script>
+
+<script type = "text">  //罗马数转阿拉伯数字
+    var romanToInt = function(s) {
+        var symbol = 1
+        var sum = 0
+        var ary = []
+        var n = s.length
+        for(let i = 0;i < n;i++) {
+            switch(s[i]) {
+                case "I":ary.push(1)
+                break
+                case "V":ary.push(5)
+                break
+                case "X":ary.push(10)
+                break
+                case "L":ary.push(50)
+                break
+                case "C":ary.push(100)
+                break
+                case "D":ary.push(500)
+                break
+                case "M":ary.push(1000)
+                break
+            }
+        }
+        for(let i = 0;i < n;i++) {
+            if(i < n && (ary[i] < ary[i + 1])) symbol = -1
+            else symbol = 1
+            sum = sum + ary[i] * symbol
+        }
+        return sum
+    }
+    romanToInt("IV")
+</script>
+
+<script type = "text">  //阿拉伯数字转罗马数  这个思路还没做出来
+    var intToRoman = function(num) {
+
+        var ary = [1,4,5,9,10,40,50,90,100,400,500,900,1000]
+        var nums = [0,0,0,0,0,0,0,0,0,0,0,0,0]
+        for(let i = 12;i >= 0;i--) {
+            nums[i] = Math.floor(num / ary[i])
+            num = num - nums[i] * ary[i]
+        }
+        
+    }
+    intToRoman(58)
+</script>
+
+<script type = "text">   //阿拉伯数字转罗马数
+    var intToRoman = function(num) {
+        var ary = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
+        var list = ['M', 'CM', 'D', 'CD','C','XC','L', 'XL','X','IX','V','IV','I']
+        var result = ''
+        var i = 0
+        while(num > 0) {
+            while(Math.floor(num / ary[i]) > 0) {
+                result += list[i]
+                num = num - ary[i]
+            }
+            i++
+        }
+        return result
+    }
+    intToRoman(58)
+</script>
+
+<script type = "text">  //()[]{}
+    var isValid = function(s) {
+
+        var stack = []
+        for(let i = 0;i < s.length;i++) {
+            var char = s[i]
+            if(char !== '(' && char !== '[' && char !== '{' && char !== ')' && char !== ']' && char !== '}') return false
+            if(char === '(' || char === '[' || char === '{') {
+                stack.push(char)
+            }
+            if(char == ')') {
+                if(stack[stack.length - 1] === '(') {
+                    stack.pop()
+                }
+                else {
+                    return false
+                }
+            }
+            if(char == ']') {
+                if(stack[stack.length - 1] === '[') {
+                    stack.pop()
+                }
+                else {
+                    return false
+                }
+            }
+            if(char == '}') {
+                if(stack[stack.length - 1] === '{') {
+                    stack.pop()
+                }
+                else {
+                    return false
+                }
+            }
+        }
+        if(stack.length === 0) return true
+        else return false
+    }
+    isValid("{[()]}")
+</script>
+
+<script type = "text">   //()[]{}  另一种方法 array.map?
+    var isValid = function(s) {
+        var map = {
+            '(' : 1,
+            ')' : -1,
+            '[' : 2,
+            ']' : -2,
+            '{' : 3,
+            '}' : -3
+        }
+        var stack = []
+        var left
+        for(let i = 0;i < s.length;i++) {
+            var char = s[i]
+            var t = map[char]
+            if(t > 0) {
+                stack.push(t)
+            }
+            else {
+                left = stack.pop()
+                if(left + t != 0) return false
+            }
+        }
+        if(stack.length == 0) return true
+        else return false
+    }
+    isValid('[()]')
+</script>
+
+<script type = "text">  //二分法找最小数字
+    var findMin = function(nums) {
+        var n = nums.length
+        if(n === 1) return nums[0]
+        var left = 0,right = n
+        while(left < right) {
+            var mid = Math.floor((left + right) / 2)
+            if(nums[mid] < nums[left]) {
+                if(nums[mid] < nums[mid - 1]) {
+                    return nums[mid]
+                }
+                else {
+                    right = mid + 1
+                }
+            }
+            else {
+                if(nums[mid] > nums[mid + 1]) {
+                    return nums[mid + 1]
+                }
+                else {
+                    if(nums[0] < nums[n - 1]) {
+                        return nums[0]
+                    }
+                    else {
+                        left = mid
+                    }
+                }
+            } 
+        }
+
+    }
+    console.log(findMin([15,16,17,19,22,33,44,55,1,2,4]))
+</script>
+
+<script type = "text">  //二分法找target  33
+    var search = function(nums, target) {
+        var n = nums.length
+        if(n === 1) {
+            if(nums[0] == target) return 0
+            else return -1
+        }
+        var left = 0,right = n
+        while(left < right) {
+            var mid = Math.floor((left + right) / 2)
+            if(nums[mid] === target) {
+                return mid
+            }
+            else if(nums[mid] < target) {
+                if (nums[mid] > nums[left]) {
+                    left = mid
+                }
+                else {
+                    if(target >= nums[left]) {
+                        right = mid
+                    }
+                    else {
+                        left = mid
+                    }
+                }
+            }
+            else {
+                if(nums[mid] > nums[right - 1]) {
+                    if(target >= nums[left]) {
+                        right = mid
+                    }
+                    else {
+                        left = mid
+                    }
+                }
+                else {
+                    right = mid
+                }
+            }  
+        }
+        return -1
+    }
+    search([4,5,6,7,0,1,2],0)
+</script>
+
+<script type = "text">
+    var reverseBits = function(n) {
+        var sum = 0
+        for(let i = 0;i < 32;i++) {
+            var d = (n >> i) & 1
+            sum = sum << 1 + d
+        }
+        return sum >>> 0
+    }
+</script>
+
+<script type = "text">  //UTF-8编码
+    var validUtf8 = function(data) {
+        var num = 0
+        for(let i = 0;i < data.length;i++) {
+            if(num === 0) {
+                if(((data[i] >>> 3) === 0b11110)) num = 3
+                else if(((data[i] >>> 4) === 0b1110)) num = 2
+                else if(((data[i] >>> 5) === 0b110)) num = 1
+                else if((data[i] >>> 7) !== 0) return false
+            }
+            else {
+                if(((data[i] >>> 6) !== 0b10)) return false
+                num--
+            }
+        }
+        return (num == 0)
+    }
+    validUtf8([197, 130, 1,128])
+</script>
+
+<script type = "text"> //双指针 平方和排序 97
+    var sortedSquares = function(a) {
+        var nums = []
+        var t = a.length - 1
+        var c = 0,d = t
+        for(let k = t;k >= 0;k--) {
+            if(Math.abs(a[c]) >= Math.abs(a[d])) {
+                nums[k] = a[c] * a[c]
+                c++
+            }
+            else {
+                nums[k] = a[d] * a[d]
+                d--
+            }
+        }
+        return nums
+    }
+    sortedSquares([-7,-3,2,3,3,11])
+</script>
+
+<script type = "text">   //松鼠人 找事件相关性
+    function getCorelationsOf(event) {
+        for(let i = 0;i < coletions.length;i++) {
+            if(corelations[i].name === event) {
+                return corelations[i].relations
+            }
+        }
+    }
+</script>
+
+<script type = "text">  //3个数字相同 排序
+    var singleNumber = function(nums) {
+        nums.sort((a, b) => a - b)
+        var i = 0
+        while(i > 0) {
+            if(nums[i] === nums[i + 1]) {
+                i += 3
+            }
+            else return nums[i]
+        }
+    }
+</script>
+
+<script type = "text">  //3个数字相同 对象
+    var singleNumber = function(nums) {
+        var obj = {}
+        for(let i = 0;i < nums.length;i++) {
+            if(nums[i] in obj) {
+                obj[nums[i]] += 1
+            }
+            else {
+                obj[nums[i]] = 1
+            }
+        }
+        for(var k in obj) {
+            if(obj[k] === 1) return Number(k)
+        }
+        
+    }
+    singleNumber([2,2,3,2])
+</script>
+
+<script type = "text">  //array partition
+    var arrayPairSum = function(nums) {
+        nums.sort((a, b) => a - b)
+        var sum = 0
+        for(i = 0;i < nums.length;i += 2) {
+            sum = sum + nums[i]
+        }
+        return nums
+    }
+</script>
+
+<script type = "text">  //771 找石头
+    var numJewelsInStones = function(J, S) {
+        var count = 0
+        for(let i = 0;i < J.length;i++) {
+            for(let j = 0;j < S.length;j++) {
+                if(S[j] == J[i]) count++
+            }
+        }
+        return count
+    }
+</script>
+
+<script type = "text">   //找两数组交集
+    var intersect = function(nums1, nums2) {
+        var ary = []
+        for(let i = 0;i < nums1.length;i++) {
+            var n = nums2.indexOf(nums1[i])
+            if(n != -1) {
+                ary.push(nums1[i])
+                nums2.splice(n,1)
+            }
+        }
+        return ary
+    }
+    intersect([1],[2])
+</script>
+
+<script type = "text">
+    var reverseWords = function(s) {
+    var n = s.length
+    var str = ""
+    var q = ""
+    var i = 0
+    while(i < n) {
+        while(s[i] !== " " && i < n) {
+            str = s[i] + str
+            i++ 
+        }
+        i < n ? q = q + str + ' ' : q = q + str
+        str = ''
+        i++
+    }
+    return q
+    }
+    reverseWords("Let's take LeetCode contest")
+</script>
+
+<script type = "x">
+    var maxArea = function(height) {
+        var n = height.length
+        var max = 0
+        var s
+        for(let i = 0;i < n - 1;i++) {
+            for(let j = i + 1;j < n;j++) {
+                s = min(height[i],height[j]) * (j - i)
+                max = s > max ? s : max
+            }
+        }
+        return max
+    }
+    function min(x,y) {
+        return x >= y ? y : x
+    }
+    maxArea([1,8,6,2,5,4,8,3,7])
+</script>
+
+<script type = "x">
+    var maxArea = function(height) {
+        
+        var n = height.length,max = 0
+        var left = 0,right = n - 1
+        while(left < right) {
+            var area = min(height[right],height[left]) * (right - left)
+            max = max > area ? max : area
+            if(height[right] > height[left]) left += 1
+            else right -= 1
+        }
+        return max 
+    }
+    function min(x,y) {
+        return x >= y ? y : x
+    }
+    maxArea([1,8,12,2,5,4,8,3,7])
+</script>
+
+<script type = "x">   //ary flat函数
+    function flat(ary) {
+        var result = []
+        for(let i = 0;i < ary.length;i++) {
+            if(Array.isArray(ary[i])) {
+                for(let j = 0;j < ary[i].length;j++) {
+                    result.push(ary[i][j])
+                }
+            }
+            else {
+                result.push(ary[i])
+            }
+        }
+    }
+</script>
+
+<script type = "x">
+    function includes(ary, value) {
+        for(let i = 0;i < ary.length;i++) {
+            if(value === ary[i]) return true
+        }
+        return false
+    }
+</script>
+
+<script type = "x">
+    function sum() {
+        var sum = 0
+        for(let i = 0;i < arguments.length;i++) {
+            sum = sum + arguments[i]
+        }
+        return sum
+    }
+ </script>
+
+<script type = "x">
+    var twoSum = function(nums,target) {
+        var map = {}
+        for(let i = 0;i < nums.length;i++) {
+            var need = target - nums[i]
+            if(need in map) {
+                return [map[need],i]
+            }
+            else {
+                map[nums[i]] = i
+            }
+        }
+    }
+</script>
+
+<script type = "x">
+    var firstUniqChar = function(s) {
+        var countMap = {}
+        for(let i = 0;i < s.length;i++) {
+            var char = s[i]
+            if(char in countMap) {
+                countMap[char]++
+            }
+            else {
+                countMap[char] = 1
+            }
+        }
+        for(let i = 0;i < s.length;i++) {
+            var char = s[i]
+            if(countMap[char] === 1) return i
+        }
+        return -1
+    }
+</script>
+
+<script type = "x">  //49 给每个字符串排序 乘积相同
+    var groupAnagrams = function(s) {
+        var map = {}
+        var result = []
+        var judge = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101]
+        for(let i = 0;i < s.length;i++) {
+            str = s[i]
+            let multiply = 1
+            for(let j = 0;j < str.length;j++) {
+                multiply *= judge[str.charCodeAt(j) - 97]
+            }
+            if(!(multiply in map)) {
+                map[multiply] = [str]
+            } else {
+                map[multiply].push(str)
+            }
+        }
+        for(var key in map) {
+            result.push(map[key])
+        }
+        return result
+    }
+    groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"])
+</script>
+
+<script type = "x">  //49 给每个字符串排序
+    var groupAnagrams = function(strs) {
+        var result = new Map()
+        strs.map(char => {
+            let str = [...char].sort().join('')
+            if(result.has(str)) {
+                let ary = result.get(str)
+                ary.push(char)
+                result.set(str,ary)
+            } else {
+                result.set(str,[char])
+            }
+        })
+        return [...result.values()]
+    }
+    groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"])
+</script>
+
+<script type = "x">  //上面同一种方法
+    var groupAnagrams = function(s) {
+        var map = {}
+        for(let i = 0;i < s.length;i++) {
+            var char = s[i].split('').sort().join('')
+            if(map[char]) {
+                map[char].push(s[i])
+            } else {
+                map[char] = [s[i]]
+            }
+        }
+        return Obeject.values(map)
+    }
+</script>
+
+<script type = "x"> //3
+    var lengthOfLongestSubstring = function(s) {
+       
+        var map = {}
+        var max = 0,anchor = 0
+        for(var i = 0;i < s.length;i++) {
+            if(!(s[i] in map)) {
+                map[s[i]] = i
+            } else {
+                if(map[s[i]] >= anchor) {
+                    var last = i - anchor
+                    anchor = map[s[i]] + 1
+                    max = max > last ? max : last
+                }
+                map[s[i]] = i
+            }      
+        }
+        last = i - anchor
+        max = max > last ? max : last  
+        return max
+    }
+    lengthOfLongestSubstring("abcabcbb")
+</script>
+
+<script type = "x">
+    var lengthOfLongestSubstring = function(s) {
+        
+        if(s == '') return 0
+        var i = 0,j = 0
+        var map = {}
+        var longest = 1
+        while(j < s.length) {
+            if(!(s[j] in map)) {
+                map[s[j]] = 1
+            }
+            else {
+                map[s[j]]++
+            }
+
+            if(map[s[j]] == 2) {
+                while(map[s[j]] == 2) {
+                    map[s[i]]--
+                    i++
+                }
+            }
+            j++ 
+            longest = Math.max(longest,j - i)
+        }
+        return longest
+    }
+    lengthOfLongestSubstring("aaabvdaaas")
+</script>
+
+<script type = "x">  //别人的写法
+    var lengthOfLongestSubstring = function(s) {
+        debugger
+        var res = {};
+        var i = 0;
+        var anchor = 0;
+        var len = 0;
+        var templen = 0;
+
+        for(i = 0; i < s.length; i++){
+            if(res[s[i]] === undefined){
+                res[s[i]] = i;
+            }
+            else{
+                if(res[s[i]] >= anchor){
+                    templen = i - anchor;
+                    len = len > templen ? len : templen;
+                    anchor = res[s[i]] + 1;                
+                }
+                res[s[i]] = i;
+            }
+        }
+        templen = i - anchor;
+        len = len > templen ? len : templen;
+        return len;
+    };
+    lengthOfLongestSubstring("abcabcbb")
+</script>
+
+<script type = "x"> //键盘
+    var findWords = function(words) {
+        var map = {
+            "q" : 0,"w" : 0,"e" : 0,"r" : 0,"t" : 0,"y" : 0,"u" : 0,"i" : 0,"o" : 0,"p" : 0,
+            "a" : 1,"s" : 1,"d" : 1,"f" : 1,"g" : 1,"h" : 1,"j" : 1,"k" : 1,"l" : 1,
+            "z" : 2,"x" : 2,"c" : 2,"v" : 2,"b" : 2,"n" : 2,"m" : 2
+        }
+        var array = []
+        for(let i = 0;i < words.length;i++) {
+            var word = words[i]
+            var first = word[0].toLowerCase()
+            var t = map[first]
+            var count = 1
+            for(let j = 1;j < word.length;j++) {
+                if(map[word[j].toLowerCase()] !== t) break
+                else count++
+            }
+            if(count == word.length) array.push(word)
+        }
+        return array
+    }
+    findWords(["Hello", "Alaska", "Dad", "Peace"])
+</script>
+
+<script type = "x">   //斐波那契数列 递归
+    var cache = []
+    function fibb(n) {
+        
+        if(cache[n]) {
+            return cache[n]
+        }
+        if(n <= 1) {
+            cache[n] = 1
+            return 1
+        }
+        var r = fibb(n - 1) + fibb(n - 2)
+        cache[n] = r
+        return r
+    }
+    fibb(7)
+</script>
+
+<script>  //递归 求数组子列最大和
+    function maxSubArray(ary) {
+
+        if(ary.length === 0) return 0
+        if(ary.length === 1) {
+            if(ary[0] > 0) return ary[0]
+            else return 0
+        }
+
+        var l = ary.length
+        var mid = Math.floor(l / 2)
+
+        var leftAry = ary.slice(0,mid)
+        var rightAry = ary.slice(mid)
+
+        var leftMax = 0
+        var leftSum = 0
+        for(i = mid - 1; i >=0; i--) {
+            leftSum = leftSum + ary[i]
+            if(leftSum > leftMax) {
+                leftMax = leftSum
+            }
+        }
+
+        var rightMax = 0
+        var rightSum = 0
+        for(i = mid; i < l; i++) {
+            rightSum = rightSum + ary[i]
+            if(rightSum > rightMax) {
+                rightMax = rightSum
+            }
+        }
+        var midResult = leftMax + rightMax
+        var leftResult = maxSubArray(leftAry)
+        var rightResult = maxSubArray(rightAry)
+        return Math.max(leftResult,rightResult,midResult)
+    }
+    maxSubArray([-2,11,-4,13,-5,-2])
+</script>
+
+<script> //递归
+    var data = [
+        [2],
+        [1,4],
+        [6,5,3],
+        [3,7,2,9],
+        [6,5,8,1,7]
+    ]
+    function maxCollect(row,col) {
+        if(row = data.length - 1) return data[0][0]
+        var left = data[i + 1][i]
+        var right = data[i + 1][i + 1]
+        sum = sum + maxCollect()
+    }
+</script>
+
+<script>
+    var isIsomorphic = function(s, t) {
+        var map1 = {},map2 = {}
+        for(let i = 0;i < s.length;i++) {
+            if(map1[s[i]]) {
+                map1[s[i]].push(i)
+            }
+            else {
+                map1[s[i]] = [i] 
+            }
+        }
+        for(let i = 0;i < t.length;i++) {
+            if(map2[t[i]]) {
+                map2[t[i]].push(i)
+            }
+            else {
+                map2[t[i]] = [i] 
+            }
+        }
+        console.log(map1)
+        for(let i = 0;i < s.length;i++) {
+            if ((map1[s[i]].join('')) !== (map2[t[i]].join(''))) return false
+        }
+        return true
+    }
+    isIsomorphic("egg","add")
+</script>
+
+<script>
+    var isValidSudoku = function(board) {
+
+        for(let i = 0;i < 9;i++) {
+            let map = {}
+            for(let j = 0;j < 9;j++) {
+                if(board[i][j] in map && board[i][j] !== '.') return false
+                else map[board[i][j]] = true
+            }
+        }
+        for(let i = 0;i < 9;i++) {
+            let map = {}
+            for(let j = 0;j < 9;j++) {
+                if(board[j][i] in map && board[j][i] !== '.') return false
+                else map[board[j][i]] = true
+            }
+        }
+        
+        var map1 = {}
+        for(let m = 0;m < 3;m++) {
+            for(let n = 0;n < 3;n++) {
+                if(board[m][n] in map1 && board[m][n] !== '.') return false
+                else map1[board[m][n]] = true
+            }
+        }
+
+        var map2 = {}
+        for(let m = 0;m < 3;m++) {
+            for(let n = 3;n < 5;n++) {
+                if(board[m][n] in map2 && board[m][n] !== '.') return false
+                else map2[board[m][n]] = true
+            }
+        }
+        
+        var map3 = {}
+        for(let m = 0;m < 3;m++) {
+            for(let n = 6;n < 8;n++) {
+                if(board[m][n] in map3 && board[m][n] !== '.') return false
+                else map3[board[m][n]] = true
+            }
+        }
+
+        var map4 = {}
+        for(let m = 3;m < 5;m++) {
+            for(let n = 0;n < 3;n++) {
+                if(board[m][n] in map4 && board[m][n] !== '.') return false
+                else map4[board[m][n]] = true
+            }
+        }
+
+        var map5 = {}
+        for(let m = 3;m < 5;m++) {
+            for(let n = 3;n < 5;n++) {
+                if(board[m][n] in map5 && board[m][n] !== '.') return false
+                else map5[board[m][n]] = true
+            }
+        }
+        
+        var map6 = {}
+        for(let m = 3;m < 5;m++) {
+            for(let n = 6;n < 8;n++) {
+                if(board[m][n] in map6 && board[m][n] !== '.') return false
+                else map6[board[m][n]] = true
+            }
+        }
+
+        var map7 = {}
+        for(let m = 6;m < 8;m++) {
+            for(let n = 0;n < 3;n++) {
+                if(board[m][n] in map7 && board[m][n] !== '.') return false
+                else map7[board[m][n]] = true
+            }
+        }
+
+        var map8 = {}
+        for(let m = 6;m < 8;m++) {
+            for(let n = 3;n < 5;n++) {
+                if(board[m][n] in map8 && board[m][n] !== '.') return false
+                else map8[board[m][n]] = true
+            }
+        }
+        
+        var map9 = {}
+        for(let m = 6;m < 8;m++) {
+            for(let n = 6;n < 8;n++) {
+                if(board[m][n] in map9 && board[m][n] !== '.') return false
+                else map9[board[m][n]] = true
+            }
+        }
+        return true
+    }
+    isValidSudoku(
+    [
+    [".",".",".",".","5",".",".","1","."],
+    [".","4",".","3",".",".",".",".","."],
+    [".",".",".",".",".","3",".",".","1"],
+    ["8",".",".",".",".",".",".","2","."],
+    [".",".","2",".","7",".",".",".","."],
+    [".","1","5",".",".",".",".",".","."],
+    [".",".",".",".",".","2",".",".","."],
+    [".","2",".","9",".",".",".",".","."],
+    [".",".","4",".",".",".",".",".","."]
+    ])
+    ​
+</script>
+
+<script>
+    var isValidSudoku = function(board) {
+        
+        for(let i = 0;i < 9;i++) {
+            let map = {}
+            for(let j = 0;j < 9;j++) {
+                if(board[i][j] in map && board[i][j] !== '.') return false
+                else map[board[i][j]] = true
+            }
+        }
+        for(let i = 0;i < 9;i++) {
+            let map = {}
+            for(let j = 0;j < 9;j++) {
+                if(board[j][i] in map && board[j][i] !== '.') return false
+                else map[board[j][i]] = true
+            }
+        }
+        
+        var l = 0,r = 0
+        for(let k = 0; k < 3; k ++) {
+            for(let m = r; m < (3 + r); m++) {
+                let map = {}
+                for(let n = l; n < (3 + l); n++) {
+                    if(board[m][n] in map && board[m][n] !== '.') return false
+                    else map[board[m][n]] = true
+                }
+                l += 3
+            }
+            r += 3
+        }
+        return true
+    }
+
+    isValidSudoku(
+    [
+    ["8","3",".",".","7",".",".",".","."],
+    ["6",".",".","1","9","5",".",".","."],
+    [".","9","8",".",".",".",".","6","."],
+    ["8",".",".",".","6",".",".",".","3"],
+    ["4",".",".","8",".","3",".",".","1"],
+    ["7",".",".",".","2",".",".",".","6"],
+    [".","6",".",".",".",".","2","8","."],
+    [".",".",".","4","1","9",".",".","5"],
+    [".",".",".",".","8",".",".","7","9"]
+    ])
+</script>
+
+<script>
+    var isValidSudoku = function(board) {
+
+
+        
+        for(let k = 0; k < 3; k ++) {
+            let map = {}
+            var l = 0
+            for(let m = r; m < (3 + r); m++) {
+                for(let n = l; n < (3 + l); n++) {
+                    if(board[m][n] in map && board[m][n] !== '.') return false
+                    else map[board[m][n]] = true
+                }
+            } 
+            l += 3
+        }
+
+    
+        return true
+    }
+    
+    isValidSudoku(
+    [
+        [".",".",".",".","5",".",".","1","."],
+        [".","4",".","3",".",".",".",".","."],
+        [".",".",".",".",".","3",".",".","1"],
+        ["8",".",".",".",".",".",".","2","."],
+        [".",".","2",".","7",".",".",".","."],
+        [".","1","5",".",".",".",".",".","."],
+        [".",".",".",".",".","2",".",".","."],
+        [".","2",".","9",".",".",".",".","."],
+        [".",".","4",".",".",".",".",".","."]
+    ])
+</script>
+
+<script>  //链表
+    function arrayToList(ary) {
+        var dummy = {
+            value: undefined,
+            next: null
+        }
+        var prev = dummy
+        for(let i = 0;i < ary.length;i++) {
+            var node = {
+                value: ary[i],
+                next: null
+            }
+            prev.next = node
+            prev = node
+        }
+        return dummy.next
+    }
+    arrayToList([0,1,2,3,4])
+</script>
+
+<!-- 有一个函数返回1的概率为p
+返回0的概率为1-p
+基于此函数实现一个等概率返回0，1的函数 -->
+
+<script>
+    function rand() {
+        if(Math.random() < 0.2) return 0
+        else return 1
+    }
+    function random() {
+        var x = '' + rand() + rand()
+        if(x == '01') return 0
+        if(x == '10') return 1
+        return random() 
+    }
+</script>
+
+<script>
+    isEqual(NaN,NaN)    //特殊情况
+    isEqual(2,false)
+    isEqual({a: 1,b: 2,c: [1,1,1]},{a:1,b:2,c:{0:1,1:1,2:1,length:3}})
+
+
+    function isEqual(a,b) {
+        if(a === b) return true
+        for(var key in a) {
+            if(typeof(a[key]) === 'object') {
+                if(!isEqual(a[key],b[key])) {
+                    return false
+                }
+                return true
+            }
+            else {
+                    if(a[key] !== b[key]) return false
+                }   
+        }
+        return true
+    }
+    isEqual({a: {a: 1,b: 2},b: 2},{a: {a: 1,b: 2},b: 2})
+</script>
+
+<script>
+    var isValidSudoku = function(board) {
+        
+        for(let i = 0;i < 9;i++) {
+            let map = {}
+            for(let j = 0;j < 9;j++) {
+                if(board[i][j] in map && board[i][j] !== '.') return false
+                else map[board[i][j]] = true
+            }
+        }
+        for(let i = 0;i < 9;i++) {
+            let map = {}
+            for(let j = 0;j < 9;j++) {
+                if(board[j][i] in map && board[j][i] !== '.') return false
+                else map[board[j][i]] = true
+            }
+        }
+        
+        for(let i = 0;i < 9;i++) {
+            let map = {}
+            for(let j = 0;j < 9;j++) {
+                if(board[j][i] in map && board[j][i] !== '.') return false
+                else map[board[j][i]] = true
+            }
+        }
+        return true
+    }
+
+    isValidSudoku(
+    [
+    ["8","3",".",".","7",".",".",".","."],
+    ["6",".",".","1","9","5",".",".","."],
+    [".","9","8",".",".",".",".","6","."],
+    ["8",".",".",".","6",".",".",".","3"],
+    ["4",".",".","8",".","3",".",".","1"],
+    ["7",".",".",".","2",".",".",".","6"],
+    [".","6",".",".",".",".","2","8","."],
+    [".",".",".","4","1","9",".",".","5"],
+    [".",".",".",".","8",".",".","7","9"]
+    ])
+</script>
+
+<script>
+    var isValidSudoku = function(board) {
+        for(let i = 0;i < 9;i++) {
+            let maprow = {},mapcol = {},mapsq = {}
+            for(let j = 0;j < 9;j++) {
+                let sqi = Math.floor(i / 3) * 3 + Math.floor(j / 3)
+                let sqj = Math.floor(i % 3) * 3 + Math.floor(j % 3)
+                if(maprow[board[i][j]]) return false
+                if(mapcol[board[j][i]]) return false
+                if(mapsq[board[sqi][sqj]]) return false
+                if(board[i][j] !== '.') maprow[board[i][j]] = true
+                if(board[j][i] !== '.') mapcol[board[j][i]] = true
+                if(board[sqi][sqj] !== '.') mapsq[board[sqi][sqj]] = true
+            }
+        }
+        return true
+    }
+    isValidSudoku(
+        [
+        ["8","3",".",".","7",".",".",".","."],
+        ["6",".",".","1","9","5",".",".","."],
+        [".","9","8",".",".",".",".","6","."],
+        ["8",".",".",".","6",".",".",".","3"],
+        ["4",".",".","8",".","3",".",".","1"],
+        ["7",".",".",".","2",".",".",".","6"],
+        [".","6",".",".",".",".","2","8","."],
+        [".",".",".","4","1","9",".",".","5"],
+        [".",".",".",".","8",".",".","7","9"]
+        ])
+</script>
+
+<script>
+    var romanToInt = function(s) {
+        var roman = {
+            I: 1,
+            V: 5,
+            X: 10,
+            L: 50,
+            C: 100,
+            D: 500,
+            M: 1000
+        }
+        var prev = 0,result = 0
+        for(let i = s.length - 1;i >= 0;i++) {
+            var now = roman[s[i]]
+            if(now < prev) result -= now
+            else result += now
+            prev = now
+        }
+        return result
+    }
+</script>
+
+<script>
+    var isEven = function(n) {
+        if(n == 0) return true
+        if(n == 1) return false
+        if(n > 0) return isEven(n - 2)
+        else return isEven(n + 2)
+    }
+    isEven(50)
+</script>
+
+<script>
+    function filter(ary,test) {
+        for(let i = 0;i < ary.length;i++)
+        if(test(ary[i])) {
+            passed.push(ary[i])
+        }
+        return passed
+    }
+</script>
+
+<script>
+
+    function map(ary,mapper) {
+        var result = []
+        for(let i = 0;i < ary.length;i++) {
+            result.push(mapper(ary[i]),i,ary)
+        }
+    }
+</script>

@@ -1,0 +1,219 @@
+<script type = "x">  //数组转链表 循环
+    function arrayToList(ary) {
+        var dummy = {
+            value: undefined,
+            next: null
+        }
+        var prev = dummy
+        for(let i = 0;i < ary.length;i++) {
+            var node = {
+                value: ary[i],
+                next: null
+            } 
+            prev.next = node
+            prev = node    //prev = prev.next
+        }
+        return dummy.next
+    }
+    arrayToList([0,1,2,3,4])
+</script>
+
+<script type = "x">  //数组转链表 递归 创建新数组->空间复杂度O(n2) 数组过长时空间会爆
+    function arrayToList(ary) {
+        if(ary.length == 0) return null
+        var headValue = ary[0]
+        var aryTail = ary.slice(1)
+        var headNode = {
+            value: headValue,
+            next: arrayToList(aryTail)
+        }
+        return headNode 
+    }
+    arrayToList([0,1,2,3,4])
+</script>
+
+<script type = "x"> //数组转链表 递归 数组过长时栈会爆
+    function arrayToList(ary, start = 0) {
+
+        if(start == ary.length) return null
+        var headNode = {
+            value: ary[start],
+            next: arrayToList(ary,++start)   
+        }
+        return headNode
+    }
+    arrayToList([0,1,2,3,4])
+</script>
+
+<script>
+    function listToArray(list) {
+
+        var result = []
+        while(list !== null) {
+            result.push(list.value)
+            list = list.next
+        }
+        return result
+    }
+    listToArray(arrayToList([0,1,2,3,4]))
+</script>
+
+<script>  //链表转数组
+    function listToArray(list) {
+        if(list = null) return []
+        var tail = list.next
+        return [list.value].concat(listToArray(tail))
+    }
+</script>
+
+<script> //链表转数组
+    function listToArray(list) {
+        if(list = null) return []
+        var tail = list.next
+        return [list.value,...listToArray(tail)]
+    }
+</script>
+
+<script> //计算链表长度 但是要判断长度为0（没写长度0的情况...）
+    function size(list) {
+        var length = 0
+        while(list.next) {
+            length++
+            list = list.next
+        }
+        return length + 1
+    }
+    size(arrayToList([0,1,2,3,4]))
+</script>
+
+<script> //计算链表长度 改一下判断条件  循环
+    function size(list) { 
+        var length = 0
+        while(list !== null) {    //while(list)
+            length++
+            list = list.next
+        }
+        return length
+    }
+    size(arrayToList([0,1,2,3,4]))
+</script>
+
+<script>  //计算链表长度 递归
+    function size(list) {
+        if(list == null) return 0   //if(!list)
+        return 1 + size(list.next)
+    }
+    size(arrayToList([0,1,2,3,4]))
+</script>
+
+<script>  //把值插到链表的指定位置
+    function insert(list,index,value) {
+
+        if(!list) {   //list != null
+            return {
+                value: value,
+                next: null
+            }
+        }
+        if(index <= 0) {    //返回的是一个节点，节点指向之前的头节点
+            return {
+                value: value,
+                next: list
+            }
+        }
+        var head = list
+        var idx = 0
+        while(idx != index - 1 && list.next) {  //节点要指向目标节点
+            list = list.next                    //&&后面的是为了判断（index大于链表长度的情况） 
+            idx++
+        }
+
+        var node = {
+            value: value,
+            next: null,
+        }
+        var tmp = list.next
+        list.next = node   //list.next.next = tmp
+        node.next = tmp
+        return head
+    }
+    insert(arrayToList([0,1,2,4,5]),8,3)
+</script>
+
+<script>  //把值插到链表的指定位置 上面那个改了下判断条件
+    function insert(list,index,value) {
+        if(!list) {   //list != null
+            return {
+                value: value,
+                next: null
+            }
+        }
+        if(index <= 0) {    //返回的是一个节点，节点指向之前的头节点
+            return {
+                value: value,
+                next: list
+            }
+        }
+        var head = list
+        var idx = -1  //idx在指针前一个位置，idx=-1是为了避免index = 0的情况
+        while(list) {  //节点要指向目标节点
+            
+            idx++
+            if(idx == index - 1) { //idx == index - 1相当于指针 = index，因为idx在指针前一个位置
+                break
+            }
+            list = list.next
+            // 这里的判断是，如果指针挪动到了索引前面的位置就不能再挪动了
+        }
+
+        var node = {
+            value: value,
+            next: null,
+        }
+        var tmp = list.next
+        list.next = node   //list.next.next = tmp
+        node.next = tmp
+        return head
+    }
+    insert(arrayToList([0,1,2,4,5]),8,3)
+</script>
+
+<script>  //找链表第index个元素值 递归
+    function nth(list,index) {
+        if(!list) return undefined
+        if(index == 0) return list.value
+        return nth(list.next, index - 1)
+    }
+    nth(arrayToList([0,1,2,4,5]),3) 
+</script>
+
+<script>  //在链表开头插入值
+    function prepend(list, value) {  
+        return insert(list, 0, value)
+    }
+</script>
+
+<script>  //在链表末尾插入值
+    function append(list,value) {
+        return insert(list, Infinity, value)
+    }
+    append(arrayToList([0,1,2,4,5]),-1)
+</script>
+
+<script>
+    function listToArray(list) {
+        if(list.next == null) return [list.value]
+        getvalue = list.value
+        return [list.value].concat(listToArray(list.next))
+        
+    }
+    listToArray(arrayToList([0,1,2,3,4]))
+</script>
+
+<script>
+    function listToArray(list) {
+        if(list.next == null) return [list.val]
+        return [list.val].concat(listToArray(list.next))  
+    }
+    listToArray(arrayToList([]))
+</script>

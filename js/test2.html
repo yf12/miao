@@ -211,26 +211,26 @@ console.timeEnd()
 </script>
 
 <script type="x">   //二分法，有点冗余但是好想点
-    var isPerfectSquare = function(num) {
-        var min = 0,max = num
-        if(num === 1) return true
-        else {
-            while(max - min > 1) {
-                var mid = Math.floor((max + min) / 2)
-                if(mid * mid === num) return true
-                else if (mid * mid > num) {
-                    max = mid
+        var isPerfectSquare = function(num) {
+            var min = 0,max = num
+            if(num === 1) return true
+            else {
+                while(max - min > 1) {
+                    var mid = Math.floor((max + min) / 2)
+                    if(mid * mid === num) return true
+                    else if (mid * mid > num) {
+                        max = mid
+                    }
+                    else {
+                        min = mid
+                    }
                 }
-                else {
-                    min = mid
-                }
+                return false
             }
-            return false
         }
-    }
-    var n = +prompt('请输入n')
-    console.log(isPerfectSquare(n))
-</script>
+        var n = +prompt('请输入n')
+        console.log(isPerfectSquare(n))
+    </script>
 
 <script type="x">    //完全平方数
     var isPerfectSquare = function(num) {
@@ -1207,7 +1207,7 @@ console.timeEnd()
     inputTheReverse(4)
 </script>
 
-<script type = "x">
+<script type="x">
     function findSolution (x , y) {
         var result = []
         return find(0,0,'')
@@ -1225,7 +1225,7 @@ console.timeEnd()
     findSolution (3 , 4)
 </script>
 
-<script type = "x">
+<script>
     function findSolution (x , y) {
         var result = []
         function find(xStart, yStart, history) {
@@ -1243,20 +1243,7 @@ console.timeEnd()
     findSolution (3 , 4)
     </script>
 
-<script type = "x">
-    function find(xStart, yStart, history, result = []) {
-        if(xStart == x && yStart == y) {
-            result.push(history)
-        }
-        else if(xStart <= x && yStart <= y) {
-            find(xStart + 1,yStart,history + '+' + '右', result) ||
-            find(xStart,yStart + 1,history + '+' + '上', result)
-        }
-        return result
-    }
-
-    console.log(find(0,0,''))
-
+<script>
     function findSolution (x , y) {
         var result = []
         function find(xStart, yStart, history) {
@@ -1266,6 +1253,26 @@ console.timeEnd()
             else if(xStart <= x && yStart <= y) {
                 find(xStart + 1,yStart,history + '+' + '右') ||
                 find(xStart,yStart + 1,history + '+' + '上')
+            }
+        }
+        find(0,0,'')
+        return result
+    }
+    findSolution (3 , 4)
+</script>
+
+<script>
+    function findSolution (x , y) {
+        var result = []
+        function find(xStart, yStart, history) {
+            if(xStart == x && yStart == y) {
+                result.push(history)
+            }
+            else if(xStart <= x && yStart <= y) {
+                find(xStart + 1,yStart,history + '+' + '右')
+                find(xStart + 2,yStart,history + '+' + '右') 
+                find(xStart,yStart + 1,history + '+' + '上')
+                find(xStart,yStart + 2,history + '+' + '上')
             }
         }
         find(0,0,'')
@@ -1310,39 +1317,3 @@ console.timeEnd()
     }
     climbStairs(12)
 </script>
-
-<script>
-    var commonChars = function(A) {
-
-        var map = {}
-        var result = A[0]
-        for(let i = 1;i < A.length;i++) {
-            result = twoString(A[i],result)
-        }
-        return result.split('')
-    }
-    commonChars(
-    ["acabcddd","bcbdbcbd","baddbadb","cbdddcac","aacbcccd","ccccddda","cababaab","addcaccd"])
-
-    function twoString(str1,str2) {
-        var map = {}
-        var str = ''
-        for(let i = 0;i < str1.length;i++) {
-            if(str1[i] in map) {
-                map[str1[i]]++
-            }
-            else {
-                map[str1[i]] = 1
-            }
-        }
-        for(let j = 0;j < str2.length;j++) {
-            if(str2[j] in map && map[str2[j]]) {
-                str += str2[j]
-                map[str2[j]]--
-            }
-        }
-        return str
-    }
-
-</script>
-

@@ -1,0 +1,208 @@
+<script type = "x">  //大数相加
+    var addStrings = function(nums1, nums2) {
+        var ary1 = stringToNumber(nums1)
+        var ary2 = stringToNumber(nums2)
+        var ary = []
+        var carry = 0
+        var n1 = ary1.length - 1 
+        var n2 = ary2.length - 1
+        var n = n1 > n2 ? n1 : n2
+        for(let i = n;i >= 0;i--) {
+            var l1 = n1 >= 0 ? ary1[n1] : 0
+            var l2 = n2 >= 0 ? ary2[n2] : 0
+            ary[i] = (l1 + l2 + carry) % 10
+            carry = Math.floor((l1 + l2 + carry) / 10)
+            n1--
+            n2--
+        }
+        if(carry > 0) {
+            ary.unshift(carry)
+        }
+        return ary.join("")
+    }
+
+    var stringToNumber = function(num) {
+        var ary = num.split('')
+        for (var i = 0;i < num.length;i++) {
+            ary[i] = Number(ary[i])
+        }
+        return ary
+    }
+    
+    addStrings("199999","457")
+</script>
+
+<script type = "x">  //大数相乘
+    var multiply = function(num1, num2) {
+        if (num1 == "0" || num2 == "0") return "0"
+        var ary1 = stringToNumber(num1)
+        var ary2 = stringToNumber(num2)
+        var n1 = ary1.length - 1 
+        var n2 = ary2.length - 1
+        var ary = Array(n1 + n2 + 2).fill(0)
+        var sum = 0
+        for(let i = n1;i >= 0;i--) {
+            var carry = 0
+            for(let j = n2;j >= 0;j--) {
+                var t = i + j + 1
+                sum = ary1[i] * ary2[j] + ary[t] + carry
+                ary[t] = sum % 10
+                carry = Math.floor(sum / 10)
+            }
+            ary[i] += carry
+        }
+        if(ary[0] === 0) ary.shift()
+        return ary.join('')
+    }
+
+    var stringToNumber = function(num) {
+        var ary = num.split('')
+        for (var i = 0;i < num.length;i++) {
+            ary[i] = Number(ary[i])
+        }
+        return ary
+    }
+
+    multiply("0","123")
+</script>
+
+<script type = "x">  //大数相乘（leetcode上别人写的）
+    var multiply = function(num1, num2) {
+        debugger
+        if (num1 === '0' || num2 === '0') {
+            return '0';
+        }
+        
+        const result = new Array(num1.length + num2.length).fill(0);
+        
+        for (let i = num1.length - 1; i >= 0; i--) {
+            
+            let overflow = 0;
+            for (let j = num2.length - 1; j >= 0; j--) {
+                const k = i + j + 1;
+                const sum = num1[i] * num2[j] + overflow + result[k];
+
+                result[k] = sum % 10;
+                overflow = Math.floor(sum / 10);
+            }
+            
+            result[i] += overflow;
+        }
+        
+        return result.join('').replace(/^0*/, '')
+    };
+    multiply("123","456")
+</script>
+
+<script type = "x">  //大数相乘（相加版思路）
+    var multiply = function (num1, num2) {
+  if ((num1.length === 1 && num1[0] == 0) || (num2.length === 1 && num2[0] == 0)) return "0"
+  let arr1 = num1.split('')
+  let arr2 = num2.split('')
+  let zeroCount = 0
+  let res = []
+
+  while (arr2.length) {
+    let d = arr2.pop()
+    let product = getProduct(arr1, d, zeroCount)
+    res = getProduceSum(res, product)
+    zeroCount++
+  }
+
+  function getProduceSum(arr1, arr2) {
+    if (arr1.length === 0) return arr2
+    let r = []
+    let carry = 0
+    while (arr1.length || arr2.length) {
+      let n1 = arr1.pop() || 0
+      let n2 = arr2.pop() || 0
+      let s = n1 + n2 + carry
+      r.push(s % 10)
+      carry = ~~(s / 10)
+    }
+    if (carry !== 0) r.push(1)
+    return r.reverse()
+  }
+
+  function getProduct(num, n, zeroCount) {
+    let r = []
+    let c = 0
+    for (let len = num.length, i = len - 1; i >= 0; i—) {
+      let d = num[i] * n // 18
+      let tmp = d + c
+      r.push(tmp % 10)
+      c = ~~((d + c) / 10)
+    }
+    if (c !== 0) r.push(c)
+    r = r.reverse()
+    for (let i = 0; i < zeroCount; i++) {
+      r.push(0)
+    }
+    return r
+  }
+
+  return res.join('')
+};
+</script>
+
+<script type = "x">  //二进制相加（输入字符串） 和大数相加一样的
+    var addBinary = function(nums1, nums2) {
+        var ary1 = stringToNumber(nums1)
+        var ary2 = stringToNumber(nums2)
+        var ary = []
+        var carry = 0
+        var n1 = ary1.length - 1 
+        var n2 = ary2.length - 1
+        var n = n1 > n2 ? n1 : n2
+        for(let i = n;i >= 0;i--) {
+            var l1 = n1 >= 0 ? ary1[n1] : 0
+            var l2 = n2 >= 0 ? ary2[n2] : 0
+            ary[i] = (l1 + l2 + carry) % 2
+            carry = Math.floor((l1 + l2 + carry) / 2)
+            n1--
+            n2--
+        }
+        if(carry > 0) {
+            ary.unshift(carry)
+        }
+        return ary.join("")
+    }
+
+    var stringToNumber = function(num) {
+        var ary = num.split('')
+        for (var i = 0;i < num.length;i++) {
+            ary[i] = Number(ary[i])
+        }
+        return ary
+    }
+    
+    addStrings("1101010","110011") 
+</script>
+
+<script type = "x"> //数组加字
+    var addToArrayForm = function(a, k) {
+        var b = []
+        while(k > 0) {
+            b.unshift(k % 10)
+            k = Math.floor(k / 10)
+        }
+        var ary = []
+        var carry = 0
+        var n1 = a.length - 1 
+        var n2 = b.length - 1
+        var n = n1 > n2 ? n1 : n2
+        for(let i = n;i >= 0;i--) {
+            var l1 = n1 >= 0 ? a[n1] : 0
+            var l2 = n2 >= 0 ? b[n2] : 0
+            ary[i] = (l1 + l2 + carry) % 10
+            carry = Math.floor((l1 + l2 + carry) / 10)
+            n1--
+            n2--
+        }
+        if(carry > 0) {
+            ary.unshift(carry)
+        }
+        return ary
+    }
+    addToArrayForm([9,9,9],12)
+</script>

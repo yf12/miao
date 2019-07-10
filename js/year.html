@@ -1,0 +1,72 @@
+<script>
+    function weekday(year,month) {
+        var y = year - 1
+        var days = 365 * y + Math.floor(y / 4) + Math.floor(y / 400) -Math.floor(y / 100)
+        // for(let i = 1;i < year;i++) {
+        //     if(isLeapYear(i)) {
+        //         days += 366
+        //     } else {
+        //         days += 365
+        //     }
+        // }
+        for(let m = 1;m < month;m++) {
+            days += getMonthDays(year,m)
+        }
+        return (days + 1) % 7
+    }
+
+    function isLeapYear(year) {
+        if((year % 4 === 0 && year % 100 !== 0) || (year % 400 == 0)) return true
+        else return false
+    }
+
+    function getMonthDays(year,month) {
+        switch(month) {
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+                return 31
+            case 2:
+                if(isLeapYear(year)) return 29
+                else return 28
+            default:
+                return 30 
+        }
+    }
+    weekday(2019,7)
+</script>
+
+<script>
+    function monthCal(year,month) {
+        var result = `<table>
+            <thead>
+                <tr>
+                    <td>日</td>
+                    <td>一</td>
+                    <td>二</td>
+                    <td>三</td>
+                    <td>四</td>
+                    <td>五</td>
+                    <td>六</td>
+                </tr>
+            </thead>    
+        `
+        var wd = weekday(year,month) 
+        result += '<tr>'
+        for(let day = 0;day < getMonthDays(year,month);day++) {
+            result += '</tr>' + day + '<tr>'
+            if((day + wd) % 7 == 0) {
+                result += '</tr><tr>'
+            }
+        }
+        return result
+    }
+
+    function yearCal(year) {
+
+    }
+</script>
