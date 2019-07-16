@@ -927,22 +927,6 @@
     maxSubArray([-2,11,-4,13,-5,-2])
 </script>
 
-<script> //递归
-    var data = [
-        [2],
-        [1,4],
-        [6,5,3],
-        [3,7,2,9],
-        [6,5,8,1,7]
-    ]
-    function maxCollect(row,col) {
-        if(row = data.length - 1) return data[0][0]
-        var left = data[i + 1][i]
-        var right = data[i + 1][i + 1]
-        sum = sum + maxCollect()
-    }
-</script>
-
 <script>
     var isIsomorphic = function(s, t) {
         var map1 = {},map2 = {}
@@ -969,112 +953,6 @@
         return true
     }
     isIsomorphic("egg","add")
-</script>
-
-<script>
-    var isValidSudoku = function(board) {
-
-        for(let i = 0;i < 9;i++) {
-            let map = {}
-            for(let j = 0;j < 9;j++) {
-                if(board[i][j] in map && board[i][j] !== '.') return false
-                else map[board[i][j]] = true
-            }
-        }
-        for(let i = 0;i < 9;i++) {
-            let map = {}
-            for(let j = 0;j < 9;j++) {
-                if(board[j][i] in map && board[j][i] !== '.') return false
-                else map[board[j][i]] = true
-            }
-        }
-        
-        var map1 = {}
-        for(let m = 0;m < 3;m++) {
-            for(let n = 0;n < 3;n++) {
-                if(board[m][n] in map1 && board[m][n] !== '.') return false
-                else map1[board[m][n]] = true
-            }
-        }
-
-        var map2 = {}
-        for(let m = 0;m < 3;m++) {
-            for(let n = 3;n < 5;n++) {
-                if(board[m][n] in map2 && board[m][n] !== '.') return false
-                else map2[board[m][n]] = true
-            }
-        }
-        
-        var map3 = {}
-        for(let m = 0;m < 3;m++) {
-            for(let n = 6;n < 8;n++) {
-                if(board[m][n] in map3 && board[m][n] !== '.') return false
-                else map3[board[m][n]] = true
-            }
-        }
-
-        var map4 = {}
-        for(let m = 3;m < 5;m++) {
-            for(let n = 0;n < 3;n++) {
-                if(board[m][n] in map4 && board[m][n] !== '.') return false
-                else map4[board[m][n]] = true
-            }
-        }
-
-        var map5 = {}
-        for(let m = 3;m < 5;m++) {
-            for(let n = 3;n < 5;n++) {
-                if(board[m][n] in map5 && board[m][n] !== '.') return false
-                else map5[board[m][n]] = true
-            }
-        }
-        
-        var map6 = {}
-        for(let m = 3;m < 5;m++) {
-            for(let n = 6;n < 8;n++) {
-                if(board[m][n] in map6 && board[m][n] !== '.') return false
-                else map6[board[m][n]] = true
-            }
-        }
-
-        var map7 = {}
-        for(let m = 6;m < 8;m++) {
-            for(let n = 0;n < 3;n++) {
-                if(board[m][n] in map7 && board[m][n] !== '.') return false
-                else map7[board[m][n]] = true
-            }
-        }
-
-        var map8 = {}
-        for(let m = 6;m < 8;m++) {
-            for(let n = 3;n < 5;n++) {
-                if(board[m][n] in map8 && board[m][n] !== '.') return false
-                else map8[board[m][n]] = true
-            }
-        }
-        
-        var map9 = {}
-        for(let m = 6;m < 8;m++) {
-            for(let n = 6;n < 8;n++) {
-                if(board[m][n] in map9 && board[m][n] !== '.') return false
-                else map9[board[m][n]] = true
-            }
-        }
-        return true
-    }
-    isValidSudoku(
-    [
-    [".",".",".",".","5",".",".","1","."],
-    [".","4",".","3",".",".",".",".","."],
-    [".",".",".",".",".","3",".",".","1"],
-    ["8",".",".",".",".",".",".","2","."],
-    [".",".","2",".","7",".",".",".","."],
-    [".","1","5",".",".",".",".",".","."],
-    [".",".",".",".",".","2",".",".","."],
-    [".","2",".","9",".",".",".",".","."],
-    [".",".","4",".",".",".",".",".","."]
-    ])
-    ​
 </script>
 
 <script>
@@ -1343,4 +1221,43 @@
             result.push(mapper(ary[i]),i,ary)
         }
     }
+</script>
+
+<script>
+    fp = d(x => x * x)
+    function d(f) {
+        return function(x) {
+            s = 0.000000001
+            x1 = x - s
+            x2 = x + s
+            k = (f(x1) - f(x2)) / (x1 - x2)
+        }
+    }
+</script>
+
+<script>
+    function reduce(ary,initialVal,f) {
+        var i = 0
+        if(arguments.length == 2) {
+            initialVal = ary[0]
+            i = 1
+        }
+        for(;i < ary.length;i++) {
+            initialVal = f(initialVal,ary[i])
+        }
+        return initialVal
+    }
+
+    reduce(ary,0,(a,b) => a + b)
+</script>
+
+<script>
+    reduce(ary,dummyperson,(a,b) => a > b ? a : b)
+</script>
+
+<script>
+    ancestry
+	.filter(it => it.born > 1800 && it.born < 1900)
+	.map(it => it.died - it.born)//[2,6,2,5]
+	.reduce( ??? )// average of the array
 </script>

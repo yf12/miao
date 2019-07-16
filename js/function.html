@@ -1,0 +1,514 @@
+<script>
+    function map(ary,mapper) {
+        return ary.reduce(function(result,item){
+            result.push(mapper(item))
+            return result
+        },[])
+    }
+</script>
+
+<script>  //forEach函数
+    function forEach(ary,action) {
+        for(let i = 0;i < ary.length;i++) {
+            action(ary[i])
+        }
+    }
+</script>
+
+<script>
+    function everyOdd(ary) {
+
+        return ary.reduce((result, item) => {
+            return item % 2 == 1 && result
+        }, true)
+    }
+    hasOdd([12,4,5,6,8,7])
+
+    item % 2 == 1 &&item % 2 == 1 &&item % 2 == 1 &&item % 2 == 1 &&item % 2 == 1 &&item % 2 == 1 &&item % 2 == 1 &&item % 2 == 1 && result
+</script>
+
+<script>
+    function hasOdd(n){
+        function isit(n) {
+            if (n % 2 == 0) return true
+        }
+        return false 
+    }
+</script>
+
+<script>   //以祖先名字存储其对象信息  forEach
+    function keyBy(ary,key) {
+        var result = {}
+        ary.forEach(item => {
+            result[item[key]] = item 
+        })
+        return result
+    }
+</script>
+
+<script>   //以祖先名字存储其对象信息  reduce
+    function keyBy(ary,key) {
+        return ary.reduce((result,item) => {
+            result[item[key]] = item
+            return result
+        },{})
+    }
+</script>
+
+<script>
+    var byName = keyBy(ancestry,'name')
+    var name = 'haver'
+    var target = 'van'
+    var start = byName[name]  //结果是主角名映射的对象
+    var current = start  //一个对象
+    var count = 0
+    while(current.name != target) {
+        count++
+        current = byName[current.father]
+    }
+    console.log(count)
+</script>
+
+<script>   //给定一个人及其祖先，计算他们的基因关联性
+    function sharedDNAWithPvH(name) {
+        var person = byName[name]
+        if(!person) return 0
+        if(name == 'van') return 1
+        return (
+            sharedDNAWithPvH(person.father)
+            +
+            sharedDNAWithPvH(person.mother)
+        ) / 2
+    }
+</script>
+
+<script>   //valueFor的返回值就是f的返回值（除了为默认值的时候），所以一定程度上可以认为valueFor就是f本身
+    function reduceAncestor(person,f,defaultValue) { //传进来的person是个对象
+        function valueFor(person) {  //给定一个人，计算其在某方面的值
+            if(person == null) return defaultValue
+            else return f(  //给定一个人，及其父母在某方面的值，计算该人在这方面的值
+                person,
+                valueFor(byName[person.father]),
+                valueFor(byName[person.mother])
+            )
+        }
+    }
+</script>
+
+
+7.14
+<script>  //forEach函数
+    function forEach(ary,action) {
+        for(let i = 0;i < ary.length;i++) {
+            action(ary[i])
+        }
+    }
+</script>
+
+<script>  //forEach函数的应用
+    function gatherCorrelations(journel) {
+        var phis = {}
+        journel.forEach(function(entry) {
+            entry.events.forEach(function(event) {
+                if(!(event in phis)) {
+                    phis[event] = phi(tableFor(event,journel))
+                }
+            })
+        })
+    }
+</script>
+
+<script>
+    items.forEach(function(item) {
+        copy.push(item)
+    })
+</script>
+
+<script>  //判断两个数大小关系，抽象了两个数字
+    function greaterThan(n) {
+        return function(m) {
+            return m > n
+        }
+    }
+    var greaterThan10 = greaterThan(10)
+    console.log(greaterThan10(11))
+</script>
+
+<script> //函数f 透明包装
+    function noisy(f) {
+        return function(arg) {
+            console.log(arg)
+            var val = f(arg)
+            console.log(arg => val)
+            return val
+        }
+    }
+    noisy(Boolean)(0)
+</script>
+
+<script>
+    function unless(test,then) {
+        if(!test) then()
+    }
+    function repeat(times,body) {
+        for(let i = 0; i < times; i++) {
+            body(i)
+        }
+    }
+    repeat(3, function(n) {
+        unless(n % 2, function() {
+            console.log(n,"is even")
+        })
+    })
+</script>
+
+<script>   //如果非要给unless里的函数参数的话
+    function unless(test,then,n) {
+        if(!test(n)) then(n)
+    }
+    function repeat(times,body) {
+        for(let i = 0; i < times; i++) {
+            body(i)
+        }
+    }
+    repeat(3, function(n) {
+        unless(function(n) {
+            return n % 2     //没有return值返回undefined,!运算后就是true
+        },function(n) {
+            console.log(n,"is even")
+        },n)
+    })
+</script>
+
+<script>  
+    function transparentWrapping(f) {
+        return function() {
+            return f.apply(null,arguments)
+        }
+    }
+</script>
+
+<script>
+    function transparentWrapping(f) {
+        return function(...args) {
+            return f(...args)
+        }
+    }
+</script>
+
+<script>   //filter 过滤
+    function filter(array,test) {
+        var passed = []
+        for(let i = 0; i < array.length; i++) {
+            if(test(array[i])) {
+                passed.push(array[i])
+            }
+        }
+        return passed
+    }
+    console.log(filter(ancestry,function(person) {
+        return person.born > 1900 && person.born < 1925
+    }))
+</script>
+
+<script>
+    function filter(array,test) {
+        var passed = []
+        forEach(array,item => {
+            if(test(item)) {
+                passed.push(item)
+            }
+        })
+        return passed
+    }
+</script>
+
+<script>
+    function map(array,transform) {
+        var mapped = []
+        for(let i = 0; i < array.length; i++) {
+            mapped.push(transform(array[i]))
+        }
+        return mapped
+    }
+    var overNinety = ancestry.filter(function(person) {
+        return person.died - person.born > 90
+    })
+    console.log(map(overNinety,function(person) {
+        return person.name
+    }))
+</script>
+
+<script>  //reduce函数
+    function reduce(array,combine,start) {
+        var current = start
+        for(let i = 0; i < array.length; i++) {
+            current = combine(current,array[i],i,array)
+        }
+        return current
+    }
+    reduce([1,2,3,4],function(a,b) {
+        return a + b
+    },0)
+</script>
+
+<script>
+    function reduce(ary,reducer,initialVal = ary[0]) {
+        var i = 0
+        if(arguments.length == 2) i = 1
+        for(; i < ary.length; i++) {
+            initialVal = reducer(initialVal,ary[i])
+        }
+        return initialVal        
+    }
+</script>
+
+<script>
+    ancestry.reduce(function(min,cur) {
+        if(cur.born < min.born) return cur
+        else return min 
+    })
+</script>
+
+<script>
+    var byName = {}
+    ancestry.forEach(function(person) {
+        byName[person.name] = person
+    })
+    byName["Philibert Haverbeke"]
+</script>
+
+<script>
+    function reduceAncestor(person,f,defaultValue) {
+        function valueFor(person) {
+            if(!person) return defaultValue
+            return f(person,valueFor(byName[person.mother]),
+                            valueFor(byName[person.father]))
+        }
+        return valueFor(person)
+    }
+</script>
+
+<script>
+    function sharedDNA(person, fromMother, fromFather) {
+        if(person.name == "Pauwels van Haverbeke") return 1
+        else return (fromMother + fromFather) / 2
+    }
+    var ph = byName["Pauwels van Haverbeke"]
+    reduceAncestor(ph,sharedDNA,0) / 4
+</script>
+
+<script>   //bind函数实现
+    function bind(f,...fixedArgs) {
+        return function(...args) {
+            return f(...fixedArgs,...args)
+        }
+    }
+</script>
+
+<script>  //bind函数实现 不用...
+    function bind(f) {
+        var fixedArgs = Array.from(arguments).slice(1)
+        return function() {
+            var args = Array.from(arguments)
+            return f.apply(null,fixedArgs.concat(args))
+        }        
+    }
+</script>
+
+<script>   //展开数组(一层)
+    function flatten(ary) {
+        let result = []
+        for(let item of ary) {
+            if(Array.isArray(item)) {
+                result.push(...item)
+            } else {
+                result.push(item)
+            }
+        }
+        return result
+    }
+</script>
+
+<script>   //同上
+    function flatten(ary) {
+        return [].concat(...ary)
+    }
+    flatten([[[1],[2],[3]],[4,5],[6,7]])
+</script>
+
+<script>   //展开数组(所有)
+    function flattenDeep(ary) {
+        let result = []
+        for(let item of ary) {
+            if(Array.isArray(item)) {
+                let flattedItem = flatten(item)
+                result.push(...flattedItem)
+            } else {
+                result.push(item)
+            }
+        }
+        return result
+    }
+    flattenDeep([[[1],[2],[3]],[4,5],[6,7]])
+</script>
+
+<script>   //展开数组(depth层)
+    function flattenDepth(ary,depth = 1) {
+        if(depth == 0) return ary.silce()
+        let result = []
+        for(let item of ary) {
+            if(Array.isArray(item)) {
+                let flattedItem = flatten(item,depth - 1)
+                result.push(...flattedItem)
+            } else {
+                result.push(item)
+            }
+        }
+        return result
+    }
+</script>
+
+<script>
+    function flattenDepth(ary,depth = 1) {
+        return Array(depth).fill(0).reduce(ary => {
+            return flatten(ary)
+        },ary.slice())
+    }
+    flattenDepth([[[1],[2],[3]],[4,5],[6,7]],2)
+</script>
+
+<script>    //数组每个数是否都符合条件
+    function every(ary,predicate) {
+        return ary.reduce((result,item,val,ary) => {
+            return result && predicate(item,val,ary)
+        },true)
+    }
+</script>
+
+<script>    //数组是否有符合条件的
+    function some(ary,predicate) {
+        return ary.reduce((result,item,val,ary) => {
+            return result || predicate(item,val,ary)
+        },false)
+    }
+</script>
+
+<script>
+    function some(ary,predicate) {
+        return !every(ary,function(...args) {
+            return !predicate(...args)
+        })
+    }
+</script>
+
+<script>
+    function every(ary,predicate) {
+        return !some(ary,function(...args) {
+            return !predicate(...args)
+        })
+    }
+</script>
+
+<script>   //对函数取反
+    function negate(f) {
+        return function(...args) {
+            return !f(args)
+        }
+    }
+</script>
+
+<script>
+    function some(ary,predicate) {
+        return !every(ary, negate(predicate))
+    }
+</script>
+
+<script>
+    function flip(func) {
+        return function(...args) {
+            return func(...args.reverse())
+        }
+    }
+</script>
+
+<script>   //n次内调用原函数，超出后返回最后一次调用的值
+    function before(n,func) {
+        var times = 0
+        var lastResult
+        return function(...args) {
+            times++
+            if(times < n) {
+                return lastResult = func(...args)
+            } else {
+                return lastResult
+            }
+        }
+    }
+</script>
+
+<script>
+    function after(n,func) {
+        var times = 0
+        return function(...args) {
+            times++
+            if(times < n) {
+                return
+            } else {
+                return func(...args)
+            }
+        }
+    }
+</script>
+
+<script>
+    function ary(f, n = f.length) {  //默认n为参数长度
+        return function (...args) {
+            return f(args.slice(0,n))
+        }
+    }
+</script>
+
+<script>
+    function unary(f) {
+        return ary(f,1)
+    }
+    ['1','2','3','4'].map(parseInt)   //map会传3个参数，parseInt默认接2个（除了值外还会接下标，第二个为进制，所以会返回1和3个NaN）
+    ['1','2','3','4'].map(unary(parseInt))
+</script>
+
+<script>
+    function spread(f) {
+        return function(ary) {
+            return f(...ary)   //return f.apply(null,ary)
+        }
+    }
+
+    ;[
+        [1,2,3],
+        [1,2],
+        [4,5,2]
+    ].map(it => {
+        var spreadSum = spread(sum)
+        return spreadSum(it)
+    })
+
+    ;[
+        [1,2,3],
+        [1,2],
+        [4,5,2]
+    ].map(unary(spread(sum)))
+</script>
+
+<script>
+    function memorize(f) {
+        let cache = {}
+        return function(arg) {
+            if(arg in cache) {
+                return cache[arg]
+            } else {
+                return cache[arg] = f(arg)
+            }
+        }
+    }
+</script>

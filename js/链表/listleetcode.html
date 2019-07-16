@@ -834,9 +834,8 @@
     }
 </script>
 
-<script>  //82
+<script>  //82 没做出来qaq
     var deleteDuplicates = function(head) {
-        if(!head) return head
         while(head && head.next) {
             let value = head.val
             let judge = false
@@ -845,36 +844,39 @@
                 head = head.next
             }
             if(judge) head = head.next
-            if(head.val !== head.next.val) break
+            if(!head || (head.val !== head.next.val)) break
         }
-        let list = head
-        while(list.next && list.next.next) {
+        let list = head.next
+        while(list && list.next && list.next.next) {
             let value = list.next.val
             let judge = false
             while(list.next.next.val == value) {
                 judge = true
                 list.next = list.next.next
             }
-            if(judge) list.next = list.next.next
-            list = list.next
+            if(!judge) list = list.next
         }
         return head
     }
 </script>
 
-<script>  //82
+<script>  //82 别人的做法
     var deleteDuplicates = function(head) {
-        if(!head) return head
-        while(head && head.next) {
-            let value = head.val
-            let judge = false
-            while(head.next && head.next.val == value) {
-                judge = true
-                head = head.next
+        var dummy = new ListNode()
+        dummy.next = head
+        var list = head
+        var pre = dummy
+        while(list && list.next) {
+            while(list.next && list.val == list.next.val) {
+                list = list.next
             }
-            if(judge) head = head.next
-            if(head.val !== head.next.val) break
+            if(pre.next == list) {
+                pre = pre.next
+            } else {
+                pre.next = list.next
+            }
+            list = list.next
         }
-        return head
+        return dummy.next
     }
 </script>

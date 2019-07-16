@@ -1,0 +1,84 @@
+// average time O(n * log(n))
+// worst time O(n * b)
+// space O(n)
+<script>  //二叉树排序算法
+    function bstSort(ary) {
+        var root = null
+        for(let i = 0;i < ary.length;i++) {
+            root = insertIntoBST(root,ary[i])
+        }
+        k = 0
+        inOrderTraverse(root,val => {
+            ary[k++] = val
+        })
+        return ary
+    }
+</script>
+
+<script>
+    function bstSort(ary) {
+        var root = ary.reduce(function(root,item) {
+            return insertIntoBST(root,item)
+        }, null)
+        k = 0
+        inOrderTraverse(root,val => {
+            ary[k++] = val
+        })
+        return ary
+    }
+</script>
+
+<script>
+    function bstSort(ary) {
+        k = 0
+        inOrderTraverse(ary.reduce(insertIntoBST(root,item), null),val => {  //要去掉insert函数的(root,item)
+            ary[k++] = val
+        })
+        return ary
+    }
+</script>
+
+<script>
+    function bstSort(ary){
+        var root = ary.reduce(insertIntoBST,null)
+        k = 0
+        inOrderTraverse(root,val => {
+            ary[k++] = val
+        })
+        return ary
+    }
+</script>
+
+// time O(n * n)
+// space O(1)
+<script>   //选择排序
+    function swap(ary,i,j) {
+        if(i !== j) {
+            var t = ary[i]
+            ary[i] = ary[j]
+            ary[j] = t
+        }
+    }
+
+    function selectSort(ary) {
+
+        for(let i = 0; i < ary.length - 1; i++) {
+            let minPos = i
+            for(var j = i + 1; j < ary.length; j++) {
+                if(ary[j] < ary[minPos]) {
+                    minPos = j
+                }
+            }
+            swap(ary,i,minPos)
+        }
+        return ary
+    }
+    array = Array(100).fill(0).map(it => Math.random() * 100 | 0)
+    selectSort(array)
+</script>
+
+<script>   //插入排序
+    function insertSort(ary) {
+
+    }
+</script>
