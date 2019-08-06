@@ -94,6 +94,23 @@ var yf12 = function(){
         }
     }
 
+    function difference(ary,...array) {
+        let result = []
+        for(let i = 0;i < ary.length;i++) {
+            let flag = false
+            for(let j = 0;j < array.length;j++) {
+                if(array[j].indexOf(ary[i]) >= 0) {
+                    flag = true
+                    break
+                }
+            }
+            if(!flag) {
+                result.push(ary[i])
+            }            
+        }
+        return result
+    }
+
     return {
         chunk,
         compact,
@@ -104,5 +121,6 @@ var yf12 = function(){
         flattenDeep,
         flattenDepth,
         curry,
+        difference,
     }
 }()
