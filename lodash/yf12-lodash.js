@@ -61,7 +61,7 @@ var yf12 = function(){
         let result = []
         for(let item of ary) {
             if(Array.isArray(item)) {
-                let flattedItem = yf12.flattenDeep(item)
+                let flattedItem = flattenDeep(item)
                 result.push(...flattedItem)
             } else {
                 result.push(item)
@@ -75,13 +75,23 @@ var yf12 = function(){
         let result = []
         for(let item of ary) {
             if(Array.isArray(item)) {
-                let flattedItem = yf12.flattenDepth(item,depth - 1)
+                let flattedItem = flattenDepth(item,depth - 1)
                 result.push(...flattedItem)
             } else {
                 result.push(item)
             }
         }
         return result
+    }
+
+    function curry(f,length = f.length) {
+        return function(...args) {
+            if(args.length >= length) {
+                return f(...args)
+            } else {
+                return curry(f.bind(null,...args),length - args.length)
+            }
+        }
     }
 
     return {
@@ -93,5 +103,6 @@ var yf12 = function(){
         flatten,
         flattenDeep,
         flattenDepth,
+        curry,
     }
 }()
