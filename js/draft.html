@@ -1,0 +1,59 @@
+<script>
+    class PriorityQueue {
+        constructor(initialValues = [],predicate = it => it) {
+            this.elements = initialValues.slice()
+            this.heapify()
+            thi.predicate = predicate
+        }
+
+        //将无序的elements就地调整成一个堆
+        heapify() {
+            var startIdx = (this.elements.length - 2) >> 1
+            for(var i = startIdx;i >= 0;i--) {
+                this.heapDown(i)
+            }
+        }
+
+        _swap(i,j) {
+            var t = this.elements[i]
+            this.elements[i] = this.elements[j]
+            this.elements[j] = t
+        }
+
+        //从某个位置(currIdx)开始向下调整
+        //适用于堆顶删除了一个元素时
+        //堆尾的元素补在了堆顶时
+        heapDown(currIdx) {
+            if(currIdx < this.elements.length) {
+                var maxIdx = currIdx
+                var lIdx = currIdx * 2 + 1
+                var rIdx = lIdx + 1
+                if(lIdx < this.elements.size && this.elements[maxIdx] < this.elements[lIdx]) {
+                    maxIdx = lIdx
+                }
+                if(rIdx < this.elements.size && this.elements[maxIdx] < this.elements[rIdx]) {
+                    maxIdx = rIdx
+                }
+                if(currIdx != maxIdx) {
+                    this._swap(currIdx,maxIdx)
+                    this.heapDown(maxIdx)
+                }
+            }
+        }
+    }
+
+    class KthLargest {
+        constructor(k, nums){
+            this.heap = new PriorityQueue(nums, it => -it)
+        }
+        add(val) {
+            if (this.heap.peek() < val) {
+                this.heap.pop()
+                this.heap.push(val)
+            } else {
+
+            }
+            return this.heap.peek()
+        }
+    }
+</script>

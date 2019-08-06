@@ -200,7 +200,7 @@
     function filter(array,test) {
         var passed = []
         for(let i = 0; i < array.length; i++) {
-            if(test(array[i])) {
+            if(test(array[i],i,array)) {
                 passed.push(array[i])
             }
         }
@@ -355,11 +355,11 @@
 
 <script>   //展开数组(depth层)
     function flattenDepth(ary,depth = 1) {
-        if(depth == 0) return ary.silce()
+        if(depth == 0) return ary.slice()
         let result = []
         for(let item of ary) {
             if(Array.isArray(item)) {
-                let flattedItem = flatten(item,depth - 1)
+                let flattedItem = flattenDepth(item,depth - 1)
                 result.push(...flattedItem)
             } else {
                 result.push(item)
@@ -367,6 +367,7 @@
         }
         return result
     }
+    flattenDepth([[[1],[2],[3]],[4,5],[6,7]])
 </script>
 
 <script>
@@ -415,12 +416,6 @@
         return function(...args) {
             return !f(args)
         }
-    }
-</script>
-
-<script>
-    function some(ary,predicate) {
-        return !every(ary, negate(predicate))
     }
 </script>
 
@@ -509,6 +504,373 @@
             } else {
                 return cache[arg] = f(arg)
             }
+        }
+    }
+</script>
+
+<script>
+    function property(propName) {
+        return function(obj) {
+            return obj[propName]
+        }
+    }
+</script>
+
+<script>
+    ary.slice2 = function(start = 0,end = this.length) {
+        var result = []
+        for(var i = start;i < end;i++) {
+            result.push(this[i])
+        }
+        return result
+    }
+</script>
+
+<script>  //对象中只操作自有属性
+    function forOwn(obj,iterator) {
+        var hasOwn = Object.prototype.hasOwnProperty   //防止hasOwnProperty被覆盖
+        for(let key in obj) {
+            if(hasOwn.call(obj,key)) {
+                iterator(obj[key],key,offscreenBuffering)
+            }
+        }
+    }
+</script>
+
+<script>   //继承
+    function Creature(name,age) {
+        this.name = name
+        this.age = age
+    }
+
+    Creature.prototype.grow = function() {
+        this.age++
+    }
+
+    function Dog(name,age,master) {
+        Creature.call(this,name,age)
+        this.master = master
+    }
+
+    Object.setPrototypeOf(Dog.prototype,Creature.prototype)
+    var dog = new Dog('a',10,'b')
+    dog.grow()
+</script>
+
+<script>   //数组拼成字符串
+    function joint(blocks) {
+        return '\n' + blocks[0].map((_,idx) => {
+            return blocks.map(row => {
+                return row[idx]
+            }).join('   |   ')
+        }).join('\n')
+    }
+
+   joint([
+        [
+            'foo',
+            'bar',
+            'baz'
+        ],[
+            'aaaaaaa',
+            'bbbbb  ',
+            '       '
+        ],[
+            'jiangcheng',
+            'yunmeng   ',
+            'shuangjiea'
+        ]
+    ])
+</script>
+
+<script>
+    function TextCell(text) {
+        this.lines = text.split('\n')
+    }
+    TextCell('jiangcheng \nyunmeng \nshuangjiea')
+</script>
+
+<script>   //一个单元格的最小宽度
+    TextCell.prototype.minWidth = function() {
+        return this.lines.reduce((max,line) => {
+            return Math.max(max,line.length)
+        },0)
+    }
+</script>
+
+<script>    //一个单元格的高度
+    TextCell.prototype.minHeight = function() {
+        return this.lines.length
+    }
+</script>
+
+<script>
+    TextCell.prototype.draw = function(width,height) {
+        var result = []
+        for(let i = 0;i < height;i++) {
+            var line = this.lines[i] || ''
+            result.push(line.padEnd(width))
+        }
+        return result
+    }
+</script>
+
+<script>
+    function Complex(real, imag) {
+        this.real = real
+        this.imag = imag
+    }
+
+    Complex.fromString = function(str) {
+        var real = xxxx
+        var imag = yyyy
+        return new Complex(real, imag)
+    }
+
+    Complex.copy = function (c) {
+        return new Complex(c.real, c.imag)
+    }
+
+    Complex.prototype = {
+        plus(c) {
+            var real = this.real + c.real
+            var imag = this.imag + c.imag
+            return new Complex(real, imag)
+        },
+        minus(c) {
+            var real = this.real - c.real
+            var imag = this.imag - c.imag
+            return new Complex(real, imag)
+        },
+        mul(c) {
+            var real = this.real * c.real - this.imag * c.imag
+            var imag = this.real * c.imag + this.imag * c.real
+            return new Complex(real, imag)
+        },
+        division(c) {
+            var factor = c.real * c.real + c.imag * c.imag
+            var real = this.real * c.real + this.imag * c.imag
+            var imag = this.imag * c.real - this.real * c.imag
+            return new Complex(real / factor, imag / factor)
+        },
+        toString() {
+            if (this.imag < 0) {
+            return '' + this.real + this.imag + 'i'
+            } else {
+            return '' + this.real + '+' + this.imag + 'i'
+            }
+        }
+    }
+</script>
+
+<script>
+    function Stack() {
+        this._top = null
+        this._elementCount = 0
+    }
+
+    Stack.prototype = {
+        pop() {
+            if (this._top) {
+                var node = this._top
+                this._top = this._top.next
+                this._elementCount--
+                return node.val
+            } else {
+                return undefined
+            }
+        },
+        push(val) {
+            this._elementCount++
+            var node = {
+                val: val,
+                next: this._top,
+            }
+            this._top = node
+            return this
+        },
+        get size() {
+            return this._elementCount
+        }
+    }
+</script>
+
+<script>
+    function Queue() {
+        this._head = null
+        this._tail = null
+    }
+
+    Queue.prototype = {
+        add(val) {
+            var node = {
+                val: val,
+                next: null,
+            }
+            if (this._head == null) {
+                this._head = this._tail = node
+            } else {
+                this._tail.next = node
+                this._tail = node
+            }
+            return this
+        },
+        remove() {
+            if (!this._head) {
+                return undefined
+            }
+            var node = this._head
+            this._head = this._head.next
+            if (this._head == null) {
+                this._tail = null
+            }
+            return node.val
+        }
+    }
+</script>
+
+<script>
+    function Queue(initVals = []) {
+        this._head = null
+        this._tail = null
+
+        for (var val of initVals) {
+            this.add(val)
+        }
+    }
+
+    Queue.prototype = {
+        add(val) {
+            var node = {
+                val: val,
+                next: null,
+            }
+            if (this._head == null) {
+                this._head = this._tail = node
+            } else {
+                this._tail.next = node
+                this._tail = node
+            }
+            return this
+        },
+        remove() {
+            if (!this._head) {
+                return undefined
+            }
+            var node = this._head
+            this._head = this._head.next
+            if (this._head == null) {
+                this._tail = null
+            }
+            return node.val
+        }
+    }
+</script>
+
+<script>   //console.table([{},{},{}])
+    function tableHTML(data) {
+        var result = '<table>\n<thead>\n'
+        
+        var keys = _.uniq(_.flatten(data.map(Object.keys)))
+
+        for(var key of keys) {
+            result += '<th>' + key + '</th>\n'
+        }
+        result += '</thead>\n<tbody>\n'
+
+        for(var item of data) {
+            result += '<tr>\n'
+            for(var key of keys) {
+                if (key in item) {
+                    var className = getClassName(item[key])
+                    if (typeof item[key] == 'string') {
+                        result += '<td class="'+className+'">"' + item[key] + '"</td>\n'
+                    } else {
+                        result += '<td class="'+className+'">' + item[key] + '</td>\n'
+                    }
+                } else {
+                    result += '<td></td>\n'
+                }
+            }
+            result += '</tr>\n'
+        }
+        
+        result += '</tbody>\n</table>'
+
+        return result
+
+        function getClassName(val) {
+            if (typeof val == 'number') {
+                return 'number'
+            } else if (typeof val == 'string') {
+                return 'string'
+            }
+        }
+    }
+</script>
+
+<script>
+    class MyMap {
+        constructor(initialMaps) {// [[1, 2],[NaN, {}],[3, 8]]
+            this._keys = []
+            this._values = []
+
+            for(var pair of initialMaps) {
+            this.set(pair[0], pair[1])
+            }
+        }
+
+        _keyIndex(key) {
+            if (key !== key) {
+                for(var i = 0; i < this._keys.length; i++) {
+                    if (this._keys[i] !== this._keys[i]) {
+                        return i
+                    }
+                }
+            } else {
+            return this._keys.indexOf(key)
+            }
+        }
+
+        set(key, val) {
+            if (this.has(key)) {
+                var idx = this._keyIndex(key)
+                this._values[idx] = val
+            } else {
+                this._keys.push(key)
+                this._values.push(val)
+            }
+            return this
+        }
+
+        get(key) {
+            var idx = this._keyIndex(key)
+            if (idx >= 0) {
+                return this._values[idx]
+            }
+        }
+
+        delete(key) {
+            var idx = this._keyIndex(key)
+            if (idx >= 0) {
+                this._keys.splice(idx, 1)
+                this._values.splice(idx, 1)
+            }
+            return this
+        }
+
+        has(key) {
+            return this._keyIndex(key) >= 0
+        }
+
+        clear() {
+            this._keys.length = 0
+            this._values.length = 0
+            return this
+        }
+
+        get size() {
+            return this._keys.length
         }
     }
 </script>

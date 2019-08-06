@@ -59,7 +59,7 @@
     }
 </script>
 
-<script>  //非完全二叉树
+<script>  //非完全二叉树 数组转树
     function lcary2tree(ary) {
         if(ary.length == 0) return null
         var root = {
@@ -100,7 +100,7 @@
     lcary2tree([1,2,null,3,4,null,5,null,null,null,6,7,null,8,9])
 </script>
 
-<script>
+<script>  //非完全二叉树 树转数组
     function lctree2ary(root) {
         var result = []
         var nodes = [root]

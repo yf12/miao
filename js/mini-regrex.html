@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mini Regexp101</title>
+    <style>
+        em {
+            background-color: lightgreen;
+        
+        }
+        em:empty {
+            display: inline-block;
+            height: 1em;
+            width: 2px;
+            margin-left: -1px;
+            margin-right: -1px;
+            vertical-align: bottom;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="regexp" onkeyup="process()">
+    <br>
+    <textarea id="string" cols="30" rows="3" onkeyup="process()">adsfasdfoacbdfef</textarea>
+    <pre id="result"></pre>
+    <script>
+        function matcher(re,str) {  //re 正则 str字符串
+            var result = ''
+            var lastIndex = re.lastIndex
+            var match
+
+            while(match = re.exec(str)) {
+                result += str.slice(lastIndex,match.index)
+                lastIndex = re.lastIndex
+                if(match[0].length == 0) {
+                    re.lastIndex++
+                }
+                result += '<em>' + match[0] + '</em>'
+            }
+            result += str.slice(lastIndex)
+            return result
+        }
+
+        var regexpInput = document.getElementById('regexp')
+        var stringInput = document.getElementById('string')
+        var result = document.getElementById('result')
+
+        function process() {
+            var re = new RegExp(stringInput.value,'g')
+            var str = stringInput.value
+            var matched = matcher(re,str)
+            result.innerHTML = matched
+        }
+    </script>
+</body>
+</html>

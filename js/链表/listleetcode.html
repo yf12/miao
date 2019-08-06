@@ -880,3 +880,422 @@
         return dummy.next
     }
 </script>
+
+<script>
+    var partition = function(head, x) {
+        var list = head
+        var dummy1 = new ListNode()
+        var dummy2 = new ListNode()
+        var dummy1origin = dummy1
+        var dummy2origin = dummy2
+        while(list) {
+            if(list.val < x) {
+                dummy1.next = new ListNode(list.val)
+                dummy1 = dummy1.next
+            } else {
+                dummy2.next = new ListNode(list.val)
+                dummy2 = dummy2.next
+            }
+            list = list.next
+        }
+        dummy1.next = dummy2origin.next
+        return dummy1origin.next
+    }
+    partition(arrayToList([6,4,3,1,5,2]),3)
+</script>
+
+<script>
+    var partition = function(head, x) {
+        var list = head
+        var dummy1 = new ListNode()
+        var dummy2 = new ListNode()
+        var dummy1origin = dummy1
+        var dummy2origin = dummy2
+        while(head) {
+            if(head.val < x) {
+                dummy1.next = head
+                dummy1 = dummy1.next 
+            } else {
+                dummy2.next = head
+                dummy2 = dummy2.next
+            }
+            head = head.next
+        }
+        dummy2.next = null
+        dummy1.next = dummy2.next
+        return dummy1origin.next
+    }
+    partition(arrayToList([6,4,3,1,5,2]),3)
+</script>
+
+<script>
+    var partition = function(head, x) {
+        var dummy1 = new ListNode()
+        var dummy2 = new ListNode()
+        var dummy1origin = dummy1
+        var dummy2origin = dummy2
+        while(head) {
+            var curr = head
+            head = head.next
+            curr.next = null
+            if(curr.val < x) {
+                dummy1.next = curr
+                dummy1 = dummy1.next
+            } else {
+                dummy2.next = curr
+                dummy2 = dummy2.next
+            }
+        }
+        dummy1.next = dummy2origin.next
+        return dummy1origin.next
+    }
+    partition(arrayToList([6,4,3,1,5,2]),3)
+</script>
+
+<script>
+    var detectCycle = function(head) {
+        var slow = head,fast = head,count = 0
+        var isCycle = false
+        while(fast !== null && fast.next !== null) {
+            slow = slow.next
+            fast = fast.next.next
+            count++
+            if(slow == fast) {
+                isCycle = true
+                break
+            }
+        }
+        if(!isCycle) return null
+        slow = head
+        while(slow !== fast) {
+            slow = slow.next
+            fast = fast.next
+        }
+        return slow
+    }
+
+</script>
+
+<script>
+    var copyRandomList = function(head) {
+    }
+</script>
+
+<script>
+    var sortedListToBST = function(head) {
+        let list = head
+        let slow = head
+        let fast = head
+        let ary = []
+        while(fast.next && fast.next.next) {
+            slow = slow.next
+            fast = fast.next.next
+        }
+        while(list != slow) {
+            ary.push(list.val)
+            list = list.next
+        }
+        let root = new TreeNode(slow.val)
+
+    }
+</script>
+
+<script>  //109 二叉树转BST
+    var sortedListToBST = function(head) {
+        if(!head || !head.next) return head
+        let list = head.next
+        let slow = head
+        let fast = head
+        let half = new ListNode(head.val)
+        let copy = half
+        while(fast && fast.next) {
+            slow = slow.next
+            fast = fast.next.next
+        }
+        while(list && list != slow) {
+            half.next = new ListNode(list.val)
+            half = half.next
+            list = list.next
+        }
+        let root = new TreeNode(slow.val)
+        root.left = sortedListToBST(copy)
+        root.right = sortedListToBST(slow.next)
+        return root
+    }
+    sortedListToBST(arrayToList([0,1,2,3,4,5,6,7,8]))
+</script>
+
+<script>  //109 二叉树转BST  省空间的做法
+    var sortedListToBST = function(head) {
+        if(!head) return null
+        return toBST(head,null)
+    }
+
+    function toBST(head,tail) {
+        let slow = head
+        let fast = head
+        if(head == tail) return null
+        while(fast !== tail && fast.next != tail) {
+            slow = slow.next
+            fast = fast.next.next
+        }
+        let root = new TreeNode(slow.val)
+        root.left = toBST(head,slow)
+        root.right = toBST(slow.next,tail)
+        return root
+    }
+    sortedListToBST(arrayToList([-10,-3,0,5,9]))
+</script>
+
+<script>  //重排列表 143
+    var reorderList = function(head) {
+        if(!head || !head.next) return head
+        let list = head
+        let slow = head
+        let fast = head
+        while(fast.next && fast.next.next) {
+            slow = slow.next
+            fast = fast.next.next
+        }
+        let reverse = slow.next
+        slow.next = null
+        reverse = reverseList(reverse)
+        while(list && reverse) {
+            let secondList = list.next
+            let secondReverse = reverse.next
+            list.next = reverse
+            reverse.next = secondList
+            list = secondList
+            reverse = secondReverse
+        }
+        return head
+    }
+    reorderList(arrayToList([1,2,3,4,5]))
+
+    function reverseList(head) {
+        if(!head || !head.next) return head
+        let newHead = reverseList(head.next)
+        head.next.next = head
+        head.next = null
+        return newHead
+    }
+</script>
+
+
+<script>   //插入排序  147
+    var insertionSortList = function(head) {
+        let dummy = new ListNode()
+        while(head) {
+            let cur = dummy
+            while(cur.next && head.val > cur.next.val) {
+                cur = cur.next
+            }
+            let secondcur = cur.next
+            cur.next = new ListNode(head.val)
+            cur.next.next = secondcur
+            head = head.next
+        }
+        return dummy.next
+    }
+</script>
+
+<script>   //插入排序  147
+    var insertionSortList = function(head) {
+        let dummy = new ListNode()
+        while(head) {
+            let cur = dummy
+            let t = head.next
+            while(cur.next && head.val > cur.next.val) {
+                cur = cur.next
+            }
+            let secondcur = cur.next
+            cur.next = head
+            head.next = secondcur
+            head = t
+        }
+        return dummy.next
+    }
+</script>
+
+<script>  //两数相加 457
+    var addTwoNumbers = function(l1, l2) {
+        let ary1 = []
+        let ary2 = []
+        let l3 = new ListNode()
+        while(l1) {
+            ary1.push(l1.val)
+            l1 = l1.next
+        }
+        while(l2) {
+            ary2.push(l2.val)
+            l2 = l2.next
+        }
+        let t = 0
+        while(ary1.length > 0 || ary2.length > 0) {
+            let num1 = ary1.pop()
+            num1 = num1 ? num1 : 0
+            let num2 = ary2.pop()
+            num2 = num2 ? num2 : 0
+            let num = (num1 + num2 + t) % 10
+            t = Math.floor((num1 + num2 + t) / 10)
+            let tmp = new ListNode(num)
+            if(l3.val) {
+                tmp.next = l3
+            }
+            l3 = tmp
+        }
+        if(t > 0) {
+            let tmp = new ListNode(t)
+            tmp.next = l3
+            l3 = tmp            
+        }
+        return l3
+    }
+    addTwoNumbers(arrayToList([7,2,4,3]),arrayToList([5,6,4]))
+</script>
+
+<script>  //分割链表 725
+    var splitListToParts = function(root, k) {
+        let result = []
+        let l = size(root)
+        let remain = l % k
+        let number = (l - remain) / k
+        for(let j = 0;j < k;j++) {
+            let i = 1
+            if(root) {
+                var list = new ListNode(root.val)
+            }
+            else {
+                var list = null
+            }
+            var newList = list
+            if(root) root = root.next
+            while(i < number && root) {
+                list.next = new ListNode(root.val)
+                list = list.next
+                i++
+                root = root.next
+            }
+            if(remain > 0 && number > 0 && root) {
+                list.next = new ListNode(root.val)
+                list = list.next
+                i++
+                root = root.next
+                remain--
+            }
+            result.push(newList)
+        }
+        return result
+    }
+    splitListToParts(arrayToList([1,2,3,4,5,6,7,8,9,10,11,12,13]),5)
+
+    function size(list) { 
+        var length = 0
+        while(list !== null) {    //while(list)
+            length++
+            list = list.next
+        }
+        return length
+    }
+</script>
+
+<script>  //分割链表 725
+    var splitListToParts = function(root, k) {
+        let result = []
+        let l = size(root)
+        let t = k
+        for(let i = 0;i < k;i++) {
+            if(!root) {
+                result.push(root)
+            } else {
+                result.push(root)
+                let number = Math.ceil(l / t)
+                for(let j = 1;j < number;j++) {
+                    root = root.next
+                }
+                if(root) {
+                    let newRoot = root.next
+                    root.next = null
+                    root = newRoot
+                }
+                l -= number
+                t--
+            }
+        }
+        return result
+    }
+    splitListToParts(arrayToList([1,2,3,4,5,6,7,8,9,10,11,12,13]),5)
+
+    function size(list) { 
+        var length = 0
+        while(list !== null) {    //while(list)
+            length++
+            list = list.next
+        }
+        return length
+    }
+</script>
+
+<script>   //奇偶链表 328
+    var oddEvenList = function(head) {
+        if(!head) return head
+        let odd = head,even = head.next,evenHead = even
+        while(even && even.next) {
+            odd.next = even.next
+            even.next = even.next.next
+            odd = odd.next
+            even = even.next
+        }
+        odd.next = evenHead
+        return head
+    }
+</script>
+
+<script>
+    var nextLargerNodes = function(head) {
+        let result = []
+        while(head.next) {
+            if(head.next.val > head.val) {
+                result.push(head.next.val)
+            } else {
+                let list = head.next.next
+                while(list && list.val <= head.val) {
+                    list = list.next
+                }
+                let t = list ? list.val : 0
+                result.push(t)
+            }
+            head = head.next
+        }
+        result.push(0)
+        return result
+    }
+</script>
+
+<script>
+    var nextLargerNodes = function(head) {
+        let result = []
+        let stack = []
+        while(head) {
+            result.push(head.val)
+            head = head.next
+        }
+        let n = result.length - 1
+        while(n >= 0) {
+            if(stack.length == 0) {
+                stack.push(result[n])
+                result[n] = 0
+                n--
+            } else if(result[n] < stack[stack.length - 1]) {
+                let temp = stack[stack.length - 1]
+                stack.push(result[n])
+                result[n] = temp
+                n--
+            } else {
+                stack.pop()
+            }
+        }
+        return result
+    }
+    nextLargerNodes(arrayToList([1,7,5,1,9,2,5,1]))
+</script>

@@ -1,0 +1,435 @@
+<script>     //继承实现的模式
+    function Creature(name,age) {
+        this.name = name
+        this.age = age
+    }
+
+    Creature.prototype.grow = function() {
+        this.age++
+    }
+
+    function Dog(name,age,master) {    //Dog设置属性的方法调用Creature的函数
+        Creature.call(this,name,age)   //将Creature当作函数而不是构造函数调用，this是Dog的参数，相当于重用了Creature函数中的代码
+        this.master = master
+    }
+
+    Object.setPrototypeOf(Dog.prototype,Creature.prototype)   //将狗的原型设为生物，这样就可以调用Creature的原型属性中的函数（grow）
+
+    var dog = new Dog('仙子',7,'金凌')
+    dog.grow
+</script>
+
+<script>   //栈 后进先出
+    function Stack() {
+        this._top = null
+        this._elementCount = 0
+    }
+
+    Stack.prototype = {
+        pop() {
+            if(this._top) {
+                var node = this._top
+                this._top = this._top.next
+                this._elementCount--
+                return node.val
+            } else {
+                return undefined
+            }
+        },
+        push(val) {
+            this._elementCount++
+            var node = {
+                val:val,
+                next:this._top
+            }
+            this._top = node
+            return this
+        },
+        get size() {
+            return this._elementCount
+        }
+    }
+</script>
+
+<script>   //创建队列
+    function Queue(initVals = []) {  //如果要将一个数组存入队列中
+        this._head = null
+        this._tail = null
+        this._elementCount = 0
+        for(var val of initVals) {
+            this.add(val)
+        }
+    }
+
+    Queue.prototype = {
+        add(val) {
+            this._elementCount++
+            var node = {
+                val:val,
+                next:null
+            }
+            if(this._head == null) {
+                this._head = this._tail = node
+            } else {
+                this._tail.next = node
+                this._tail = node
+            }
+            return this
+        },
+        remove() {
+            if(this._head == null) {
+                return undefined
+            } else {
+                this._elementCount--
+                var node = this._head
+                this._head = this._head.next
+                if(this._head == null) {
+                    this._tail = null
+                }
+                return node.val
+            }
+        },
+        get size() {
+            return this._elementCount
+        }
+    }
+</script>
+
+<script>   //创建构造函数的另一方法
+    class Queue {
+        static from(ary) {   //直接挂在Queen下的函数
+            var q = new Queue()
+            for(var val of initVals) {
+                q.add(val)
+            }
+            return q         
+        }
+        constructor(initVals = []) {
+            this._head = null
+            this._tail = null
+            this._elementCount = 0
+            for(var val of ary) {
+                this.add(val)
+            }            
+        }
+
+        add(val) {   //挂在Queen的prototype下的函数 原型上的方法默认不可枚举
+            this._elementCount++
+            var node = {
+                val:val,
+                next:null
+            }
+            if(this._head == null) {
+                this._head = this._tail = node
+            } else {
+                this._tail.next = node
+                this._tail = node
+            }
+            return this
+        }
+        remove() {
+            if(this._head == null) {
+                return undefined
+            } else {
+                this._elementCount--
+                var node = this._head
+                this._head = this._head.next
+                if(this._head == null) {
+                    this._tail = null
+                }
+                return node.val
+            }
+        }
+        get size() {
+            return this._elementCount
+        }
+    }
+</script>
+
+<script>  //class类的继承
+    class B{
+        constructor() {
+            this.b = true
+        }
+        add() {
+
+        }
+    }
+
+    class A extends B {
+        constructor() {
+            super() //大致相当于B.call(this)
+            super.add()
+            this.a = true
+        }
+    }
+</script>
+
+<script>
+    class MySet {
+        constructor(initVals = []) {
+            this = []
+            for(var val of initVals) {
+                this.push(val)
+            }
+            return this
+        }
+
+        add(val) {
+
+        }
+
+        delete(val) {
+
+        }
+
+        has(val) {
+
+        }
+
+        clear() {
+
+        }
+
+        get size() {
+
+        }
+    }
+</script>
+
+<script>
+    function MySet(initVals = []) {
+        this.ary = []
+    }
+
+    MySet.prototype = {
+        add(val) {
+
+        },
+
+        delete(val) {
+
+        },
+
+        has(val) {
+
+        },
+
+        clear() {
+
+        },
+
+        get size() {
+
+        }        
+    }
+</script>
+
+<script>
+    /**
+    * Initialize your data structure here.
+    */
+    var MyLinkedList = function() {
+        this.head = null
+        this.tail = null
+        this.elementCount = 0
+    };
+
+    /**
+    * Get the value of the index-th node in the linked list. If the index is invalid, return -1. 
+    * @param {number} index
+    * @return {number}
+    */
+    MyLinkedList.prototype.get = function(index) {
+        let node = this.head
+        if(!node || index > this.elementCount || index < 0) return -1
+        for(let i = 0;i < index;i++) {
+            node = node.next
+        }
+        if(node) return node.val
+        else return -1
+    };
+
+    /**
+    * Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list. 
+    * @param {number} val
+    * @return {void}
+    */
+    MyLinkedList.prototype.addAtHead = function(val) {
+        this.elementCount++
+        let node = {
+            val: val,
+            next: this.head
+        }
+        if(this.head == null) {
+            this.head = this.tail = node
+        } else {
+            this.head = node
+        }
+        return this
+    };
+
+    /**
+    * Append a node of value val to the last element of the linked list. 
+    * @param {number} val
+    * @return {void}
+    */
+    MyLinkedList.prototype.addAtTail = function(val) {
+        this.elementCount++
+        let node = {
+            val: val,
+            next: null
+        }
+        if(this.head == null) {
+            this.head = this.tail = node
+        } else {
+            this.tail.next = node
+            this.tail = node
+        }
+        return this       
+    };
+
+    /**
+    * Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. 
+    * @param {number} index 
+    * @param {number} val
+    * @return {void}
+    */
+    MyLinkedList.prototype.addAtIndex = function(index, val) {
+        let list = this.head
+        let node = {
+            val: val,
+            next: null
+        }
+        if(!list && index == 0) {
+            this.elementCount++
+            this.head = this.tail = node
+        } else if(index == 0) {            
+            this.elementCount++
+            node.next = this.head
+            this.head = node
+        } else if(index < this.elementCount && index > 0) {
+            this.elementCount++
+            for(let i = 0;i < index - 1;i++) {
+                list = list.next
+            }
+            let then = list.next
+            list.next = node
+            node.next = then
+        } else if(index == this.elementCount) {
+            this.elementCount++
+            this.tail.next = node
+            this.tail = this.tail.next
+            this.tail.next = null
+        }
+        return this
+    };
+
+    /**
+    * Delete the index-th node in the linked list, if the index is valid. 
+    * @param {number} index
+    * @return {void}
+    */
+    MyLinkedList.prototype.deleteAtIndex = function(index) {
+        let list = this.head
+        if(index >= 0 && index < this.elementCount) {
+            this.elementCount--
+            for(i = 0;i < index - 1;i++) {
+                list = list.next
+            }
+            if(index == 0) {
+                this.head = this.head.next
+            } else if(list.next) {
+                list.next = list.next.next
+            } else {
+                list.next = null
+            }
+        }
+        return this
+    };
+
+    /** 
+    * Your MyLinkedList object will be instantiated and called as such:
+    * var obj = new MyLinkedList()
+    * var param_1 = obj.get(index)
+    * obj.addAtHead(val)
+    * obj.addAtTail(val)
+    * obj.addAtIndex(index,val)
+    * obj.deleteAtIndex(index)
+    */
+</script>
+
+<script>   //画表格
+    function rowHeights(rows) {
+        return rows.map(row => {
+            return row.reduce((max,cell) => {
+                return Math.max(max,cell.minHeight())
+            })
+        },0)
+    }
+
+    function colWidths(rows) {
+        return rows[0].map((_,idx) =>{
+            return rows.reduce((max,row) => {
+                return Math.max(max,row[i].minWidth())
+            },0)
+        }) 
+    }
+
+    function drawTable(rows) {
+        var heights = rowHeights(rows)
+        var widths = colWidths(rows)
+        function drawLine(blocks,lineNo) {
+            return blocks.map(block => {
+                return block[lineNo]
+            }).join("")
+        }
+        function drawRow(row,rowNum) {
+            var blocks = row.map((cell,colNum) => {
+                return cell.draw(widths[colNum],heights[rowNum])
+            })
+            return blocks[0].map((_,lineNo) => {
+                return drawLine(blocks,lineNo)
+            }).join("\n")
+        }
+    }
+</script>
+
+<script>
+    function tableHTML(data) {
+        var result = '<table>\n<thead>\n'
+        var keys = _.uniq(_.flatten(data.map(item => Object.keys[item])))  //data.map(Object.keys)
+        for(var key of keys) {
+            result += '<th>' + key + '</th>\n'
+        }
+        result += '</thead>\n<tbody>\n'
+
+        for(var item of data) {
+            result += '<tr>\n'
+            for(var key of keys) {
+                if(key in item) {
+                    var className = getClassName(item[key])
+                    if(typeof item[key] == 'string') {
+                        result += '<td class="'+className+'">"' + item[key] + '"</td>\n'
+                    } else {
+                        result += '<td class="'+className+''">' + item[key] + '</td>\n'
+                    }
+                } else {
+                    result += '<td></td>\n'
+                }
+            }
+            result += '</tr>\n'
+        }
+        result += '</tbody>\n</table>'
+        return result
+
+        function getClassName(val) {
+            if(typeof val == 'number') {
+                return 'number'
+            } else if(typeof val == 'string') {
+                return 'string'
+            }
+        }
+    }
+</script>
+

@@ -1346,3 +1346,437 @@ console.timeEnd()
 
 </script>
 
+<script>
+    var majorityElement = function(nums) {
+        let ary = [nums[0]]
+        for(let i = 1;i < nums.length;i++) {
+            if(ary.length == 0) {
+                ary.push(nums[i])
+            }else if(nums[i] !== ary[ary.length - 1]) {
+                ary.pop()
+            } else {
+                ary.push(nums[i])
+            }
+        }
+        return ary[0]
+    }
+</script>
+
+<script>   //71 化简文件路径
+    var simplifyPath = function(path) {
+        if(path.length == 0) return ''
+        let ary = path.split("/")
+        let docu = []
+        let str = ""
+        for(let i = 0;i < ary.length;i++) {
+            if(ary[i] !== '.' && ary[i] !== '..' && ary [i] !== '') {
+                docu.push(ary[i])
+            }
+            if(ary[i] == '..' && docu.length > 0) {
+                docu.pop()
+            }
+        }
+        console.log(docu)
+        for(let i = 0;i < docu.length;i++) {
+            str += '/' + docu[i]
+        }
+        return docu.length == 0 ? '/' : str
+    }
+    simplifyPath("/a//b////c/d//././/..")
+</script>
+
+<script>
+    var evalRPN = function(tokens) {
+        if(tokens.length == 1) return Number(tokens[0])
+        var flag = true
+        let stack = []
+        let result
+        for(let i = 0;i < tokens.length;i++) {
+            if(tokens[i] != '+' && tokens[i] != '-' && tokens[i] != '*' && tokens[i] != '/') {
+                stack.push(Number(tokens[i]))
+            } else {
+                if(flag) {
+                    let b = stack.pop()
+                    let a = stack.pop()
+                    result = caculator(tokens[i],a,b)
+                    flag = false
+                } else {
+                    let c = stack.pop()
+                    if(tokens[i] == '-') {
+                        return caculator(tokens[i],result,c)
+                    }
+                    result = caculator(tokens[i],c,result)
+                }
+            }
+        }
+        return result
+    }
+    evalRPN(["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"])
+
+    function caculator(caculate,a,b) {
+        if(caculate == '+') {
+            return a + b > 0 ? Math.floor(a + b) : Math.ceil(a + b)
+        }
+        if(caculate == '-') {
+            return a - b > 0 ? Math.floor(a - b) : Math.ceil(a - b)
+        }
+        if(caculate == '*') {
+            return a * b > 0 ? Math.floor(a * b) : Math.ceil(a * b)
+        }
+        if(caculate == '/') {
+            return a / b > 0 ? Math.floor(a / b) : Math.ceil(a / b)
+        }
+    }
+</script>
+
+<script>
+    var evalRPN = function(tokens) {
+        if(tokens.length == 1) return Number(tokens[0])
+        var flag = true
+        let stack = []
+        let result
+        for(let i = 0;i < tokens.length;i++) {
+            if(tokens[i] != '+' && tokens[i] != '-' && tokens[i] != '*' && tokens[i] != '/') {
+                stack.push(Number(tokens[i]))
+            } else {
+                let b = stack.pop()
+                let a = stack.pop()
+                result = caculator(tokens[i],a,b)
+                stack.push(result)
+            }
+        }
+        return stack[0]
+    }
+    evalRPN(["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"])
+
+    function caculator(caculate,a,b) {
+        if(caculate == '+') {
+            return a + b > 0 ? Math.floor(a + b) : Math.ceil(a + b)
+        }
+        if(caculate == '-') {
+            return a - b > 0 ? Math.floor(a - b) : Math.ceil(a - b)
+        }
+        if(caculate == '*') {
+            return a * b > 0 ? Math.floor(a * b) : Math.ceil(a * b)
+        }
+        if(caculate == '/') {
+            return a / b > 0 ? Math.floor(a / b) : Math.ceil(a / b)
+        }
+    }
+</script>
+
+<script>  //丑数2
+    var nthUglyNumber = function(n) {
+        let ugly = [1]
+        let factor2 = 2,factor3 = 3,factor5 = 5
+        let index2 = 0,index3 = 0,index5 = 0
+        for(let i = 1;i < n;i++) {
+            let min = Math.min(factor2,factor3,factor5)
+            ugly[i] = min
+            if(min == factor2) {
+                factor2 = 2 * ugly[++index2]
+            }
+            if(min == factor3) {
+                factor3 = 3 * ugly[++index3]
+            }
+            if(min == factor2) {
+                factor5 = 5 * ugly[++index5]
+            }
+        }
+        return ugly[n - 1]
+    }
+    nthUglyNumber(120)
+</script>
+
+<script>  //超丑数
+    var nthSuperUglyNumber = function(n, primes) {
+        let ugly = [1]
+        let factor = primes.slice()
+        let index = new Array(primes.length).fill(0)
+        for(let i = 0;i < n;i++) {
+            let min = Math.min(...factor)
+            ugly[i] = min
+            for(let j = 0;j < factor.length;j++) {
+                if(min == factor[j]) {
+                    factor[j] = primes[j] * ugly[++index[j]]
+                }
+            }
+        }
+        return ugly[n - 1]
+    }
+    nthSuperUglyNumber(12,[2,3,5])
+</script>
+
+<script>  //前k个众数 347
+    var topKFrequent = function(nums, k) {
+        let map = {}
+        let number = []
+        for(let i = 0;i < nums.length;i++) {
+            if(nums[i] in map) {
+                map[nums[i]]++
+            } else {
+                map[nums[i]] = 1
+            }
+        }
+        for(let i = 0;i < k;i++) {
+            let max = -Infinity
+            let maxKey
+            for(let key in map) {
+                if(map[key] > max) {
+                    max = map[key]
+                    maxKey = key
+                }
+            }
+            map[maxKey] = 0
+            number[i] = maxKey
+        }
+        return number
+    }
+    topKFrequent([1,1,2,2,3,3,4,4,4,5,5,5,5,5,5,5,100,100,100,100])
+</script>
+
+<script>  //前k个众数 347
+    var topKFrequent = function(nums, k) {
+        let map = {}
+        let number = []
+        nums.forEach(currentValue => {
+            if(currentValue in map) {
+                map[currentValue]++
+            } else {
+                map[currentValue] = 1
+            }            
+        })
+        let orderedMap = Object.keys(map).sort((a,b) => map[b] - map[a]).map(key => key)
+        return orderedMap.slice(0,k)
+    }
+    topKFrequent([1,1,2,2,3,3,4,4,4,5,5,5,5,5,5,5,100,100,100,100])
+</script>
+
+<script>
+    var kthSmallest = function(matrix, k) {
+        let n = matrix.length
+        let number = new Array(matrix.length).fill(0)
+        let sortAry = [matrix[0][0]]
+        for(let i = 0;i < n;i++) {
+            for(let j = 0;j < n;j++) {
+                if(matrix[i][])
+            }
+        }
+    }
+</script>
+
+<script>
+    var findDuplicate = function(nums) {
+        if(nums.length > 1) {
+            let slow = nums[0]
+            let fast = nums[nums[0]]
+            while(slow !== fast) {
+                slow = nums[slow]
+                fast = nums[nums[fast]]
+            }
+            fast = 0
+            while(slow !== fast) {
+                slow = nums[slow]
+                fast = nums[fast]
+            }
+            return slow
+        }
+        return -1
+    }
+    findDuplicate([1,3,2,4,2])
+</script>
+
+<script>
+    var kthSmallest = function(matrix, k) {
+        let n = matrix.length
+        let lo = matrix[0][0]
+        let hi = matrix[n - 1][n - 1]
+        while(lo < hi) {
+            let mid = Math.floor(lo + (hi - lo) / 2)
+            let count = 0
+            let j = n - 1
+            for(let i = 0;i < n;i++) {
+                while(matrix[i][j] > mid && j >= 0) {
+                    j--
+                }
+                count += j + 1
+            }
+            if(count < k) lo = mid
+            else hi = mid
+        }
+        return 
+    }
+</script>
+
+<script>
+    function findMid(array,first,last,value) {
+        while(first < last) {
+            mid = Math.floor(first + (last - first) / 2)
+            if(array[mid] < value) first = mid + 1
+            else last = mid
+        }
+        return first
+    }
+</script>
+
+<script>
+    var rob = function(nums) {
+        nums.push(0)
+        for(let i = nums.length - 3;i >=0;i--) {
+            nums[i] = nums[i] + Math.max(nums[i + 2],nums[i + 3])
+        }
+        return nums[0]
+    }
+</script>
+
+<script>   //通配符
+    function match(str, wildcard) {
+        if (!str && !wildcard) {
+            return true
+        }
+        if (wildcard == '*') {
+            return true
+        }
+        var w0 = wildcard[0]
+        if (w0 == '?') {
+            if (!str) {
+                return false
+            }
+            return match(str.slice(1), wildcard.slice(1))
+        } else if (w0 == '*') {
+            var restWildcard = wildcard.slice(1)
+            for (var i = 0; i <= str.length; i++) {
+                if (match(str.slice(i), restWildcard)) {
+                    return true
+                }
+            }
+            return false
+        } else {
+            if (str[0] == w0) {
+                return match(str.slice(1), wildcard.slice(1))
+            } else {
+                return false
+            }
+        }
+    }
+</script>
+
+<script>
+    var rob = function(nums) {
+        var prev1 = 0,prev2 = 0
+        for(let i = 0;i < nums.length;i++) {
+            var temp = prev1
+            prev1 = Math.max(prev1,nums[i] + prev2)
+            prev2 = temp
+        }
+        return prev1
+    }
+</script>
+
+<script>
+    function restoreIpAddresses(s,parts = [],result = []) {
+        if(parts.length == 3 && isIPPart(s)) {
+            result.push(parts.join('.') + '.' +s)
+            return
+        }
+        for(var i = 1;i <= 3;i++) {
+            var part = s.slice(0,i)
+            if(isIPPart(part)) {
+                parts.push(part)
+                restoreIpAddresses(s.slice(i),parts,result)
+                parts.pop()
+            }
+        }
+        return result
+    }
+    restoreIpAddresses("25525511135")
+
+    function isIPPart(s) {
+        if(s[0] == '0') {
+            return s.length == 1
+        }
+        return s.length && s < 256
+    }
+</script>
+
+<script> //合法IP地址 93
+    function restoreIpAddresses(s,result = [],parts = []) {
+        if(parts.length == 3) {
+            if(isIPPart(s)) {
+                result.push(parts.join('.') + '.' + s)
+            }
+            return
+        }
+        for(let i = 1;i <= 3;i++) {
+            let s1 = s.slice(0,i)
+            if(isIPPart(s1)) {
+                parts.push(s1)
+                restoreIpAddresses(s.slice(i),result,parts)
+                parts.pop()
+            }
+        }
+        return result
+    }
+    restoreIpAddresses("25525511135")
+
+    function isIPPart(s) {
+        if(s[0] == '0') {
+            return s.length == 1
+        }
+        return s < 256 && s.length
+    }
+</script>
+
+<script>
+    var calculate = function(s) {
+        for(let i = 0;i < s.length;i++) {
+            if(typeof s[i] == '*'|| typeof s[i] == '/')
+        }
+    }
+ 
+    function caculator(caculate,a,b) {
+        if(caculate == '+') {
+            return a + b
+        }
+        if(caculate == '-') {
+            return a - b
+        }
+        if(caculate == '*') {
+            return a * b
+        }
+        if(caculate == '/') {
+            return Math.floor(a / b)
+        }
+    }
+</script>
+
+<script>
+    var calculate = function(s) {
+        var stack = []
+        var sign = '+'
+        var sum = 0
+        for(let i = 0;i < s.length;i++) {
+            if(Number(s[i])) {
+                if(sign == '+') {
+                    stack.push(Number(s[i]))
+                }
+                if(sign == '-') {
+                    stack.push(Number(s[i]))
+                }
+                if(sign == '*') {
+                    stack.push(stack.pop() * Number(s[i]))
+                }
+                if(sign == '/') {
+                    stack.push(stack.pop() / Number(s[i]))
+                }
+            } else {
+                sign = s[i]
+            }
+        }
+        for(var j = 0;j < stack.length;j++) {
+            sum = sum + stack[j]
+        }
+        return sum
+    }
+    calculate("3+2*2")
+</script>

@@ -1,0 +1,11 @@
+<script>  //数转倒转字符串 递归
+    function transorm(n,isOuterMost = true) {
+        if(n == 0) {
+            if(isOuterMost) return '0'
+            else return ''
+        }
+        var d = n % 10
+        var rest = (n - d) / 10
+        return '' + d + transorm(rest,false)
+    }
+</script>

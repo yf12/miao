@@ -1317,3 +1317,20 @@ console.timeEnd()
     }
     climbStairs(12)
 </script>
+
+<script>  //负数计算 537
+    var complexNumberMultiply = function(a, b) {
+        let arya = a.split('+')
+        let aryb = b.split('+')
+        let str = ''
+        let ainscriber = Number(arya[1].slice(0,arya[1].length - 1))
+        let binscriber = Number(aryb[1].slice(0,aryb[1].length - 1))
+        let areal = Number(arya[0])
+        let breal = Number(aryb[0])
+        let real = areal * breal - ainscriber * binscriber
+        let inscriber = areal * binscriber + breal * ainscriber
+        let string = String(real) + '+' + String(inscriber) + 'i'
+        return string
+    }
+    complexNumberMultiply("78+-76i","-86+72i")
+</script>

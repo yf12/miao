@@ -397,3 +397,370 @@ var isSameTree = function(p, q) {
         return !node.left && !node.right
     }
 </script>
+
+<script>
+    var serialize = function(root) {
+        var string = ''
+        if(!root) return string
+        if(!root.left && !root.right) return string + root.val
+        if(root.left && !root.right) return string + root.val + '(' + serialize(root.left) +')'
+        return string + root.val + '(' + serialize(root.left) +')' + '(' + serialize(root.right) +')'
+    }
+    serialize([1,2,3,null,null,4,5])
+</script>
+
+<script>
+    var deserialize = function(data,result = []) {
+        if(data = '(') return result
+        let breakpoint
+        for(let i = 2;i < data.length;i++) {
+            let stack = []
+            if(data[i] = '(') {
+                stack.push(data[i])
+            }
+            if(data[i] == ')') {
+                if(stack.length == 0) {
+                    breakpoint = i
+                    break
+                } else {
+                    stack.pop()
+                }
+            }
+        }
+        result.push(data[0],data[2],data[breakpoint + 2])
+        data1 = data.slice(2,breakpoint)
+        data2 = data.slice(breakpoint + 2,data.length - 1)
+        deserialize(data1,result)
+        deserialize(data2,result)
+        return result
+    }
+    deserialize("1(2(4(8)(9))(5))(3(6)(7))")
+</script>
+
+<script>  //938
+    var rangeSumBST = function(root, L, R, status={sum:0, judge:false}) {
+        if(!root) return 0
+        if(root.left) {
+            rangeSumBST(root.left,L,R,status)
+        }
+        if(root.val == L) {
+            status.judge = true
+        }
+        if(root.val == R) {
+            status.sum += root.val
+            status.judge = false
+            return sum
+        }
+        if(status.judge) {
+            status.sum += root.val
+        }
+        if(root.right) {
+            rangeSumBST(root.right,L,R,status)
+        }
+        return status.sum
+    }
+    rangeSumBST(lcary2tree([10,5,15,3,7,null,18]),7,15)
+</script>
+
+<script>  //235
+    var lowestCommonAncestor = function(root, p, q) {
+        var min = Math.min(p.val,q.val)
+        var max = Math.max(p.val,q.val)
+        if(!root) return root
+        if(root.val == max || root.val == min) {
+            return root
+        } else if(root.val > max) {
+            return lowestCommonAncestor(root.left,p,q)
+        } else if(root.val < max){
+            if(root.val > min) {
+                return root
+            } else if(root.val < min) {
+                return lowestCommonAncestor(root.right,p,q)
+            }
+        }
+    }
+    lowestCommonAncestor(lcary2tree([6,2,8,0,4,7,9,null,null,3,5]),7,3)
+</script>
+
+<script> //236
+    var lowestCommonAncestor = function(root, p, q) {
+        if(!root) return root
+        if(p.val == root.val || q.val == root.val) {
+            return root
+        } else if(isInit(root.left,p.val) !== isInit(root.left,p.val)) {
+            return root
+        } else if(isInit(root.left,p.val) == 1 && isInit(root.left,q.val) == 1) {
+            return lowestCommonAncestor(root.left,p,q)
+        } else if(isInit(root.left,p.val) == 0 && isInit(root.left,q.val) == 0) {
+            return lowestCommonAncestor(root.right,p,q)
+        }
+    }
+    lowestCommonAncestor(lcary2tree([3,5,1,6,2,9,8,null,null,7,4]))
+
+    function isInit(root,value,judge = 0) {
+        if(root) {
+            if(root.val == value) {
+                judge = 1
+                return judge
+            }
+            judge = isInit(root.left,value,judge)
+            judge = isInit(root.right,value,judge)
+        }
+        return judge
+    }
+</script>
+
+<script>  //236 标准解法【大概
+    var lowestCommonAncestor = function(root, p, q) {
+        if(!root || root == p || root == q) {
+            return root
+        }
+        var l = lowestCommonAncestor(root.left,p,q)
+        var r = lowestCommonAncestor(root.right,p,q)
+
+        if(l && r) return root
+        if(!l && ! r) return null
+        return l ? l : r
+    }
+    lowestCommonAncestor(lcary2tree([3,5,1,6,2,0,8,null,null,7,4]),7,0)
+</script>
+
+<script>
+    var isValidBST = function(root,flag = true) {
+        if(!root) return true
+        if(root) {
+            if(root.left) {
+                if(root.left.val >= root.val) {
+                    return false
+                }
+            }
+            if(root.right) {
+                if(root.right.val <= root.val) {
+                    return false
+                }
+            }
+        }
+        if(root.left) return isValidBST(root.left)
+        if(root.left) return isValidBST(root.right)
+        return true
+    }
+</script>
+
+<script>
+    var isValidBST = function(root) {
+        if(!root) return true
+        if(root.left) isValidBST(root.left)
+        if(root.left) {
+            if(root.left.val >= root.val) {
+                return false
+            }
+        }
+        if(root.right) {
+            if(root.right.val <= root.val) {
+                return false
+            }
+        }
+        if(root.left) return isValidBST(root.right)        
+    }
+</script>
+
+<script>
+    var isValidBST = function(root) {
+        if(!root) return true
+        if(root.left) {
+            if(root.left.val >= root.val) {
+                return false
+            }
+            if(root.left.left) {
+                if(root.left.left.val >= root.left.val) {
+                    return false
+                }
+            }
+            if(root.left.right) {
+                if(root.left.right.val <= root.left.val) {
+                    return false
+                }
+                if(root.left.right.val >= root.val) {
+                    return false
+                }
+            }
+        }
+        if(root.right) {
+            if(root.right.val <= root.val) {
+                return false
+            }
+            if(root.right.left) {
+                if(root.right.left.val >= root.right.val) {
+                    return false
+                }
+                if(root.right.left.val <= root.val) {
+                    return false
+                }
+            }
+            if(root.right.right) {
+                if(root.right.right.val <= root.right.val) {
+                    return false
+                }
+            }
+        }
+        if(root.left) return isValidBST(root.left)
+        if(root.left) return isValidBST(root.right)
+        return true
+    }
+
+</script>
+
+<script>  //判断是否是BST 98
+    var isValidBST = function(root) {
+        if(!root) return true
+        let stack = []
+        let pre = new TreeNode()
+        while(root || stack.length > 0) {
+            while(root) {
+                stack.push(root)
+                root = root.left
+            }
+            root = stack.pop()
+            if(pre && root.val <= pre.val) {
+                return false
+            }
+            pre = root
+            root = root.right
+        }
+        return true
+    }
+    isValidBST(lcary2tree([3,1,5,0,2,4,6,null,null,null,3]))
+</script>
+
+<script>  //二叉树中序遍历  94 循环 栈
+    var inorderTraversal = function(root) {
+        let result = []
+        let stack = []
+        while(root || stack.length > 0) {
+            if(root) {
+                stack.push(root)
+                root = root.left
+            }
+            root = stack.pop()
+            result.push(root.val)
+            root = root.right
+        }
+        return result
+    }
+    inorderTraversal(lcary2tree([3,1,5,0,2,4,6,null,null,null,3]))
+</script>
+
+<script>   //二叉树中序遍历 递归 ...
+    var inorderTraversal = function(root) {
+        let result = []
+        if(root) {
+            if(root.left) {
+                result.push(...inorderTraversal(root.left))
+            }
+            result.push(root.val)
+            if(root.right) {
+                result.push(...inorderTraversal(root.right))
+            }
+        }
+        return result
+    }
+</script>
+
+<script>   //230
+    var kthSmallest = function(root, k) {
+        let stack = []
+        let count = 0
+        while(root || stack.length > 0) {
+            while(root) {
+                stack.push(root)
+                root = root.left
+            }
+            root = stack.pop()
+            count++
+            if(count == k) {
+                return root.val
+            }
+            root = root.right
+        }
+    }
+</script>
+
+<script>  //判断是否是平衡树  110
+    var isBalanced = function(root) {
+        return balance(root) >= 0
+    }
+
+    //如果root是平衡的，返回其深度
+    //如果不是，返回-1
+    function balance(root) {
+        if(root) {
+            var dl = balance(root.left)
+            var dr = balance(root.right)
+            if(dl == -1 || dr == -1) {
+                return -1
+            }
+            if(Math.abs(dl - dr) <= 1) {
+                return Math.max(dl,dr) + 1
+            } else {
+                return -1
+            }
+        }
+        return 0
+    }
+</script>
+
+<script>  //BST节点的最小差值 783
+    var minDiffInBST = function(root) {
+        if(root) {
+            if(root.left) {
+                var left = root.left
+                while(left.right) {
+                    left = left.right
+                }
+                var lval = root.val - left.val
+            }
+            if(root.right) {
+                var right = root.right
+                while(right.left) {
+                    right = right.left
+                }
+                var rval = right.val - root.val
+            }
+            lval = lval ? lval : Infinity
+            rval = rval ? rval : Infinity
+            var l = root.left ? minDiffInBST(root.left) : Infinity
+            var r = root.right ? minDiffInBST(root.right) : Infinity
+            return Math.min(lval,rval,l,r)
+        }
+    }
+    minDiffInBST(lcary2tree([96,12,null,null,13,null,52,29,null,null,null]))
+</script>
+
+<script>
+    var lowestCommonAncestor = function(root, p, q) {
+        if(!root) return 0
+        if(!root.left && !root.right) {
+            if(root == p || root == q) {
+                return 1
+            } else {
+                return 0
+            }
+        }
+        let ls = lowestCommonAncestor(root.left,p,q)
+        let rs = lowestCommonAncestor(root.right,p,q)
+        if(typeof(ls) != 'number') return ls
+        if(typeof(rs) != 'number') return rs
+        if(rs + ls == 2) return root
+        if(root == p || root == q) {
+            if(1 + ls + rs == 2) return root
+            else return 1
+        } else {
+            return ls + rs
+        }
+    }
+</script>
+
+
+
+
+    

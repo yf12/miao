@@ -1,0 +1,67 @@
+<script> //合法IP地址 93
+    function restoreIpAddresses(s,result = [],parts = []) {
+        if(parts.length == 3) {
+            if(isIPPart(s)) {
+                result.push(parts.join('.') + '.' + s)
+            }
+            return
+        }
+        for(let i = 1;i <= 3;i++) {
+            let s1 = s.slice(0,i)
+            if(isIPPart(s1)) {
+                parts.push(s1)
+                restoreIpAddresses(s.slice(i),result,parts)
+                parts.pop()
+            }
+        }
+        return result
+    }
+    restoreIpAddresses("25525511135")
+
+    function isIPPart(s) {
+        if(s[0] == '0') {
+            return s.length == 1
+        }
+        return s < 256 && s.length
+    }
+</script>
+
+<script>   //39
+    var combinationSum = function(candidates, target,j = 0,result = [],store = []) {
+        candidates.sort((a,b) => (a - b))
+        for(let i = j;i < candidates.length;i++) {
+            let j = i
+            if(candidates[i] == target) {
+                store.push(candidates[i])
+                result.push(store.slice())
+                store.pop()
+                return result
+            } else if(candidates[i] < target) {
+                store.push(candidates[i])
+                combinationSum(candidates,target - candidates[i],j,result,store)
+                store.pop()
+            }
+        }
+        return result
+    }
+    combinationSum([4,2,8],8)
+</script>
+
+<script>   //39
+    var combinationSum = function(candidates, target,j = 0,result = [],store = []) {
+        for(let i = j;i < candidates.length;i++) {
+            let j = i
+            if(candidates[i] == target) {
+                store.push(candidates[i])
+                result.push(store.slice())
+                store.pop()
+            } else if(candidates[i] < target) {
+                store.push(candidates[i])
+                combinationSum(candidates,target - candidates[i],j,result,store)
+                store.pop()
+            }
+        }
+        return result
+    }
+    combinationSum([4,2,8],8)
+</script>
