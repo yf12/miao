@@ -71,7 +71,7 @@ var yf12 = function(){
     }
 
     function flattenDepth(ary,depth = 1) {
-        if(depth == 0) return result
+        if(depth == 0) return ary.slice()
         let result = []
         for(let item of ary) {
             if(Array.isArray(item)) {
@@ -80,7 +80,8 @@ var yf12 = function(){
             } else {
                 result.push(item)
             }
-        }   
+        }
+        return result
     }
 
     return {
