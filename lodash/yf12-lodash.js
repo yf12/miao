@@ -111,6 +111,60 @@ var yf12 = function(){
         return result
     }
 
+    function toPath(str) {   //a.b.0.c[fooo][bar].d
+        return str.split(/\.|\[|\]./g)
+    }
+
+    function get(obj,path,defaultVal) {
+        var path = toPath(path)
+        for(var i = 0;i < path.length;i++) {
+            if(obj == undefined) {
+                return defaultVal
+            } else {
+                obj = obj[path[i]]
+            }
+        }
+        return obj
+    }
+
+    function property(path) {
+        return function(obj) {
+            return get(obj,path)
+        }
+    }
+
+    function differenceBy(ary,...array) {
+        let func = array.pop()
+        if(typeof func == 'object') {
+            array.push(func)
+            return difference(ary,...array)
+        }
+        let result = []
+        if(typeof func == 'string') {
+            if(/\=\>/.exec(func)) {
+                let prams = func.match(/(.+)\s\=\>/)[1]
+                let returnval = func.match(/\=\>\s(.+)/)[1]
+                func = new Function(prams,'return' + ' ' + returnval)
+            } else {
+                func = property(func)
+            }
+        }
+        for(let i = 0;i < ary.length;i++) {
+            let flag = true
+            for(let j = 0;j < array.length;j++) {
+                let aryf = array[j].map(func)
+                if(aryf.indexOf(func(ary[i])) >= 0) {
+                    flag = false
+                    break
+                }
+            }
+            if(flag) {
+                result.push(ary[i])
+            }
+        }
+        return result
+    }
+
     return {
         chunk,
         compact,
@@ -122,5 +176,9 @@ var yf12 = function(){
         flattenDepth,
         curry,
         difference,
+        toPath,
+        get,
+        property,
+        differenceBy
     }
 }()
