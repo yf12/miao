@@ -165,6 +165,10 @@ var yf12 = function(){
         return result
     }
 
+    function drop(ary,n = 1) {
+        return ary.slice(n)
+    }
+
     return {
         chunk,
         compact,
@@ -179,6 +183,7 @@ var yf12 = function(){
         toPath,
         get,
         property,
-        differenceBy
+        differenceBy,
+        drop,
     }
 }()
