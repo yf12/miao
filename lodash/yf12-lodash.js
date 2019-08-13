@@ -164,12 +164,12 @@ var yf12 = function(){
     function iteratee(func) {
         if(typeof func == 'string') {
             return property(func)
+        }        
+        if(Array.isArray(func)) {
+            return matchesProperty(...func)
         }
         if(typeof func == 'object') {
             return matches(func)
-        }
-        if(Array.isArray(func)) {
-            return matchesProperty(...func)
         }
     }
 
@@ -207,6 +207,10 @@ var yf12 = function(){
 
     function isObject(value) {
         return value instanceof(Object)
+    }
+
+    function isFunction(value) {
+        return Object.prototype.toString.call(value) == '[object Function]'
     }
 
     function isNaN(value) {
@@ -257,6 +261,20 @@ var yf12 = function(){
         }
     }
 
+    function dropRightWhile(ary,predicate) {
+        let result = ary.slice()
+        if(!isFunction(predicate)) {
+            predicate = iteratee(predicate)
+        }
+        for(let i = ary.length - 1;i >= 0;i--) {
+            if(predicate(ary[i])) {
+                result.pop()
+            } else {
+                break
+            }
+        }
+        return result
+    }
     
 
     return {
@@ -280,9 +298,11 @@ var yf12 = function(){
         isEqual,
         isArray,
         isObject,
+        isFunction,
         isNaN,
         differenceBy,
         drop,
-        dropRight
+        dropRight,
+        dropRightWhile,
     }
 }()
