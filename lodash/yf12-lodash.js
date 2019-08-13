@@ -168,6 +168,9 @@ var yf12 = function(){
         if(Array.isArray(func)) {
             return matchesProperty(...func)
         }
+        if(isFunction(func)) {
+            return func
+        }
         if(typeof func == 'object') {
             return matches(func)
         }
@@ -290,6 +293,75 @@ var yf12 = function(){
         return ary.slice(t)
     }
     
+    function fill(ary,value,start = 0,end = ary.length) {
+        for(let i = start;i < end;i++) {
+            ary[i] = value
+        }
+        return ary
+    }
+
+    function findIndex(ary,predicate) {
+        predicate = iteratee(predicate)
+        for(let i = 0;i < ary.length;i++) {
+            if(predicate(ary[i])) {
+                return i
+            }
+        }
+        return -1
+    }
+
+    function findLastIndex(ary,predicate) {
+        predicate = iteratee(predicate)
+        for(let i = ary.length - 1;i >= 0;i--) {
+            if(predicate(ary[i])) {
+                return i
+            }
+        }
+        return -1
+    }
+
+    function fromPairs(pairs) {
+        let map = {}
+        pairs.forEach(element => {
+            map[element[0]] = element[1]
+        })
+        return map
+    }
+
+    function head(ary) {
+        return ary[0]
+    }
+
+    function indexOf(ary,value,fromIndex = 0) {
+        for(let i = fromIndex;i < ary.length;i++) {
+            if(!value && !ary[i]) {
+                return i
+            }
+            if(ary[i] == value) {
+                return i
+            }
+        }
+        return -1
+    }
+
+    function initial(ary) {
+        ary.pop()
+        return ary
+    }
+
+    function intersection(arrays) {
+        let ary = arguments[0]
+        let nextArrays = []
+        for(let i = 1;i < arguments.length;i++) {
+            nextArrays[i - 1] = arguments[i]
+        }
+        let result = ary.filter(element => {
+            return nextArrays.reduce((flag,nextAry) => {
+                return indexOf(nextAry,element) >= 0 && flag
+            },true)
+        })
+        return result
+    }
 
     return {
         chunk,
@@ -319,5 +391,13 @@ var yf12 = function(){
         dropRight,
         dropRightWhile,
         dropWhile,
+        fill,
+        findIndex,
+        findLastIndex,
+        fromPairs,
+        head,
+        indexOf,
+        initial,
+        intersection,
     }
 }()
