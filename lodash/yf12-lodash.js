@@ -275,6 +275,20 @@ var yf12 = function(){
         }
         return result
     }
+
+    function dropWhile(ary,predicate) {
+        let t
+        if(!isFunction(predicate)) {
+            predicate = iteratee(predicate)
+        }
+        for(let i = 0;i < ary.length;i++) {
+            if(!predicate(ary[i])) {
+                t = i
+                break
+            }
+        }
+        return ary.slice(t)
+    }
     
 
     return {
@@ -304,5 +318,6 @@ var yf12 = function(){
         drop,
         dropRight,
         dropRightWhile,
+        dropWhile,
     }
 }()
