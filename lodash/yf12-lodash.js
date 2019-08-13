@@ -111,6 +111,28 @@ var yf12 = function(){
         return result
     }
 
+    function isMatch(obj,src) {
+        if(obj == src) return true
+        for(let key in src) {
+            if(typeof src[key] == 'object' && src[key] != null) {
+                if(!isMatch(src[key],obj[key])) {
+                    return false
+                }
+            } else {
+                if(src[key] != obj[key]) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    function matches(src) {
+        return function(obj) {
+            return isMatch(obj,src)
+        }
+    }
+
     function toPath(str) {   //a.b.0.c[fooo][bar].d
         return str.split(/\.|\[|\]./g)
     }
@@ -127,10 +149,68 @@ var yf12 = function(){
         return obj
     }
 
+    function matchesProperty(path,value) {
+        return function(obj) {
+            return isEqual(get(obj,path),value)
+        }
+    }
+
     function property(path) {
         return function(obj) {
             return get(obj,path)
         }
+    }
+
+    function iteratee(func) {
+        if(typeof func == 'string') {
+            return property(func)
+        }
+        if(typeof func == 'object') {
+            return matches(func)
+        }
+        if(Array.isArray(func)) {
+            return matchesProperty(...func)
+        }
+    }
+
+    function isEqual(value,other) {
+        if(value == other) {
+            return true
+        }
+        if(isNaN(value) && isNaN(other)) {
+            return true
+        }
+        if(typeof value == 'object' && typeof other == 'object') {
+            let count1 = 0,count2 = 0
+            for(let key in value) {
+                count1++
+            }
+            for(let key in other) {
+                count2++
+            }
+            if(count1 != count2) {
+                return false
+            }
+            for(let key in value) {
+                if(!isEqual(value[key],other[key])) {
+                    return false
+                }
+            }
+            return true    
+        }
+        return false
+    }
+
+    function isArray(value) {
+        return Object.prototype.toString.call(value) == '[object Array]'
+    }
+
+    function isObject(value) {
+        return Object.prototype.toString.call(value) == '[object Object]'
+    }
+
+    function isNaN(value) {
+        return Number.isNaN(value)
     }
 
     function differenceBy(ary,...array) {
@@ -169,6 +249,16 @@ var yf12 = function(){
         return ary.slice(n)
     }
 
+    function dropRight(ary,n = 1) {
+        if(n < ary.length) {
+            return ary.slice(0,ary.length - n)
+        } else {
+            return []
+        }
+    }
+
+    
+
     return {
         chunk,
         compact,
@@ -180,10 +270,19 @@ var yf12 = function(){
         flattenDepth,
         curry,
         difference,
+        isMatch,
+        matches,
+        matchesProperty,
         toPath,
         get,
         property,
+        iteratee,
+        isEqual,
+        isArray,
+        isObject,
+        isNaN,
         differenceBy,
         drop,
+        dropRight
     }
 }()
