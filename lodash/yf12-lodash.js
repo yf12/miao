@@ -206,7 +206,7 @@ var yf12 = function(){
     }
 
     function isObject(value) {
-        return Object.prototype.toString.call(value) == '[object Object]'
+        return value instanceof(Object)
     }
 
     function isNaN(value) {
