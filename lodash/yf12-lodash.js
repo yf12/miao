@@ -363,6 +363,88 @@ var yf12 = function(){
         return result
     }
 
+    function join(ary,seperator = ',') {
+        let string = ''
+        for(let i = 0;i < ary.length - 1;i++) {
+            string += ary[i] + seperator
+        }
+        string += ary[ary.length - 1]
+        return string
+    }
+
+    function last(ary) {
+        return ary[ary.length - 1]
+    }
+
+    function lastIndexOf(ary,value,fromIndex = ary.length - 1) {
+        for(let i = fromIndex;i >= 0;i--) {
+            if(!value && !ary[i]) {
+                return i
+            }
+            if(ary[i] == value) {
+                return i
+            }
+        }
+        return -1
+    }
+
+    function pull(ary,...values) {
+        for(let i = ary.length - 1;i >= 0;i--) {
+            if(indexOf(values,ary[i]) >= 0) {
+                ary = ary.slice(0,i).concat(ary.slice(i + 1))
+            }
+        }
+        return ary
+    }
+
+    function reverse(ary) {
+        let result = []
+        for(let i = ary.length - 1;i >= 0;i--) {
+            result.push(ary[i])
+        }
+        ary = result
+        return ary
+    }
+
+    function sortedIndex(ary, value) {
+        let left = 0,right = ary.length - 1
+        while(left < right) {
+            let mid = left + Math.floor((right - left) / 2)
+            if(ary[mid] >= value) {
+                right = mid
+            } else if(ary[mid] < value) {
+                left = mid + 1
+            }
+        }
+        return left
+    }
+
+    function union(arrays) {
+        let result = []
+        for(let i = 0;i < arguments.length;i++) {
+            arguments[i].forEach(item => {
+                if(indexOf(result,item) < 0) {
+                    result.push(item)
+                }
+            })
+        }
+        return result
+    }
+
+    function unionBy(...params) {
+        let result = []
+        let predicate = iteratee(params[params.length - 1])
+        for(let i = 0;i < params.length - 1;i++) {
+            params[i].forEach(item => {
+                let aryresult = result.map(predicate)
+                if(indexOf(aryresult,predicate(item)) < 0) {
+                    result.push(item)
+                }
+            })
+        }
+        return result       
+    }
+
     return {
         chunk,
         compact,
@@ -399,5 +481,18 @@ var yf12 = function(){
         indexOf,
         initial,
         intersection,
+        join,
+        last,
+        lastIndexOf,
+        pull,
+        reverse,
+        sortedIndex,
+        union,
+        unionBy,
+        // uniq,
+        // uniqBy,
+        // without,
+        // xor,
+        // zip,
     }
 }()
