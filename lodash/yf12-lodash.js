@@ -363,10 +363,10 @@ var yf12 = function(){
         return result
     }
 
-    function join(ary,seperator = ',') {
+    function join(ary, seperator = ',') {
         let string = ''
-        for(let i = 0;i < ary.length - 1;i++) {
-            string += ary[i] + seperator
+        for (let i = 0; i < ary.length - 1; i++) {
+            string += `${ary[i]}${seperator}`
         }
         string += ary[ary.length - 1]
         return string
@@ -445,6 +445,82 @@ var yf12 = function(){
         return result       
     }
 
+    function uniq(ary) {
+        let result = []
+        ary.forEach(item => {
+            if(indexOf(result,item) < 0) {
+                result.push(item)
+            }
+        })
+        return result
+    }
+
+    function uniqBy(ary,predicate) {
+        predicate = iteratee(predicate)
+        let result = []
+        ary.forEach(item => {
+            let aryresult = result.map(predicate)
+            if(indexOf(aryresult,predicate(item)) < 0) {
+                result.push(item)
+            }
+        })
+        return result
+    }
+
+    function zip(...arrays) {
+        let result = []
+        let maxLength = Math.max(...(arrays.map(item => item.length)))
+        for(let i = 0;i < maxLength;i++) {
+            let ary = []
+            for(let j = 0;j < arrays.length;j++) {
+                ary[j] = arrays[j][i]
+            }
+            result.push(ary)
+        }
+        return result
+    }
+
+    function unzip(array) {
+        let result = []
+        for(let i = 0;i < array[0].length;i++) {
+            let ary = []
+            for(let j = 0;j < array.length;j++) {
+                ary[j] = array[j][i]
+            }
+            result.push(ary)
+        }
+        return result      
+    }
+
+    function without(ary,...values) {
+        let result = []
+        ary.forEach(item => {
+            if(indexOf(values,item) < 0) {
+                result.push(item)
+            }
+        })
+        return result
+    }
+
+    function xor(...arrays) {
+        let result = [],compare = []
+        for(let i = 0;i < arrays.length;i++) {
+            for(let j = 0;j < arrays[i].length;j++) {
+                for(let m = i + 1;m < arrays.length;m++) {
+                    for(let n = 0;n < arrays[m].length;n++) {
+                        if(arrays[i][j] == arrays[m][n]) {
+                            compare.push(arrays[i][j])
+                        }
+                    } 
+                }
+                if(indexOf(compare,arrays[i][j]) < 0) {
+                    result.push(arrays[i][j])
+                }
+            }
+        }
+        return result
+    }
+
     return {
         chunk,
         compact,
@@ -489,10 +565,12 @@ var yf12 = function(){
         sortedIndex,
         union,
         unionBy,
-        // uniq,
-        // uniqBy,
-        // without,
-        // xor,
+        uniq,
+        uniqBy,
+        zip,
+        unzip,
+        without,
+        xor,
         // zip,
     }
 }()
