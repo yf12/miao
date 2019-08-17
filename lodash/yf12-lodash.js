@@ -560,6 +560,38 @@ var yf12 = function(){
         return judge
     }
 
+    /**
+     * [filter description]
+     *
+     * @param   {[Array|Object]}  collection  [collection description]
+     * @param   {[]}  predicate   [predicate description]
+     *
+     * @return  {[Array]}              [return description]
+     */
+    function filter(collection,predicate) {
+        predicate = iteratee(predicate)
+        return collection.filter(predicate)
+    }
+
+    /**
+     * [find description]
+     *
+     * @param   {[Array|Object]}  collection  [collection description]
+     * @param   {[type]}  predicate   [predicate description]
+     * @param   {[number]}  fromIndex   [fromIndex description]
+     *
+     * @return  {[type]}              [return description]
+     */
+    function find(collection,predicate,fromIndex = 0) {
+        predicate = iteratee(predicate)
+        for(let i = fromIndex;i < collection.length;i++) {
+            if(predicate(collection[i])) {
+                return collection[i]
+            }
+        }
+        return undefined
+    }
+
     return {
         chunk,
         compact,
@@ -612,5 +644,7 @@ var yf12 = function(){
         xor,
         countBy,
         every,
+        filter,
+        find,
     }
 }()
