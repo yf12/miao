@@ -500,7 +500,7 @@ var yf12 = function(){
             }
         })
         return result
-    }
+    } 
 
     function xor(...arrays) {
         let result = [],compare = []
@@ -519,6 +519,45 @@ var yf12 = function(){
             }
         }
         return result
+    }
+
+    /**
+     * [countBy description]
+     *
+     * @param   {[Array|Object]}  collection
+     * @param   {[Object]}  predicate
+     *
+     * @return  {[Object]}
+     */
+    function countBy(collection,predicate) {
+        let map = {}
+        predicate = iteratee(predicate)
+        for(let item of collection) {
+            if(predicate(item) in map) {
+                map[predicate(item)]++
+            } else {
+                map[predicate(item)] = 1
+            }
+        }
+        return map
+    }
+
+    
+    /**
+     * [every description]
+     *
+     * @param   {[Array|Object]}  collection
+     * @param   {[Object]}  predicate
+     *
+     * @return  {[bollean]}
+     */
+    function every(collection,predicate) {
+        predicate = iteratee(predicate)
+        let judge = true
+        for(let item of collection) {
+            judge = predicate(item) && judge
+        }
+        return judge
     }
 
     return {
@@ -571,6 +610,7 @@ var yf12 = function(){
         unzip,
         without,
         xor,
-        // zip,
+        countBy,
+        every,
     }
 }()
