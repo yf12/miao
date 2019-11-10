@@ -252,6 +252,26 @@ var yf12 = function(){
         return result
     }
 
+    /**
+     * [find description]
+     *
+     * @param   {[Array]}  array  [array description]
+     * @param   {[...Array]}  values   [values description]
+     * @param   {[Function]}  comparator   [comparator description]
+     *
+     * @return  {[Array]}              [return array]
+     */
+    function differenceWith(array, values, comparator) {
+        comparator = iteratee(comparator)
+        let result = []
+        for(let i = 0; i < array.length; i++) {
+            if(!values.every(item => comparator(item, array[i]))) {
+                result.push(array[i])
+            }
+        }
+        return result
+    }
+
     function drop(ary,n = 1) {
         return ary.slice(n)
     }
@@ -616,6 +636,7 @@ var yf12 = function(){
         isFunction,
         isNaN,
         differenceBy,
+        differenceWith,
         drop,
         dropRight,
         dropRightWhile,
