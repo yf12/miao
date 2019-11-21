@@ -220,8 +220,9 @@ var yf12 = function(){
         return getTag(value) === '[object Function]'
     }
 
+    //new Number()构建的数字需要先转为原始数据类型
     function isNaN(value) {
-        return Number.isNaN(value)
+        return isNumber(value) && +value !== +value
     }
 
     function isBoolean(value) {
@@ -273,7 +274,7 @@ var yf12 = function(){
     }
 
     function isUndefined(value) {
-        return value === 'undefined'
+        return value === undefined
     }
 
     function differenceBy(ary,...array) {
