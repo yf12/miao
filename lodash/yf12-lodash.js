@@ -612,6 +612,71 @@ var yf12 = function(){
         return undefined
     }
 
+    /**
+     * @param   {[Array|Object]}  collection  [collection description]
+     * @param   {[Function]}  [iteratee=_.identity]
+     * @return  {[Array]}              [return description]
+     */
+    function flatMap(collection, predicate) {
+        predicate = iteratee(predicate)
+        let keys = Object.keys(collection)
+        if(predicate) collection = keys.map(key => predicate(collection[key]))
+        return flatten(collection)
+    }
+
+    /**
+     * @param   {[Array|Object]}  collection  [collection description]
+     * @param   {[Function]}  [iteratee=_.identity]
+     * @return  {[Array]}              [return description]
+     */
+    function flatMapDeep(collection, predicate) {
+        predicate = iteratee(predicate)
+        let keys = Object.keys(collection)
+        if(predicate) collection = keys.map(key => predicate(collection[key]))
+        return flattenDeep(collection)
+    }
+
+    /**
+     * @param   {[Array|Object]}  collection  [collection description]
+     * @param   {[Function]}  [iteratee=_.identity]
+     * @return  {[Array]}              [return description]
+     */
+    function flatMapDepth(collection, predicate, depth = 1) {
+        predicate = iteratee(predicate)
+        let keys = Object.keys(collection)
+        if(predicate) collection = keys.map(key => predicate(collection[key]))
+        return flattenDepth(collection, depth)
+    }
+
+    /**
+     * @param   {[Array|Object]}  collection  [collection description]
+     * @param   {[Function]}  [iteratee=_.identity]
+     * @return  {[*]}         [Returns collection]
+     */
+    function forEach(collection, predicate) {
+        predicate = iteratee(predicate)
+        let keys = Object.keys(collection)
+        for(key of keys) {
+            predicate(collection[key], key, collection)
+        }
+        return collection
+    }
+
+    /**
+     * @param   {[Array|Object]}  collection  [collection description]
+     * @param   {[Function]}  [iteratee=_.identity]
+     * @return  {[*]}         [Returns collection]
+     */
+    function forEachRight(collection, predicate) {
+        predicate = iteratee(predicate)
+        let keys = Object.keys(collection)
+        keys = reverse(keys)
+        for(key of keys) {
+            predicate(collection[key], key, collection)
+        }
+        return collection
+    }
+
     return {
         chunk,
         compact,
@@ -667,5 +732,10 @@ var yf12 = function(){
         every,
         filter,
         find,
+        flatMap,
+        flatMapDeep,
+        flatMapDepth,
+        forEach,
+        forEachRight,
     }
 }()
