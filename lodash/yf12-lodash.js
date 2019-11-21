@@ -204,8 +204,12 @@ var yf12 = function(){
         return false
     }
 
+    function getTag(value) {
+        return Object.prototype.toString.call(value)
+    }
+
     function isArray(value) {
-        return Object.prototype.toString.call(value) == '[object Array]'
+        return getTag(value) == '[object Array]'
     }
 
     function isObject(value) {
@@ -213,11 +217,63 @@ var yf12 = function(){
     }
 
     function isFunction(value) {
-        return Object.prototype.toString.call(value) == '[object Function]'
+        return getTag(value) === '[object Function]'
     }
 
     function isNaN(value) {
         return Number.isNaN(value)
+    }
+
+    function isBoolean(value) {
+        return getTag(value) === '[object Boolean]'
+    }
+
+    function isDate(value) {
+        return getTag(value) === '[object Date]'
+    }
+
+    function isElement(value) {
+        return  value instanceof Element
+    }
+
+    function isEmpty(value) {
+        if(!value) return true
+        for(let key in value) {
+            return false
+        }
+        return true
+    }
+
+    function isError(value) {
+        return getTag(value) === '[object Error]'
+    }
+
+    function isFinite(value) {
+        return Number.isFinite(value)
+    }
+
+    function isNil(value) {
+        return value === null || value === undefined
+    }
+
+    function isNull(value) {
+        return value === null
+    }
+
+    function isNumber(value) {
+        return getTag(value) === '[object Number]' || getTag(value) === '[object Null]'
+    }
+
+    function isRegExp(value) {
+        return getTag(value) === '[object RegExp]'
+    }
+
+    function isString(value) {
+        return getTag(value) === '[object String]'
+    }
+
+    function isUndefined(value) {
+        return value === 'undefined'
     }
 
     function differenceBy(ary,...array) {
@@ -695,11 +751,24 @@ var yf12 = function(){
         get,
         property,
         iteratee,
+        getTag,
         isEqual,
         isArray,
         isObject,
         isFunction,
         isNaN,
+        isBoolean,
+        isDate,
+        isElement,
+        isEmpty,
+        isError,
+        isFinite,
+        isNil,
+        isNull,
+        isNumber,
+        isRegExp,
+        isString,
+        isUndefined,
         differenceBy,
         differenceWith,
         drop,
