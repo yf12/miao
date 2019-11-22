@@ -756,6 +756,28 @@ var yf12 = (function() {
     return collection;
   }
 
+  function cloneDeep(value) {
+    let result
+    if(isObject(value)) {
+      if(isRegExp(value)) result = new RegExp(value.source, value.flags)
+      else if(isArray(value)) {
+        result = []
+      } else {
+        result = {}
+      }
+      for(let key in value) {
+        if(!isObject(value[key])) {
+          result[key] = value[key]
+        } else {
+          result[key] = cloneDeep(value[key])
+        }
+      }
+    } else {
+      result = value
+    }
+    return result
+  }
+
   return {
     chunk,
     compact,
@@ -829,6 +851,7 @@ var yf12 = (function() {
     flatMapDeep,
     flatMapDepth,
     forEach,
-    forEachRight
+    forEachRight,
+    cloneDeep,
   };
 })();
