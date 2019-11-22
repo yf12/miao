@@ -34,9 +34,6 @@ var yf12 = (function() {
   }
 
   function reduce(map, combine, initialValue) {
-    if (arguments.length == 2) {
-      initialValue = map[0];
-    }
     for (let i = 0; i < map.length; i++) {
       if(initialValue === undefined) {
         initialValue = map[i]
