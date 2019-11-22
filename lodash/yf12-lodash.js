@@ -33,12 +33,24 @@ var yf12 = (function() {
     return result;
   }
 
-  function reduce(map, combine, initialValue) {
-    for (let i = 0; i < map.length; i++) {
+  function reduce(collection, combine, initialValue) {
+    for (let i in collection) {
       if(initialValue === undefined) {
-        initialValue = map[i]
+        initialValue = collection[i]
       } else {
-        initialValue = combine(initialValue, map[i], i, map);
+        initialValue = combine(initialValue, collection[i], i, collection);
+      }
+    }
+    return initialValue;
+  }
+
+  function reduceRight(collection, combine, initialValue) {
+    let keys = Object.keys(collection).reverse()
+    for (let key of keys) {
+      if(initialValue === undefined) {
+        initialValue = collection[key]
+      } else {
+        initialValue = combine(initialValue, collection[key], key, collection);
       }
     }
     return initialValue;
@@ -749,6 +761,7 @@ var yf12 = (function() {
     compact,
     slice,
     reduce,
+    reduceRight,
     negate,
     flatten,
     flattenDeep,
