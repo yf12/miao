@@ -760,6 +760,11 @@ var yf12 = (function() {
     return collection;
   }
 
+  /**
+   * 
+   * @param {*} value
+   * @return {*}   Returns the deep cloned value.
+   */
   function cloneDeep(value) {
     let result
     if(isObject(value)) {
@@ -779,6 +784,43 @@ var yf12 = (function() {
     } else {
       result = value
     }
+    return result
+  }
+
+  function identity(...args) {
+    return args[0]
+  }
+
+  /**
+   * 
+   * @param {[Array|Object]} collection 
+   * @param {Function} predicate
+   * @return {Function}
+   */
+  function groupBy(collection, predicate = identity) {
+    predicate = iteratee(predicate)
+    let ary = Object.values(collection)
+    let result = {}
+    ary.forEach(value => {
+      if(predicate(value) in result) {
+        result[predicate(value)].push(value)
+      } else {
+        result[predicate(value)] = [value]
+      }
+    })
+    return result
+  }
+
+  function map(collection, predicate = identity) {
+    predicate = iteratee(predicate)
+    let ary = Object.values(collection)
+    let result = []
+    // for(let i = 0; i < ary.length; i++) {
+
+    // }
+    ary.forEach(value => {
+      result.push(predicate(value))
+    })
     return result
   }
 
@@ -858,5 +900,8 @@ var yf12 = (function() {
     forEach,
     forEachRight,
     cloneDeep,
+    identity,
+    groupBy,
+    map,
   };
 })();
