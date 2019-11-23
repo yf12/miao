@@ -827,6 +827,12 @@ var yf12 = (function() {
     return result
   }
 
+  /**
+   * 
+   * @param {[Array|Object]} collection 
+   * @param {Function} predicate
+   * @return {Array}
+   */
   function partition(collection, predicate = identity) {
     predicate = iteratee(predicate)
     let result1 = [], result2 = []
@@ -837,6 +843,30 @@ var yf12 = (function() {
     return [result1, result2]
   }
 
+  /**
+   * 
+   * @param {[Array|Object]} collection 
+   * @param {Function} predicate
+   * @return {Array}
+   */
+  function reject(collection, predicate = identity) {
+    predicate = iteratee(predicate)
+    let ary = Object.values(collection)
+    let result = []
+    ary.forEach(value => {
+      if(!predicate(value)) {
+        result.push(value)
+      }
+    })
+    return result
+  }
+
+  function sample(collection) {
+    let values = Object.values(collection)
+    let index = Math.floor(Math.random() * values.length)
+    return values[index]
+  }
+ 
   return {
     chunk,
     compact,
@@ -917,7 +947,7 @@ var yf12 = (function() {
     groupBy,
     map,
     partition,
-    // reject,
-    // sample,
+    reject,
+    sample,
   };
 })();
