@@ -298,6 +298,10 @@ var yf12 = (function() {
     return value === undefined;
   }
 
+  function isMap(value) {
+    return value instanceof Map
+  }
+
   function differenceBy(ary, ...array) {
     let func = array.pop();
     if (typeof func == "object") {
@@ -815,6 +819,7 @@ var yf12 = (function() {
     isRegExp,
     isString,
     isUndefined,
+    isMap,
     differenceBy,
     differenceWith,
     drop,
