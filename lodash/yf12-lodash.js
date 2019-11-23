@@ -813,14 +813,11 @@ var yf12 = (function() {
 
   function map(collection, predicate = identity) {
     predicate = iteratee(predicate)
-    let ary = Object.values(collection)
     let result = []
-    // for(let i = 0; i < ary.length; i++) {
-
-    // }
-    ary.forEach(value => {
-      result.push(predicate(value))
-    })
+    for(let [key, value] of Object.entries(collection)) {
+      console.log([key, value])
+      result.push(predicate(value, key, collection))
+    }
     return result
   }
 
