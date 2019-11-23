@@ -815,7 +815,7 @@ var yf12 = (function() {
     predicate = iteratee(predicate)
     let result = []
     for(let [key, value] of Object.entries(collection)) {
-      console.log([key, value])
+      if(!isNaN(key)) key = Number(key)
       result.push(predicate(value, key, collection))
     }
     return result
