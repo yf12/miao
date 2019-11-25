@@ -652,7 +652,7 @@ var yf12 = (function() {
    * @param   {[Array|Object]}  collection
    * @param   {[Object]}  predicate
    *
-   * @return  {[bollean]}
+   * @return  {[boolean]}
    */
   function every(collection, predicate) {
     predicate = iteratee(predicate);
@@ -861,12 +861,110 @@ var yf12 = (function() {
     return result
   }
 
+  /**
+   * 
+   * @param {[Array|Object]} collection
+   * @return {*}
+   */
   function sample(collection) {
     let values = Object.values(collection)
     let index = Math.floor(Math.random() * values.length)
     return values[index]
   }
  
+  /**
+   * 
+   * @param {[Array|Object]} collection
+   * @param {Number} [n=1]
+   * @return {*}
+   */
+  function sampleSize(collection, n) {
+    let values = Object.values(collection)
+    let result = []
+    let size = n <= values.length ? n : values.length
+    for(let i = 0; i < size; i++) {
+      let index = Math.floor(Math.random() * values.length)
+      result.push(values[index])
+      values.splice(index, 1)
+    }
+    return result
+  }
+
+  function shuffle(collection) {
+    let values = Object.values(collection)
+    return sampleSize(values, values.length)
+  }
+
+  function size(collection) {
+    return Object.values(collection).length
+  }
+
+  /**
+   * 
+   * @param {[Array|Object]} collection 
+   * @param {Function} predicate
+   * @return {boolean}
+   */
+  function some(collection, predicate = identity) {
+    predicate = iteratee(predicate)
+    for(let [key, value] of Object.entries(collection)) {
+      if(predicate(value)) {
+        return true
+      }
+    }
+    return false
+  }
+
+  /**
+   * 
+   * @param {[Array|Object]} collection 
+   * @param {Function} predicate
+   * @return {Array}
+   */
+  function sortBy(collection, predicate = [identity]) {
+    // debugger
+    predicate = map(predicate, iteratee)
+    let values = Object.values(collection)
+    let compare = (a, b, predicate) => {
+      for(let i = 0; i < predicate.length; i++) {
+        if (predicate[i](a) < predicate[i](b)) return -1
+        else if (predicate[i](a) > predicate[i](b)) return 1
+      }
+      return 0
+    }
+    return quickSort(values, compare, predicate)
+    // return values.sort((a, b) => compare(a, b, predicate))
+  }
+
+  function quickSort(ary, compare, predicate, start = 0, end = ary.length - 1) {
+    if(end - start <= 0) return ary
+    let pivotIndex = Math.floor(Math.random() * (end - start + 1)) + start
+    let pivot = ary[pivotIndex]
+    swap(ary, pivotIndex, end)
+    let i = start - 1
+    for(let j = start; j < end; j++) {
+      if(compare(ary[j], pivot, predicate) < 0) {
+        i++
+        swap(ary, i, j)
+      }
+    }
+    i++
+    swap(ary, i, end)
+  
+    quickSort(ary, compare, predicate, start, i - 1)
+    quickSort(ary, compare, predicate, i + 1, end)
+  
+    return ary
+  
+  
+    function swap(ary, i, j) {
+      let t = ary[i]
+      ary[i] = ary[j]
+      ary[j] = t
+      return ary
+    }
+  }
+
   return {
     chunk,
     compact,
@@ -905,6 +1003,7 @@ var yf12 = (function() {
     isString,
     isUndefined,
     isMap,
+    // isArguments,
     differenceBy,
     differenceWith,
     drop,
@@ -949,5 +1048,13 @@ var yf12 = (function() {
     partition,
     reject,
     sample,
+    sampleSize,
+    shuffle,
+    size,
+    some,
+    sortBy,
+    // defer,
+    // delay,
+
   };
 })();
