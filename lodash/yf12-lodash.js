@@ -980,6 +980,42 @@ var yf12 = (function() {
     }, wait)
   }
 
+  function toArray(value) {
+    try {
+      let ary = Object.values(value)
+      return ary
+    } catch(error) {
+      return []
+    }
+  }
+
+  function ceil(number, precision = 0) {
+    return Math.ceil(number * 10 ** precision) / 10 ** precision
+  }
+
+  function max(array) {
+    if(array.length === 0) return undefined
+    let maxValue = -Infinity
+    array.forEach(item => {
+      if(item > maxValue) {
+        maxValue = item
+      }
+    })
+    return maxValue
+  }
+
+  function maxBy(array, predicate = identity) {
+    predicate = iteratee(predicate)
+    if(array.length === 0) return undefined
+    let maxItem = array[0]
+    array.forEach(item => {
+      if(predicate(item) > predicate(maxItem)) {
+        maxItem = item
+      }
+    })
+    return maxItem    
+  }
+
   return {
     chunk,
     compact,
@@ -1070,5 +1106,9 @@ var yf12 = (function() {
     sortBy,
     defer,
     delay,
+    toArray,
+    ceil,
+    max,
+    maxBy,
   };
 })();
