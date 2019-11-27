@@ -302,6 +302,10 @@ var yf12 = (function() {
     return value instanceof Map
   }
 
+  function isArguments(value) {
+    return getTag(value) === "[object Arguments]"
+  }
+
   function differenceBy(ary, ...array) {
     let func = array.pop();
     if (typeof func == "object") {
@@ -922,28 +926,27 @@ var yf12 = (function() {
    * @return {Array}
    */
   function sortBy(collection, predicate = [identity]) {
-    // debugger
     predicate = map(predicate, iteratee)
     let values = Object.values(collection)
-    let compare = (a, b, predicate) => {
+    let compare = (a, b) => {
       for(let i = 0; i < predicate.length; i++) {
         if (predicate[i](a) < predicate[i](b)) return -1
         else if (predicate[i](a) > predicate[i](b)) return 1
       }
       return 0
     }
-    return quickSort(values, compare, predicate)
+    return quickSort(values, compare)
     // return values.sort((a, b) => compare(a, b, predicate))
   }
 
-  function quickSort(ary, compare, predicate, start = 0, end = ary.length - 1) {
+  function quickSort(ary, compare, start = 0, end = ary.length - 1) {
     if(end - start <= 0) return ary
     let pivotIndex = Math.floor(Math.random() * (end - start + 1)) + start
     let pivot = ary[pivotIndex]
     swap(ary, pivotIndex, end)
     let i = start - 1
     for(let j = start; j < end; j++) {
-      if(compare(ary[j], pivot, predicate) < 0) {
+      if(compare(ary[j], pivot) < 0) {
         i++
         swap(ary, i, j)
       }
@@ -951,8 +954,8 @@ var yf12 = (function() {
     i++
     swap(ary, i, end)
   
-    quickSort(ary, compare, predicate, start, i - 1)
-    quickSort(ary, compare, predicate, i + 1, end)
+    quickSort(ary, compare, start, i - 1)
+    quickSort(ary, compare, i + 1, end)
   
     return ary
   
@@ -963,6 +966,18 @@ var yf12 = (function() {
       ary[j] = t
       return ary
     }
+  }
+
+  function defer(func, ...args) {
+    return setTimeout(() => {
+      func(...args)
+    }, 1)
+  }
+
+  function delay(func, wait, ...args) {
+    return setTimeout(() => {
+      func(...args)
+    }, wait)
   }
 
   return {
@@ -1003,7 +1018,7 @@ var yf12 = (function() {
     isString,
     isUndefined,
     isMap,
-    // isArguments,
+    isArguments,
     differenceBy,
     differenceWith,
     drop,
@@ -1053,8 +1068,7 @@ var yf12 = (function() {
     size,
     some,
     sortBy,
-    // defer,
-    // delay,
-
+    defer,
+    delay,
   };
 })();
