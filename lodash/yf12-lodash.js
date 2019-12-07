@@ -989,10 +989,6 @@ var yf12 = (function() {
     }
   }
 
-  function ceil(number, precision = 0) {
-    return Math.ceil(number * 10 ** precision) / 10 ** precision
-  }
-
   function max(array) {
     if(array.length === 0) return undefined
     let maxValue = -Infinity
@@ -1014,6 +1010,112 @@ var yf12 = (function() {
       }
     })
     return maxItem    
+  }
+
+  function min(array) {
+    if(array.length === 0) return undefined
+    let minValue = Infinity
+    array.forEach(item => {
+      if(item < minValue) {
+        minValue = item
+      }
+    })
+    return minValue    
+  }
+
+  function minBy(array, predicate = identity) {
+    predicate = iteratee(predicate)
+    if(array.length === 0) return undefined
+    let minItem = array[0]
+    array.forEach(item => {
+      if(predicate(item) < predicate(minItem)) {
+        minItem = item
+      }
+    })
+    return minItem    
+  }
+
+  function sumBy(array, predicate = identity) {
+    predicate = iteratee(predicate)
+    let sum = 0
+    array.forEach(item => {
+      item = predicate(item)
+      sum += item
+    })
+    return sum
+  }
+
+  /**
+   * 向上取整
+   * @param {*} number 
+   * @param {*} precision 
+   */
+  function ceil(number, precision = 0) {
+    return Math.ceil(number * 10 ** precision) / 10 ** precision
+  }
+
+  /**
+   * 四舍五入
+   * @param {*} number 
+   * @param {*} precision 
+   */
+  function round(number, precision = 0) {
+    return Math.round(number * 10 ** precision) / 10 ** precision
+  }
+
+  function random(lower = 0, upper = 1, floating) {
+    if(arguments.length === 0) {
+      floating = false
+    } else if(arguments.length === 1) {
+      if(!isBoolean(arguments[0])) {
+        lower = 0
+        upper = arguments[0]
+        floating = false
+      } else {
+        lower = 0
+        floating = arguments[0]
+      }
+    } else if(arguments.length === 2) {
+      if(isBoolean(arguments[1])) {
+        lower = 0
+        upper = arguments[0]
+        floating = arguments[1]        
+      } else {
+        floating = false
+      }
+    } 
+
+    if(lower > upper) {
+      let t = lower
+      lower = upper
+      upper = t
+    }
+
+    if(!floating) {
+      return Math.floor(Math.random() * (upper - lower + 1)) + lower
+    } else {
+      return Math.random() * (upper - lower) + lower
+    }
+  }
+
+  function assign(object, ...source) {
+    for(let i = 0; i < source.length; i++) {
+      for(let key in source[i]) {
+        if(!(key in source[i].__proto__)) {
+          object[key] = source[i][key]
+        }
+      }
+    }
+    return object
+  }
+
+  function assignIn(object, ...source) {
+    for(let i = 0; i < source.length; i++) {
+      for(let key in source[i]) {
+        object[key] = source[i][key]
+      }
+    }
+    return object
   }
 
   return {
@@ -1107,8 +1209,15 @@ var yf12 = (function() {
     defer,
     delay,
     toArray,
-    ceil,
     max,
     maxBy,
+    min,
+    minBy,
+    ceil,
+    round,
+    sumBy,
+    random,
+    assign,
+    assignIn,
   };
 })();
