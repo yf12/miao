@@ -1,7 +1,7 @@
 import axios from "axios";
 import styled from "styled-components";
 
-export const baseUrl = "http://192.168.2.132:3005";
+export const baseUrl = "http://localhost:3300";
 
 //创建axios实例
 const axiosInstance = axios.create({
