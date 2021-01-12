@@ -1,0 +1,121 @@
+<script>
+    function delegate(el, event, selector, handler) {
+        el.addEventListener(event, function(e) {
+            if (e.target.matches(selector)) {
+                handler.call(e.target, e)
+            }
+        })
+    }
+</script>
+
+<script>
+    var obj = {
+        getNewObj: function() {
+            return {
+                previousObject: this,  //指向外层对象
+                end: function() {
+                    return this.previousObject
+                }
+            }
+        }
+    }
+
+    obj.getNewObj().end() === obj
+</script>
+
+<script>
+    class dQuery {
+        constructor(selector) {
+            var els = document.querySelectorAll(selector)
+            for(var i = 0; i < els.length; i++) {
+                this[i] = els[i]
+            }
+            this.length = els.length
+        }
+        find(selector) {
+            var ret = new dQuery(selector)
+            ret.previousObject = this
+            return ret 
+        }
+        end() {
+            return this.previousObject
+        }
+    }
+</script>
+
+<script>
+    class TaskQueue {
+        constructor() {
+            this.tasks = []
+            this.flag = false
+            this.flags = [true]
+            this.f = function() {
+                this.flag = true
+            }
+            this.do()
+        }
+        add(task) {
+            this.task.arguments = this.f
+            this.tasks.push(f)
+        }
+
+        do() {
+            for(let i = 0;i < this.tasks.length;i++) {
+                if(this.whether[i]) {
+                    this.tasks[i]()
+                    if(this.flag && this.flags[this.flags.length - 1]) {
+                        this.flags.push(this.flag)
+                    }
+                    this.flag = false
+                }
+            }
+        }
+    }
+
+    new TaskQueue().add(next => {
+
+        setTimeout(() => {
+            console.log(1)
+            next()
+        }, 1000)
+
+    }).add(next2 => {
+        console.log(1)
+
+    })
+
+    
+</script>
+
+<script>
+    $('body').queue(function(next) {
+	    setTimeout(() => {console.log(1);next()},1000)
+    })
+    .queue(function(next) {
+        setTimeout(() => {console.log(1);next()},1000)
+    })
+    .queue(function(next) {
+        setTimeout(() => {console.log(1);next()},1000)
+    })
+</script>
+
+<script>
+    Function.prototype.mybind = function(thisArg,...fixedArgs) {
+        var f = this
+        return function bound(...args) {
+            if(new.target == bound) {
+                return new f(...fixedArgs,...args)
+            } else {
+                return this.call(thisArg,...fixedArgs,...args)
+            }      
+        }
+    }
+
+    function People(gender,name) {
+        this.gender = gender
+        this.name = name
+    }
+
+    var MalePeople = People.bind(null,'male')
+    var ls = new MalePeople('ls')
+</script>

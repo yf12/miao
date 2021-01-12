@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .swiper {
+            position: relative;
+            box-shadow: 0 0 3px 3px;
+            margin: 200px auto;
+            overflow: hidden;
+        }
+        .swiper .img-wrapper {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            height: 100%;
+            transition: .3s;
+        }
+        .swiper .img-wrapper img {
+            float: left;
+        }
+        .swiper .indicator-list {
+            position: absolute;
+            z-index: 8;
+            background-color: rgba(0,0,0,0.5);
+            list-style: none;
+            margin: 0;
+            padding: 2px;
+            border-radius: 999px;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .swiper .indicator-list li {
+            width: 8px;
+            height: 8px;
+            float: left;
+            background-color:red;
+            margin: 2px;
+            text-indent: -99999px;
+            border-radius: 50%;
+        }
+        .swiper .indicator-list li.active {
+            background-color: aqua;
+        }
+        .swiper .prev,
+        .swiper .next {
+            width: 50px;
+            height: 100px;
+            border: none;
+            background-color: rgba(0,0,0,0.5);
+            position: absolute;
+            z-index: 8;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            outline: none;
+        }
+        .swiper .prev {
+            left: 0;
+        }
+        .swiper .next {
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="swiper" style="width: 400px;height: 300px;">
+        <img src="https://xieranmaya.github.io/images/cats/stock-photo-21964829.jpg" alt="">
+        <img src="https://xieranmaya.github.io/images/cats/stock-photo-143181649.jpg" alt="">
+        <img src="https://xieranmaya.github.io/images/cats/stock-photo-72620185.jpg" alt="">
+        <img src="https://xieranmaya.github.io/images/cats/photo-108273877.jpg" alt="">
+    </div>
+
+    <script>
+        class Swiper {
+            constructor(el,options) {
+                this.el = el
+                this.options = this.getOptions(options)
+                this.width = parseInt(el.style.width)
+                this.height = parseInt(el.style.height)
+                this.currentIdx = 0
+                this.wrapImgs()
+
+                if(this.options.indicators) {
+                    this.makeIndicators()
+                }
+
+                if(this.options.buttons) {
+                    this.makeButtons()
+                }
+
+                this.initEvents()
+                this.startAutoPlay()
+            }
+
+            initEvents() {
+                if(this.options.buttons) {
+                    this.nextBtn.addEventListener('click',e => {
+                        this.next()
+                    })
+                    this.prevBtn.addEventListener('click',e => {
+                        this.prev()
+                    })
+                }
+
+                this.el.addEventListener('click',e => {
+                    if(e.target.matches('.indicator-list > li')) {
+                        var idx = Array.from(this.indicatorsList.children).indexOf(e.target)
+                        var diff = idx - this.currentIdx
+                        if(diff > 0) {
+                            for(let i = 0;i < diff;i++) {
+                                this.next()
+                            }
+                        }
+                        if(diff < 0) {
+                            for(let i = 0;i < -diff;i++) {
+                                this.prev()
+                            }
+                        }
+                    }
+                })
+
+                this.el.addEventListener('mouseenter',e => {
+                    this.stopAutoPlay()
+                })
+                this.el.addEventListener('mouseleave',e => {
+                    this.startAutoPlay()
+                })
+            }
+
+            startAutoPlay() {
+                if(this.options.autoPlay) {
+                    this.intervalId = setInterval(() => {
+                        this.next()
+                    },this.options.interval)
+                }
+            }
+
+            stopAutoPlay() {
+                clearInterval(this.intervalId)
+            }
+
+            makeButtons() {
+                this.prevBtn = document.createElement('button')
+                this.nextBtn = document.createElement('button')
+                this.prevBtn.className = 'prev'
+                this.prevBtn.textContent = 'prev'
+                this.nextBtn.className = 'next'
+                this.nextBtn.textContent = 'next'
+                this.el.appendChild(this.prevBtn)
+                this.el.appendChild(this.nextBtn)
+            }
+
+            makeIndicators() {
+                this.indicatorsList = document.createElement('ul')
+                this.indicatorsList.className = 'indicator-list'
+                for(let i = 0;i < this.length;i++) {
+                    var li = document.createElement('li')
+                    li.className = 'indicator-item'
+                    li.textContent = i + 1
+                    this.indicatorsList.appendChild(li)
+                }
+                this.indicatorsList.firstChild.classList.add('active')
+                this.el.appendChild(this.indicatorsList)
+            }
+
+            setIndicator() {
+                if(this.options.indicators) {
+                    this.indicatorsList.querySelector('.active').classList.remove('active')
+                    this.indicatorsList.children[this.currentIdx].classList.add('active')
+                }
+            }
+
+            next() {
+                this.currentIdx = (this.currentIdx + 1) % this.length
+                this.setIndicator()
+                this.imgWrapper.style.left = '-200%'
+                this.imgWrapper.style.transition = '.3s'
+                setTimeout(() => {
+                    this.imgWrapper.style.transition = 'none'
+                    this.imgWrapper.appendChild(this.imgWrapper.firstChild)
+                    this.imgWrapper.style.left = '-100%'
+                },300)
+            }
+
+            prev() {
+                this.currentIdx = (this.currentIdx - 1 + this.length) % this.length
+                this.setIndicator()
+                this.imgWrapper.style.left = '0'
+                this.imgWrapper.style.transition = '.3s'
+                setTimeout(() => {
+                    this.imgWrapper.style.transition = 'none'
+                    this.imgWrapper.prepend(this.imgWrapper.lastChild)
+                    this.imgWrapper.style.left = '-100%'
+                },300)
+            }
+
+            wrapImgs() {
+                var imgWrapper = document.createElement('div')
+                imgWrapper.className = 'img-wrapper'
+                var imgs = Array.from(this.el.children)
+                this.length = imgs.length
+                imgs.forEach(img => {
+                    img.style.width = this.width + 'px'
+                    img.style.height = this.height + 'px'
+                    imgWrapper.appendChild(img)
+                })
+                this.el.appendChild(imgWrapper)
+                imgWrapper.prepend(imgWrapper.lastChild)
+                imgWrapper.style.width = this.length * this.width + 'px'
+                this.imgWrapper = imgWrapper
+            }
+
+            getOptions(options) {
+                var defaultOptions = {
+                    autoPlay: true,
+                    indicators: true,
+                    buttons: 0,
+                    interval: 1000,
+                }
+                return Object.assign({},defaultOptions,options)
+            } 
+        }
+ 
+
+        var s = new Swiper(document.querySelector('.swiper'), {
+            interval: 3000,
+            indicators: true,
+            buttons: true,
+            autoPlay: true,
+        })
+    </script>
+</body>
+</html>

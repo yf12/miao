@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    
+    <style>
+        .completed {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <div id="todo-app">
+        <h1>Todos</h1>
+        <div>
+            <input type="checkbox" @click="toggleAll" :checked="isAllSelected">
+            <input type="text" @keyup.enter="addTodo">
+        </div>
+        <ul>
+            <li v-for="(todo,index) in getShowing()" :class="todo.done ? 'completed' : ''">
+                <input type="checkbox" :checked="todo.done" @click="todo.done = !todo.done">
+                <span v-if="editingIndex != index" @dblclick="editingIndex = index">{{ todo.content }}</span>
+                <input type="text" v-if="editingIndex == index" :value="todo.content" @keyup.esc="cancelEdit" @blur="changeTodo($event, todo)" @keyup.enter="changeTodo($event, todo)">
+                <button @click="deleteTodo(todo)">delete</button>
+            </li>
+        </ul>
+        <div>
+            <span>{{ leftCount }} item{{ plural }} left</span>
+            <label> <input type="radio" :checked="category == 'all'" @click="category = 'all'">All</label>
+            <label> <input type="radio" :checked="category == 'active'" @click="category = 'active'">Active</label>
+            <label> <input type="radio" :checked="category == 'completed'" @click="category = 'completed'">Complete</label>
+            <button v-show="hasCompleted" @click="clearCompleted">clear completed</button>
+        </div>
+    </div>
+
+    <script src="vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#todo-app',
+            data: {
+                editingIndex: -1,
+                category: 'all',
+                todos: [{
+                    content: 'eat',
+                    done: false
+                }, {
+                    content: 'drink',
+                    done: false,
+                }, {
+                    content: 'sleep',
+                    done: true
+                }]
+            },
+            computed: {
+                isAllSelected() {
+                    return this.todos.every(it => it.done)
+                },
+                leftCount() {
+                    return this.todos.filter(it => !it.done).length
+                },
+                plural() {
+                    return this.leftCount > 1 ? 's' : ''
+                },
+                hasCompleted() {
+                    return this.todos.filter(it => it.done).length > 0
+                }
+            },
+            methods: {
+                getShowing() {
+                    if(this.category == 'all') {
+                        return this.todos
+                    }
+                    if(this.category == 'active') {
+                        return this.todos.filter(it => !it.done)
+                    }
+                    if(this.category == 'completed') {
+                        return this.todos.filter(it => it.done)
+                    }                    
+                },
+                toggleAll() {
+                    if(this.todos.some(it => !it.done)) {
+                        this.todos.forEach(it => it.done = true)
+                    } else {
+                        this.todos.forEach(it => it.done = false)
+                    }
+                },
+                addTodo(e) {
+                    var text = e.target.value.trim()
+                    if(text) {
+                        this.todos.push({
+                            content: text,
+                            done: false
+                        })
+                        e.target.value = ''
+                    }
+                },
+                changeTodo(e,todo) {
+                    if(this.editingIndex == -1) {
+                        return
+                    }
+                    var text = e.target.value.trim()
+                    if(text) {
+                        todo.content = text
+                    }
+                    this.editingIndex = -1
+                },
+                cancelEdit(e) {
+                    this.editingIndex = -1
+                },
+                clearCompleted() {
+                    this.todos = this.todos.filter(it => !it.done)
+                },
+                deleteTodo(todo) {
+                    this.todos = this.todos.filter(it => it != todoy                    )
+                }
+            }
+        })
+    </script>
+</body>
+</html>

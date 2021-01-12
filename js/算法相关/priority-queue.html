@@ -1,0 +1,188 @@
+<script>
+    class PriorityQueue {
+        constructor(initialValues = [],predicate = it => it) {
+            this.elements = initialValues.slice()
+            this.heapify()
+            this.predicate = predicate
+        }
+
+        //将无序的elements就地调整成一个堆
+        heapify() {
+            var startIdx = (this.elements.length - 2) >> 1
+            for(var i = startIdx;i >= 0;i--) {
+                this.heapDown(i)
+            }
+        }
+
+        _swap(i,j) {
+            var t = this.elements[i]
+            this.elements[i] = this.elements[j]
+            this.elements[j] = t
+        }
+
+        push(val) {
+
+        }
+
+        //删除并返回堆顶元素
+        pop() {
+            var result = this.elements[0]
+            var last = this.elements.pop()
+            if(this.elements.length == 0) {
+                return result
+            }
+            this.elements[0] = last
+
+            var currIdx = 0
+            while(currIdx < this.elements.length) {
+                var maxIdx = currIdx
+                var lIdx = currIdx * 2 + 1
+                var rIdx = lIdx + 1
+                if(lIdx < this.elements.length && this.elements[lIdx] > this.elements[maxIdx]) {
+                    maxIdx = lIdx
+                }
+                if(rIdx < this.elements.length && this.elements[rIdx] > this.elements[maxIdx]) {
+                    maxIdx = rIdx
+                }
+                if(currIdx != maxIdx) {
+                    this._swap(currIdx, maxIdx)
+                    currIdx = maxIdx   
+                } else {
+                    break
+                }
+            }
+            return result
+        }
+
+        //适用于堆尾增加了一个元素时
+        //从下往上调整
+        heapUp(idx) {
+            if(idx > 0) {
+                var pIdx = (idx - 1) >> 2   //idx元素父元素的下标
+                if(this.elements[idx] > this.elements[pIdx]) {
+                    this._swap(idx,pIdx)
+                    this.headUp(pIdx)
+                } else {
+                    return
+                }
+            }
+        }
+
+        //从某个位置(currIdx)开始向下调整
+        //适用于堆顶删除了一个元素时
+        //堆尾的元素补在了堆顶时
+        heapDown(currIdx) {
+            if(currIdx < this.elements.length) {
+                var maxIdx = currIdx
+                var lIdx = currIdx * 2 + 1
+                var rIdx = lIdx + 1
+                if(lIdx < this.elements.length && this.elements[maxIdx] < this.elements[lIdx]) {
+                    maxIdx = lIdx
+                }
+                if(rIdx < this.elements.length && this.elements[maxIdx] < this.elements[rIdx]) {
+                    maxIdx = rIdx
+                }
+                if(currIdx != maxIdx) {
+                    this._swap(currIdx,maxIdx)
+                    this.heapDown(maxIdx)
+                }
+            }
+        }
+
+        //往堆中增加一个元素
+        push(val) {
+            this.elements.push(val)
+            var currIdx = this.elements - 1
+
+            while(currIdx > 0) {
+                var pIdx = (currIdx - 1) >> 1
+                if(this.elements[currIdx] > this.elements[pIdx]) {
+                    this._swap(currIdx,pIdx)
+                } else {
+                    break
+                }
+                currIdx = pIdx
+            }
+            return this
+        }
+
+        push2(val) {
+            this.elements.push(val)
+            this.heapUp(this.size - 1)
+        }
+        
+        get size() {
+            return this.elements.length
+        }
+    }
+
+
+    //把数组end以内（不包含end）从堆开始调整成一个正确的堆
+    function heapDown(ary,currIdx,end = ary.length) {
+        if(currIdx < end) {
+            var maxIdx = currIdx
+            var lIdx = currIdx * 2 + 1
+            var rIdx = lIdx + 1
+            if (lIdx < end && ary[lIdx] > ary[maxIdx]) {
+                maxIdx = lIdx
+            }
+            if (rIdx < end && ary[rIdx] > ary[maxIdx]) {
+                maxIdx = rIdx
+            }
+            if (currIdx !== maxIdx) {
+                swap(ary, currIdx, maxIdx)
+                heapDown(ary, maxIdx, end)
+            }
+        }
+    }
+
+    function swap(ary, i, j) {
+        var t = ary[i]
+        ary[i] = ary[j]
+        ary[j] = t
+    }
+
+    //把一个无序数组就地调整为一个堆
+    function heapify(ary) {
+        var startIdx = (ary.length - 2) >> 1
+        for(var i = startIdx; i >= 0; i--) {
+            heapDown(ary, i)
+        }
+        return ary
+    }
+
+    function heapSort(ary) {
+        heapify(ary)
+        for(var i = ary.length - 1;i > 0;i--) {
+            swap(ary,i,0)
+            heapDown(ary,0,i)
+        }
+        return ary
+    }
+</script>
+
+<script>
+    function getOuterHTML(node) {
+
+        if (node.nodeType == document.TEXT_NODE) {
+            return node.nodeValue
+        } else if (node.nodeType == document.ELEMENT_NODE) {
+            var tagName = node.tagName.toLowerCase()
+            var result = '<' + tagName
+            var attrNames = node.getAttributeNames()
+            for(var attrName of attrNames) {
+                result += ` ${attrName}="${node.getAttribute(attrName)}"`
+            }
+            result += '>'
+            
+            for(var i = 0; i < node.childNodes.length; i++) {
+                result += getOuterHTML(node.childNodes[i])
+            }
+
+            result += '</' + tagName + '>'
+            return result 
+        }
+
+    }
+
+</script>

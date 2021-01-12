@@ -1,0 +1,142 @@
+<script>
+    function toCamelCase(str){
+        return str.replace(/([_-])([a-z]|[A-Z])/g,function(a,b,c) {return c.toUpperCase()})
+    }
+</script>
+//https://www.codewars.com/kata/convert-string-to-camel-case/train/javascript
+
+<script>
+    var reg = /^((?!bug).)*$/
+    var reg = /^(?!.*bug).*$/
+</script>
+//https://www.codewars.com/kata/a-string-with-bugs/train/javascript
+
+<script>
+    function incrementString (strng) {
+        // return incrementedString
+        if(/\d/.test(strng)) {
+            var str = strng.replace(/\w+\d+/)
+        } else {
+            return strng.replace(/(\w*)/,'$1'+'1')
+        }
+    }
+</script>
+
+<script>
+    RegExp.prototype.myTest = function(str) {
+        if(this.exec(str)) {
+            return true
+        }
+        return false
+    }
+
+    String.prototype.Mymatch = function(re) {
+        if(re.global) {
+            var result = []
+            var match
+            re.lastIndex = 0
+            while(match = re.exec(this)) {
+                result.push(match[0])
+                if(match[0].length == 0) {
+                    re.lastIndex++
+                }
+            }
+            return result  
+        } else {
+            return re.exec(this)
+        }
+    }
+
+    String.prototype.mySearch = function(re) {
+        var previous = re.lastIndex
+        re.lastIndex = 0
+        var match = re.exec(this)
+        re.lastIndex = previous
+        if(match) {
+            return match.index
+        } else {
+            return -1
+        }
+    }
+
+    String.prototype.mySplit = function(re) {
+        var result = []
+        var match
+        if(re.global) {
+            var previous = re.lastIndex
+        } else {
+            re = new RegExp(re.source,re.flags + 'g')
+        }
+        re.lastIndex = 0
+        var lastIndex = 0
+        while(match = re.exec(this)) {
+            beforeMatch = this.slice(lastIndex,match.index)
+            result.push(beforeMatch)
+            result.push(...match.slice(1))
+            lastIndex = re.lastIndex
+            if(match[0].length == 0) {
+                re.lastIndex++
+            }
+        }
+        result.push(this.slice(lastIndex))
+        re.lastIndex = previous
+        return result
+    }
+
+    function transform(str) {
+        return function(...args) {
+            var re = /\$(\d|\&)/g
+            var result = ''
+            var lastIndex = 0
+            while(match = re.exec(str)) {
+                result += str.slice(lastIndex,match.index)
+                if(match[1] == '&') {
+                    result += args[0]
+                } else {
+                    result += args[match[1]]
+                }
+                lastIndex = re.lastIndex
+                if(match[0].length == 0) {
+                    re.lastIndex++
+                }
+            }
+            result += str.slice(lastIndex)
+            return result
+        }
+    }
+
+    String.prototype.myReplace = function(re,f) {
+        if(typeof f == 'string') {
+            f = transform(f)
+        }
+        if(!re.global) {
+            var match = re.exec(this)
+            if(match) {
+                return this.slice(0,match.index)
+                        +
+                        f(...match)
+                        +
+                        this.slice(match.index + match[0].length)
+            } else {
+                return this
+            }
+        } else {
+            var previous = re.lastIndex
+            var match
+            var result = ''
+            re.lastIndex = 0
+            var lastIndex = 0
+            while(match = re.exec(this)) {
+                result += this.slice(lastIndex,match.index)
+                result += f(...match)
+                lastIndex = re.lastIndex
+                if(match[0].length == 0) {
+                    re.lastIndex++
+                }
+            }
+            result += this.slice(lastIndex)
+            re.lastIndex = previous
+            return result
+        }
+    }
+</script>

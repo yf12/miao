@@ -1,0 +1,32 @@
+<script>
+    var coinChange = function(coins, amount) {
+        let dp = new Array(amount + 1).fill(0)
+        dp = dp.map((_,i) => i + 1)
+        dp[0] = 0
+        for(let i = 1;i <= amount;i++) {
+            for(j = 0;j < coins.length;j++) {
+                if(coins[j] <= i) {
+                    dp[i] = Math.min(dp[i],dp[i - coins[j]] + 1)
+                }
+            }
+        }
+        return dp[amount] > amount ? -1 : dp[amount]
+    }
+    coinChange([2],3)
+</script>
+
+<script>
+    var coinChange = function(coins, amount) {
+        let dp = new Array(amount + 1).fill(amount + 1)
+        dp[0] = 0
+        for(let i = 1;i < amount + 1;i++) {
+            for(j = 0;j < coins.length;j++) {
+                if(i >= coins[j]) {
+                    dp[i] = Math.min(dp[i],dp[i - coins[j]] + 1)
+                }
+            }
+        }
+        return amount <= dp[amount] ? dp[amount] : -1
+    }
+    coinChange([2],3)
+</script>

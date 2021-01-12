@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    svg {
+      border: 5px solid paleturquoise;
+    }
+  </style>
+</head>
+<body>
+  <svg width="500" height="400">
+    <line x1="10" y1="10" x2="200" y2="100" stroke="black" stroke-width="30" />
+    <rect x="30" y="50" width="200" height="200" fill="rgba(0, 255, 255, 0.5)" stroke="rgba(255, 255, 0, 0.3)" stroke-width="30" />
+    <circle cx="200" cy="200" r="30" fill="olive" stroke="rgba(255, 0, 0, 0.5)" stroke-width="20" />
+    <ellipse cx="100" cy="100" rx="70" ry="50" fill="rgba(245, 124, 0, 0.5)" />
+    <polyline points="10 10 120 20 100 300" fill="purple" stroke="black" stroke-width="10" />
+    <polygon points="20 100 20 200 80 100" />
+    <!-- <path
+     fill="violet"
+     stroke="black"
+     stroke-width="5"
+     d="M 20 30
+        L 100 200
+        h -90 l 50 50
+        Q 10 390 250 350
+        T 500 400
+        C 317 292 480 190 450 150
+        S 260 130 340 220
+        z
+       "
+       stroke-dasharray="2, 3, 5, 7"
+    /> -->
+    <g id="dots" style="transform: translate(0px, 0px);">
+      <style>
+        circle {
+          r: 10;
+          transition: all linear 1s;
+        }
+        circle:hover {
+          r: 100;
+          fill: lightblue;
+        }
+      </style>
+      <circle cx="10" cy="390" xr="10" />
+      <circle cx="250" cy="350" xr="10" />
+    </g>
+  </svg>
+  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Suscipit, doloribus sed beatae cum accusantium nam inventore, et minus iure maxime minima quia vero. Ipsam accusantium temporibus optio vero. Sed, a?
+
+  </p>
+  <svg width="500" height="400">
+    <use href="#dots" />
+  </svg>
+  <svg width="500" height="400">
+    <path d="M 10 10 A 50 100 33 1 1 100 350" />
+  </svg>
+</body>
+</html>

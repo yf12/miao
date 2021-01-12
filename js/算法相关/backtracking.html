@@ -1,0 +1,283 @@
+<script> //合法IP地址 93
+    function restoreIpAddresses(s,result = [],parts = []) {
+        if(parts.length == 3) {
+            if(isIPPart(s)) {
+                result.push(parts.join('.') + '.' + s)
+            }
+            return
+        }
+        for(let i = 1;i <= 3;i++) {
+            let s1 = s.slice(0,i)
+            if(isIPPart(s1)) {
+                parts.push(s1)
+                restoreIpAddresses(s.slice(i),result,parts)
+                parts.pop()
+            }
+        }
+        return result
+    }
+    restoreIpAddresses("25525511135")
+
+    function isIPPart(s) {
+        if(s[0] == '0') {
+            return s.length == 1
+        }
+        return s < 256 && s.length
+    }
+</script>
+
+<script>   //39
+    var combinationSum = function(candidates, target,j = 0,result = [],store = []) {
+        candidates.sort((a,b) => (a - b))
+        for(let i = j;i < candidates.length;i++) {
+            let j = i
+            if(candidates[i] == target) {
+                store.push(candidates[i])
+                result.push(store.slice())
+                store.pop()
+                return result
+            } else if(candidates[i] < target) {
+                store.push(candidates[i])
+                combinationSum(candidates,target - candidates[i],j,result,store)
+                store.pop()
+            }
+        }
+        return result
+    }
+    combinationSum([4,2,8],8)
+</script>
+
+<script>   //39
+    var combinationSum = function(candidates, target,j = 0,result = [],store = []) {
+        for(let i = j;i < candidates.length;i++) {
+            let j = i
+            if(candidates[i] == target) {
+                store.push(candidates[i])
+                result.push(store.slice())
+                store.pop()
+            } else if(candidates[i] < target) {
+                store.push(candidates[i])
+                combinationSum(candidates,target - candidates[i],j,result,store)
+                store.pop()
+            }
+        }
+        return result
+    }
+    combinationSum([4,2,8],8)
+</script>
+
+<script>   //51   n皇后
+    var solveNQueens = function(n) {
+        let result = []
+        let queens = []
+        for(let i = 0;i < n;i++) {
+            let queen = new Array(n).fill('.')
+            queens.push(queen)
+        }
+        findSolution(queens,0)
+        return result
+
+        function findSolution(queens,curRow) {
+            let n = queens.length
+            if(curRow == n) {
+                let ary = queens.map(queen => queen.join(''))
+                result.push(ary)
+                return
+            }
+            for(let i = 0;i < n;i++) {
+                if(isValid(queens,curRow,i)) {
+                    queens[curRow][i] = 'Q'
+                    findSolution(queens,curRow + 1)
+                    queens[curRow][i] = '.'
+                }
+            }
+        }
+    }
+
+    function isValid(queens,row,col) {
+        for(let i = 0;i < row;i++) {
+            if(queens[i][col] == 'Q') {
+                return false
+            }
+        }
+        for(let i = row - 1,j = col - 1;i >= 0 && j >= 0;i--,j--) {
+            if(queens[i][j] == 'Q') {
+                return false
+            }
+        }
+        for(let i = row - 1,j = col + 1;i >= 0 && j < queens.length;i--,j++) {
+            if(queens[i][j] == 'Q') {
+                return false
+            }
+        }
+        return true
+    }
+</script>
+
+<script>   //22
+    var generateParenthesis = function(n) {
+        let result = []
+        bt(0,0,'')
+        return result
+        
+        function bt(l,r,p) {
+            if(r == n) {
+                result.push(p)
+            }
+            if(l < n) {
+                bt(l + 1,r,p + '(')
+            }
+            if(r < l) {
+                bt(l,r + 1,p + ')')
+            }
+        }
+    }
+</script>
+
+<script>  //22 回溯做法
+    var generateParenthesis = function(n) {
+        let l = 0,r = 0
+        let result = [],ary = []
+        bt()
+        return result
+
+        function bt() {
+            if(r == n) {
+                result.push(ary.join(''))
+                return
+            }
+            if(l < n) {
+                l++
+                ary.push('(')
+                bt()
+                ary.pop()
+                l--
+            }
+            if(r < l) {
+                r++
+                ary.push(')')
+                bt()
+                ary.pop()
+                r--
+            }
+        } 
+    }
+</script>
+
+<script>  //17 回溯
+    var letterCombinations = function(digits) {
+        if(!digits) return []
+        let map = {2:['a','b','c'],3:['d','e','f'],4:['g','h','i'],5:['j','k','l'],6:['m','n','o'],7:['p','q','r','s'],8:['t','u','v'],9:['w','x','y','z']}
+        let result = [],ary = []
+        lc()
+        return result
+
+        function lc(i = 0) {
+            if(i == digits.length) {
+                result.push(ary.join(''))
+                return
+            }
+            let digit = digits[i]
+            for(var key of map[i]) {
+                ary.push(key)
+                lc(i + 1)
+                ary.pop()
+            }
+        }
+    }
+    letterCombinations('23')
+</script>
+
+<script>  //17 笛卡尔积
+    var letterCombinations = function(digits) {
+        if(!digits) return []
+        let map = [
+            0,
+            1,
+            'abc',
+            'def',
+            'ghi',
+            'jkl',
+            'mno',
+            'pqrs',
+            'tuv',
+            'wxyz'
+        ]
+        let nums = digits.split('')
+
+        let result = nums.reduce(function(result,num) {
+            let ary = map[num]
+            let store = []
+            for(let i = 0;i < result.length;i++) {
+                for(let j = 0;j < ary.length;j++) {
+                    store.push(`${result[i]}${ary[j]}`)
+                }
+            }
+            result = store.slice()
+            return result
+        },[''])  
+
+        return result
+    };
+</script>
+
+<script>        
+    let map = [
+        0,
+        1,
+        'abc',
+        'def',
+        'ghi',
+        'jkl',
+        'mno',
+        'pqrs',
+        'tuv',
+        'wxyz'
+    ]
+    var letterCombinations = function(digits) {
+        if(!digits) return []
+        let result = []
+
+        function lc(i,str) {
+            if(i == digits.length) {
+                result.push(str)
+                return
+            }
+            let letters = map[digits[i]]
+            for(var letter of letters) {
+                lc(i + 1,str + letter)
+            }
+
+        }
+        lc(0,'')
+        return result
+    }
+    letterCombinations('23')
+</script>
+
+<script>
+    var letterCasePermutation = function(s) {
+        let result = []
+        lcp('',s)
+        return result
+
+        function lcp(i,str,string) {
+            if(!string){
+                result.push(str)
+                return
+            }
+            for(var key of string) {
+                if(/[0-9]/.test(key)) {
+                    lcp(str + key,string.slice(1))
+                    return
+                }
+                if(/[A-z]/.test(key)) {
+                    lcp(i + 1,str + key.toLowerCase(),string.slice(1))
+                    lcp(i + 1,str + key.toUpperCase(),string.slice(1))
+                    return
+                }
+            } 
+        }    
+    };
+    letterCasePermutation('a1b2')
+</script>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>mouse-move</title>
+    <style>
+        div {
+            width: 20px;
+            height: 20px;
+            position: fixed;
+            background-color: mediumpurple;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://lodash.com/vendor/cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+    <script>
+        window.addEventListener('mousemove',_.throttle(e => {
+            var div = document.createElement('div')
+            div.style.left = e.clientX - 10 + 'px'
+            div.style.top = e.clientY - 10 + 'px'
+            document.body.appendChild(div)
+            setTimeout(() => {
+                document.body.removeChild(div)
+            },150)
+        },15))
+
+        // function throttle(f, duration) {
+        //     var timerId 
+        //     var lastTime = 0
+        //     return function(...args) {
+        //         clearTimeout(timerId)
+        //         now = Date.now()
+        //         if(now - lastTime > duration){
+        //             f(...args)
+        //             lastTime = now
+        //         }else{
+        //             timerId = setTimeout(() => {
+        //                 f(...args)
+        //                 lastTime = Date.now()
+        //             }, duration)
+        //         }
+        //     }
+        // }
+    </script>
+</body>
+</html>

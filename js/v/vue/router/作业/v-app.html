@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> 
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div style="width: 300px;height: 500px;border: 2px solid;">
+            <router-view></router-view>
+        </div>
+        <div style="width: 300px;border: 2px solid;">
+            <router-link to="message">消息</router-link>
+            <router-link to="find">朋友圈</router-link>
+            <router-link to="settings">设置</router-link>
+        </div>
+    </div>
+
+    <script src="vue.js"></script>
+    <script src="lodash.min.js"></script>
+    <script src="vue-router.js"></script>
+
+    <script>
+        var Message = {
+            template: `
+                <div>
+                    <h3>消息</h3>
+                    <p v-for="message of allMessage" style="border:2px solid;margin: 0;padding: 2px;">{{ message.text }}</p>
+                </div>
+            `,
+            data() {
+                return {
+                    allMessage: [{
+                        text: 'hello'
+                    }, {
+                        text: 'world'
+                    }, {
+                        text: 'yeah'
+                    }]
+                }
+            }
+        }
+
+        var Find = {
+            template: `
+                <div>
+                    <h3>朋友圈</h3>
+                    <div style="display:flex;">
+                        <aside style="width: 70px;height: 100%;border-right: 2px solid;">
+                            <router-link to="/find/whiteList" style="display: block;">还没的</router-link>
+                            <router-link to="/find/blackList" style="display: block;">拉黑的</router-link>
+                        </aside>
+                        <main>
+                            <router-view></router-view>
+                        </main>
+                    </div>
+                </div>
+            `
+        }
+
+        var Settings = {
+            template: `
+                <h1>设置</h1>
+            `
+        }
+
+        var router = new VueRouter({
+            routes: [{
+                path: '/',
+                component: Message
+            }, {
+                path: '/message',
+                component: Message
+            }, {
+                path: '/find',
+                component: Find,
+                children: [{
+                    path: '',
+                    redirect: 'whiteList'
+                }, {
+                    path: 'whiteList',
+                    component: {
+                        template: `
+                            <div>
+                                <h5>还没拉黑的</h5>
+                                // <p v-for="cicle in allCicles">{{ cicle.text }}</p>
+                            </div>
+                        `,
+                        data() {
+                            return {
+                                allCicles: [{
+                                    text: 'hello'
+                                }, {
+                                    text: 'world'
+                                }, {
+                                    text: 'yeah'
+                                }]                                
+                            }
+                        }
+                    }
+                }, {
+                    path: 'blackList',
+                    component: {
+                        template: `
+                            <div>拉黑的</div>
+                        `,
+                    }
+                }]
+            }, {
+                path: '/settings',
+                component: Settings
+            }]
+        })
+
+        var app = new Vue({
+            el: '#app',
+            router: router,
+            data: {
+
+            }
+        })
+    </script>
+</body>
+</html>

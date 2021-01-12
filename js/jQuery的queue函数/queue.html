@@ -1,0 +1,49 @@
+<script>
+    class Queue {
+        constructor() {
+            this.tasks = []
+            this.hasRunning = false
+        }
+
+        add(f) {
+            var next
+            if(!this.hasRunning) {
+                this.hasRunning = true
+                f(next = () => {
+                    if(this.tasks.length) {
+                        var nextTask = this.tasks.shift()
+                        nextTask(next)
+                    } else {
+                        this.hasRunning = false
+                    }
+                })
+            } else {
+                this.tasks.push(f)
+            }
+            return this
+        }
+    }
+
+
+    new Queue()   //next换成别的名字也可以
+    .add(function f1(next) {
+        console.log(1)
+        setTimeout(() => {
+            next()
+        },1000)
+    })
+    .add(function f2(next) {
+        console.log(2)
+        setTimeout(() => {
+            next()
+        },2000)
+    })
+    .add(function f3(next) {
+        console.log(3)
+        next()
+    })
+    .add(function f4(next) {
+        console.log(4)
+        next()
+    })
+</script>

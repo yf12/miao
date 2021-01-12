@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .cat,.hat,.rat {
+            width: 50px;
+            height: 50px;
+            background-color: pink;
+            position: fixed;
+            display: inline-block;
+        }
+        .hat {
+            width: 30px;
+            height: 30px;
+            background-color: green;
+        }
+        .rat {
+            width: 15px;
+            height: 15px;
+            background-color: blue;
+        }
+        /* p {
+            text-align: center;
+            margin-top: 100px;
+        } */
+    </style>
+</head>
+<body>
+    <p>
+        <span class="cat"></span>
+        <span class="hat"></span>
+        <span class="rat"></span>
+    </p>
+
+    <script>
+        var cat = document.querySelector('.cat')
+        var hat = document.querySelector('.hat')
+        var rat = document.querySelector('.rat')
+        
+        var angle = 0,angle2 = 0,angle3 = 0
+        var lastTime = null
+
+        requestAnimationFrame(function animate(time) {
+            if(lastTime) {
+                angle += (time - lastTime) * 0.001
+                angle2 += (time - lastTime) * 0.002
+                angle3 += (time - lastTime) * 0.003
+            }
+            lastTime = time
+
+            var catX = Math.sin(angle) * 100 + 400
+            var catY = Math.cos(angle) * 100 + 200
+            
+            var hatX = Math.sin(angle2) * 80 + 25 - 10 + catX
+            var hatY = Math.cos(angle2) * 80 + 25 - 10 + catY
+
+            var ratX = Math.sin(angle2) * 50 + 15 - 7.5 + hatX
+            var ratY = Math.cos(angle2) * 50 + 15 - 7.5 + hatY
+
+            cat.style.left = catX + 'px'
+            cat.style.top = catY + 'px'
+
+            hat.style.left = hatX + 'px'
+            hat.style.top = hatY + 'px'
+            
+            rat.style.left = ratX + 'px'
+            rat.style.top = ratY + 'px'
+
+            requestAnimationFrame(animate)
+        })
+    </script>
+</body>
+</html>

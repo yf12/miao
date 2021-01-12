@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    
+    <!-- Don't use this in production: -->
+    <script src="babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+
+    <script type="text/babel">
+      // function formatName(user) {
+      //   return user.firstName + '' + user.lastName
+      // }
+
+      // const user = {
+      //   firstName: 'H',
+      //   lastName: 'a'
+      // }
+
+      // const element = (
+      //   <h1>
+      //     Hello, {formatName(user)}!
+      //   </h1>
+      // )
+
+      // ReactDOM.render(
+      //   element,
+      //   document.getElementById('root')
+      // );
+
+      // class Clock extends React.Component {
+      //   constructor(props) {
+      //     super(props)
+      //     this.state = {date: new Date()}
+      //   }
+
+      //   componentDidMount() {
+      //     this.timerId = setInterval(() => this.tick(), 1000)
+      //   }
+
+      //   componentWillUnmount() {
+      //     clearInterval(this.timerId)
+      //   }
+
+      //   tick() {
+      //     this.setState({
+      //       date: new Date()
+      //     })
+      //   }
+
+      //   render() {
+      //     return (
+      //       <div>
+      //         <h2>{this.state.date.toLocaleTimeString()}</h2>
+      //       </div>
+      //     )
+      //   }
+      // }
+
+      // ReactDOM.render(
+      //   <Clock />,
+      //   document.getElementById('root')
+      // )
+
+      class Toggle extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {isToggleOn: true};
+
+          // 这个绑定是必要的，使`this`在回调中起作用
+          this.handleClick = this.handleClick.bind(this);
+        }
+
+        handleClick() {
+          // this.setState(state => ({
+          //   isToggleOn: !state.isToggleOn
+          // }));
+          this.setState({
+            isToggleOn: !this.state.isToggleOn
+          });
+        }
+
+        render() {
+          return (
+            <button onClick={() => this.handleClick()}>
+              {this.state.isToggleOn ? 'ON' : 'OFF'}
+            </button>
+          );
+        }
+      }
+
+      ReactDOM.render(
+        <Toggle />,
+        document.getElementById('root')
+      );
+
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this section for a production-ready setup with JSX:
+      https://reactjs.org/docs/add-react-to-a-website.html#add-jsx-to-a-project
+
+      In a larger project, you can use an integrated toolchain that includes JSX instead:
+      https://reactjs.org/docs/create-a-new-react-app.html
+
+      You can also use React without JSX, in which case you can remove Babel:
+      https://reactjs.org/docs/react-without-jsx.html
+    -->
+  </body>
+</html>

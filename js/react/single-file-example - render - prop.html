@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    
+    <!-- Don't use this in production: -->
+    <script src="babel.min.js"></script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>    
+  </head>
+  <body>
+
+    <div id="root"></div>
+
+
+    <script type="text/babel">
+
+      // class DatePicker extends React.Component {
+      //   render() {
+      //     return <input type="text" />
+      //   } 
+      // }
+
+      class DatePicker extends React.Component {
+        constructor(props) {
+          super(props)
+        }
+
+        componentDidMount() {
+          $(this.refs.date).datepicker()
+        }
+
+        render() {
+          return <input type="text" ref="date"/>
+        }
+      }
+
+      ReactDOM.render(
+        <div>
+          <DatePicker />
+        </div>,
+        document.getElementById('root')
+      )
+
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this section for a production-ready setup with JSX:
+      https://reactjs.org/docs/add-react-to-a-website.html#add-jsx-to-a-project
+
+      In a larger project, you can use an integrated toolchain that includes JSX instead:
+      https://reactjs.org/docs/create-a-new-react-app.html
+
+      You can also use React without JSX, in which case you can remove Babel:
+      https://reactjs.org/docs/react-without-jsx.html
+    -->
+  </body>
+</html>

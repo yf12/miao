@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>cat</title>
+</head>
+<body>
+    <button>cat</button>
+    <div></div>
+
+    <script>
+        var xhr = new XMLHttpRequest()
+        xhr.open("GET","http://xieranmaya.github.io/images/cats/cats.json",false)
+        xhr.send()
+
+        var j = xhr.responseText
+        var imgs = JSON.parse(j)
+
+        imgs.forEach(element => {
+            element.url = "http://xieranmaya.github.io/images/cats/" + element.url
+        });
+
+        var button = document.querySelector('button')
+        var div = document.querySelector('div')
+        button.addEventListener('click',function(e) {
+            for(let i = 0;i < imgs.length;i++) {
+                var img = document.createElement('img')
+                img.setAttribute('src',imgs[i].url)
+                div.appendChild(img)
+            }
+        })
+    </script>
+</body>
+</html>

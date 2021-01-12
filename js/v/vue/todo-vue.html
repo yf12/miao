@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div id="todo-app">
+        <div>
+            <input type="text" @keyup="addTodo">
+            <input type="checkbox" @click="toggleAll" :checked="isAllelected">
+        </div>
+
+        <ul>
+            <li v-for="(todo, index) in getShowing()" :class="todo.done ? 'completed' : 'active'">
+                <input type="checkbox" :checked="todo.done" @click="todo.done = !todo.done">
+                <span @dblclick="edtingIndex = index" v-if="edtingIndex != index">{{ todo.content }}</span>
+                <input @keydown="cancelEdit" @blur="changeTodo($event, todo)" @keyup.enter="changeTodo($event, todo)" v-if="edtingIndex == index" type="text" :value="todo.content">
+                <button @click="todos.splice(index,1)">delete</button>
+            </li>
+        </ul>
+
+        <div>
+            <span>{{ leftCount }} item{{ plural }} left</span>
+            <span>
+                <label><input type="radio" :checked="category == 'all'" @click="category = 'all'">All</label>
+                <label><input type="radio" :checked="category == 'active'" @click="category = 'active'">Active</label>
+                <label><input type="radio" :checked="category == 'completed'" @click="category = 'completed'">Completed</label>
+            </span>
+            <button v-show="hasCompleted" @click="todos = todos.filter(it => !it.done)">clear completed</button>
+        </div>
+    </div>
+
+    <script src="vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#todo-app',
+            data: {
+                edtingIndex: -1,
+                category: 'all',
+                todos: [{
+                    content: '1',
+                    done: false
+                },{
+                    content: '2',
+                    done: false
+                },{
+                    content: '3',
+                    done: true
+                },]
+            },
+            computed: {
+                isAllelected: function() {
+                    return this.todos.every(it => it.done)
+                },
+                hasCompleted: function() {
+                    //return this.todos.some(it => it.done)
+                    return this.todos.filter(it => it.done).length > 0 
+                },
+                leftCount: function() {
+                    return this.todos.filter(it => !it.done).length
+                },
+                plural() {
+                    return this.leftCount > 1 ? 's' : ''
+                },
+            },
+            methods: {
+                getShowing() {
+                    if(this.category == 'all') {
+                        return this.todos
+                    }
+                    if(this.category == 'active') {
+                        return this.todos.filter(it => !it.done)
+                    }
+                    if(this.category == 'completed') {
+                        return this.todos.filter(it => it.done)
+                    }
+                },
+                cancelEdit(e) {
+                    if(e.keyCode == 27) {
+                        e.preventDefault()
+                        this.edtingIndex = -1
+                    }
+                },
+                changeTodo(e,todo) {
+                    if(this.edtingIndex == -1) {
+                        return
+                    }
+                    todo.content = e.target.value.trim()
+                    this.edtingIndex = -1
+                },
+                addTodo(e) {
+                    var text = e.target.value.trim()
+                    if(text && e.keyCode == 13) {
+                        this.todos.push({
+                            content: text,
+                            done: false
+                        })
+                        e.target.value = ''
+                    }
+                },
+                toggleAll() {
+                    if(this.todos.every(it => it.done)) {
+                        this.todos.forEach(it => it.done = false)
+                    } else {
+                        this.todos.forEach(it => it.done = true)
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

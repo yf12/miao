@@ -1,0 +1,11 @@
+style.js
+assets文件夹的global-style.js
+slider数据部分
+list index.js文件 key={item.id + index}  为什么要加index
+
+
+
+
+
+问题
+GlobalStyle是自动应用的还是在哪里导入的？

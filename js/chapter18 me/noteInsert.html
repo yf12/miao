@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <textarea name="" id="article" cols="30" rows="10"></textarea>
+
+    <script>
+        article.addEventListener('keydown',function(e) {
+            if(e.key == 'F4') {
+                var before = article.value.slice(0,article.selectionStart)
+                var after = article.value.slice(article.selectionEnd)
+                var insert = new Date().toLocaleString()
+                article.value = before + insert + after
+                article.selectionStart = article.selectionEnd = before.length + insert.length
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div id="todo-app"></div>
+
+    <script>
+        var todoApp = document.querySelector('#todo-app')
+        var showingCategory = 'all'
+
+        var todos = [{
+            done: true,
+            content: 'eat'
+        },{
+            done: false,
+            content: 'sleep'
+        }]
+
+        function showing(todo) {
+            if(showingCategory == 'all') {
+                return true
+            }
+            if(showingCategory == 'active') {
+                return !todo.done
+            }
+            if(showingCategory == 'complete') {
+                return todo.done
+            }
+        }
+
+        // function render() {
+        //     localStorage.todos = JSON.stringify(todos)
+    //         var html = `
+    //         <div>
+    //     <input type="checkbox" class="toggle-all" ${todos.every(todo => todo.done) ? 'checked':''} /><input type="text" class="todo-input" />
+    // </div>
+    // <ul>
+        // ${
+        //     todos.filter(showing).map((todo,idx) => {
+        //         return `
+        //             <li data-idx="${idx}" class="${todo.done ? 'completed' : 'uncompleted'}">
+        //                 <input type="checkbox" class="toggle-todo" ${todo.done ? 'checked' : '' />
+        //                 ${edting == idx ? 
+        //                     `<input type="text" value="${todo.content}" />`
+        //                     :
+        //                     `<span class="todo-content">${todo.content}</span>`
+        //                 }
+        //                 <button class="delete-todo">&times;</button>
+        //             </li>`
+        //                 }).join('')
+        //             }
+        //         </ul>
+        //         <div>
+        //             <span>${todos.filter(todo => !todo.done).length} item{todos.filter(todo => !todo.done).length > 1 ? 's' : ''} left</span>
+        //             <span>
+        //                 <label><input type="radio" name="category" ${showingCategory == 'all' ? 'checked' : ''} value="all">All</label>
+        //                 <label><input type="radio" name="category" ${showingCategory == 'active' ? 'checked' : ''} value="active">Active</label>
+        //                 <label><input type="radio" name="category" ${showingCategory == 'complete' ? 'checked' : ''} value="complete">Complete</label>
+        //             </span>
+        //             ${todos.some(todo => !todo.done) ? 
+        //                 '<button class="clear-completed>Clear Completed</button>'
+        //                 :
+        //                 ''
+        //             }
+        //         </div>
+        //     `
+        //     todoApp.appendChild(html)              
+        // }
+
+        // render()
+
+        todoApp.addEventListener('keyup',e => {
+            if(e.target.matches('input.todo-input')) {
+                if(e.keyCode == 13) {
+                    var todoText = e.target.value.trim()
+                    if(todoText) {
+                        todos.push({
+                            content: todoText,
+                            done: false
+                        })
+                        render()
+                        todoApp.querySelector('input.todo-input').focus()
+                    }
+                }
+            }
+        })
+
+        todoApp.addEventListener('click',e => {
+            if(e.matches('button.delete-todo')) {
+                var idx = parseInt(e.target.parentNode.dataset.idx)
+                todos.splice(idx,1)
+                render()
+            }
+        })
+
+        todoApp.addEventListener('click',e => {
+            if(e.target.matches('input.toggle-todo')) {
+                var idx = parseInt(e.target.parentNode.dataset.idx)
+                todos[idx].done = !todos[idx].done
+                render() 
+            }
+        })
+
+        todoApp.addEventListener('click', e => {
+            if(e.target.matches('button.clear-completed')) {
+                todos = todos.filter(todo => !todo.done)
+                render()
+            }
+        })
+
+        todoApp.addEventListener('click', e => {
+            if(e.target.matches('input[type="radio"]')) {
+                showingCategory = e.target.value
+                render()
+            }
+        })
+
+        todoApp.addEventListener('click',e => {
+            if(e.target.matches('input.toggle-all')) {
+                if(todos.every(it => it.done)) {
+                    todos.forEach(it => it.done = false)
+                } else {
+                    todos.forEach(it => it.done = true)
+                }
+                render()
+            }
+        })
+
+        todoApp.addEventListener('click',e => {
+            if(e.target.matches('span.todo-content')) {
+                var idx = parseInt(e.target.parentNode.dataset.idx)
+                editing = idx
+                render()
+                var editBox = todoApp.querySelector('li input[type="text"]')
+                editBox.focus()
+                editBox.selectionStart = editBox.selectionEnd = 99999
+            }
+        }) 
+        
+        todoApp.addEventListener('focusout',e => {
+            if(e.target.matches('li input[type="text"]')) {
+                if(editing == -1) {
+                    return
+                }
+            }
+            todos[editing].content = e.target.value
+            editing = -1
+            render()
+        })
+
+        todoApp.addEventListener('keyup',e => {
+            if(e.target.matches('li input[type="text"]')) {
+                if(e.keyCode == 13) {
+                    todos[editing].content = e.target.value
+                    editing = -1
+                    render()
+                } else if(e.keyCode == 27) {
+                    editing = -1
+                    render()
+                }
+            }
+        })
+
+    </script>
+
+
+</body>
+</html>

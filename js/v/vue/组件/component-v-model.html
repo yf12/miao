@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- <date-picker :value="born" @input="born=$event"></date-picker> -->
+        <date-picker v-model="born"></date-picker>
+        <hr>
+        <regexp-input v-model="re"></regexp-input>
+    </div>
+
+    <script src="vue.js"></script>
+
+    <script>
+        Vue.component('regexp-input', {
+            props: {
+                value: {
+                    type: RegExp,
+                    required: true
+                }
+            },
+            template: `
+                <span>
+                    <input type="text" v-model="regText" @change="regTextChange">
+                    <span>
+                        <input
+                         type="checkbox"
+                         v-for="flag of flags"
+                         v-model="flag.value"
+                         :title="flag.displayName"
+                        >
+                    </span>
+                </span>
+            `,
+            methods: {
+                regTextChange(e) {
+                    var re = new RegExp(this.regText, this.flags.filter(it => it.value).map(it => it.name).join(''))
+                    this.$emit('input', re)
+                },
+                getFlagArray(re) {
+                    var flags = [{
+                        displayName: 'ignoreCase',
+                        name: 'i',
+                        value: false
+                    },{
+                        displayName: 'global',
+                        name: 'g',
+                        value: false
+                    },{
+                        displayName: 'multiline',
+                        name: 'm',
+                        value: false
+                    }]
+
+                    flags.forEach(flag => {
+                        if(re.flags.indexOf(flag.name) >= 0) {
+                            flag.value = true
+                        }
+                    })
+                    return flags                 
+                },
+                watch: {
+                    value(val) {
+                        this.regText = val.source
+                        this.flags = this.getFlagArray(val)
+                    }
+                },
+                data() {
+                    return {
+                        regText: this.value.source,
+                        flags:this.getFlagArray(this.value)
+                    }
+                }
+            }
+        })
+
+        Vue.component('date-picker', {
+            props: {
+                value: {
+                    type: Date,
+                    default: new Date()
+                }
+            },
+            template: `
+                <span>
+                    请选择日期：
+                    <input type="date" :value="date" @change="dateChange">
+                </span>
+            `,
+            methods: {
+                dateChange(e) {
+                    this.$emit('input', new Date(e.target.value))
+                }
+            },
+            watch: {
+                value(val) {
+                    this.date = val.toLocalDateString().replace(/\//g,'-')
+                }
+            },
+            date() {
+                var initVal = this.value.toLocalDateString().replace(/\//g,'-')
+                return {
+                    date: initVal
+                }
+            }
+        })
+
+        var app = new Vue({
+            el: '#app',
+            date() {
+                return {
+                    re: /re/ig,
+                    born: new Date("2019-12-11"),
+                    date: ''
+                }
+            }
+        })
+    </script>
+</body>
+</html>

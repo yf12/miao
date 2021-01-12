@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: green;
+            border-radius: 100%
+        }
+    </style>
+</head>
+<body>
+    <input type="color" id="color" value="#ff0000">
+
+    <script>
+        var colorInput = document.querySelector('#color')
+        window.addEventListener('mousedown', e => {
+            if(e.which == 1) {
+                haveDot(e)
+                window.addEventListener('mousemove',moveDot)
+                e.preventDefault()
+            }
+        })
+
+        function haveDot(e) {
+            var dot = document.createElement('div')
+            dot.classList.add('dot')
+            dot.style.left = e.pageX - 5 + 'px'
+            dot.style.top = e.pageY - 5 + 'px'
+            dot.style.backgroundColor = colorInput.value
+            document.body.appendChild(dot)
+        }
+
+        //判断鼠标事件发生时，是否有鼠标按钮按下。
+        function buttonPressed(e) {
+            if (e.buttons) {
+                return e.buttons !== 0
+            } else {
+                return e.which !== 0
+            }
+        }
+        
+        function moveDot(e) {
+            if(!buttonPressed(e)) {
+                window.removeEventListener('mousemove',moveDot)
+            } else {
+                haveDot(e)
+            }
+        }
+    
+    </script>
+</body>
+</html>

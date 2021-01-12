@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <style>
+        div {
+            width: 400px;
+            height: 400px;
+            background-color: rgba(147, 112, 219,0.5);
+            transform-style: preserve-3d;
+            animation: span-3d infinite 15s;
+        }
+        @keyframes span-3d {
+            from {
+                transform: rotateX(0deg) rotateY(0deg)
+            }
+            to {
+                transform: rotateX(360deg) rotateY(360deg)
+            }
+        }
+        span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            display: block;
+            background-color: lightgreen;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <script>
+            for(var x = -100;x < 100;x += 10) {
+                for(var y = -100;y < 100;y += 10) {
+                    var z = x + y
+                    document.write('<span style="transform: translate3d(' + x + 'px,' + y + 'px,' + z + 'px)"></span>')
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>

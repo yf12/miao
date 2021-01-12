@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Loading</title>
+</head>
+<body>
+    <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis enim a nihil, nisi labore aut libero ex repellendus voluptas illum, quam illo laudantium ipsum reprehenderit molestiae, asperiores nostrum repudiandae. Placeat.</div>
+    <p></p>
+
+    <script>
+        var el = document.querySelector('p')
+        el.textContent = 'loading...'
+        var xhr = new XMLHttpRequest()
+        xhr.open("GET",'http://xieranmaya.github.io/images/cats/cats.html')
+        xhr.addEventListener('load',function(el) {
+            el.textContent = ''
+        })
+    </script>
+</body>
+</html>

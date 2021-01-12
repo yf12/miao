@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+        }
+        div.a {
+            left: 0;
+            top: 0;
+            background-color: green;
+        }
+        div.b {
+            left: 50px;
+            top: 50px;
+            background-color: pink;   
+        }
+    </style>
+</head>
+<body>
+    <div class="a"></div>
+    <div class="b"></div>
+
+    <script>
+        var diva = document.querySelector('div.a')
+        var divb = document.querySelector('div.b')
+        var nowIndex = 0
+        diva.addEventListener('mousedown',e => {
+            if(e.which == 1) {
+                nowIndex++
+                diva.style.zIndex = nowIndex
+                window.addEventListener('mousemove',moved)
+                e.preventDefault()
+            }
+        })
+
+        divb.addEventListener('mousedown',e => {
+            if(e.which == 1) {
+                nowIndex++
+                divb.style.zIndex = nowIndex
+                e.preventDefault()
+            }
+        })
+
+        //判断鼠标事件发生时，是否有鼠标按钮按下。
+        function buttonPressed(e) {
+            if (e.buttons) {
+                return e.buttons !== 0
+            } else {
+                return e.which !== 0
+            }
+        }
+
+        function moved(e) {
+            if(!buttonPressed(e)) {
+                window.removeEventListener('mousemove',moved)
+            } else {
+                diva.style.left = e.pageX - 50 + 'px'
+                diva.style.top = e.pageY - 50 + 'px'
+                divb.style.left = e.pageX + 'px'
+                divb.style.top = e.pageY + 'px'
+            }
+        }
+    </script>
+</body>
+</html>

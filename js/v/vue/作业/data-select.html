@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <select v-model="selected1" @change="changeProvince">
+            <option v-for="(province) in area">
+                {{ province.name }}
+            </option>
+        </select>
+        <select v-model="selected2" @change="changeCity">
+            <option v-for="(city) in cities">
+                {{ city.name }}
+            </option>
+        </select>
+        <select v-model="selected3">
+            <option v-for="(district) in districies">
+                {{ district.name }}
+            </option>
+        </select>
+        <!-- <br>
+        <span>{{ selected }}</span> -->
+    </div>
+
+    <script src="vue.js"></script>
+    <script src="china-city-area-zip.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                area: china_city_area_zip,
+                selected1: '北京',
+                selected2: '北京市',
+                selected3: '东城区',
+                sprovince: 0,
+                scity: 0
+            },
+            computed: {
+                cities: function() {
+                    return this.area[this.sprovince].child
+                },
+                districies: function() {
+                    return this.cities[this.scity].child
+                }
+            },
+            methods: {
+                changeProvince(e) {
+                    for(i = 0;i < this.area.length;i++) {
+                        if(this.area[i].name == this.selected1) {
+                            this.sprovince = i
+                        }
+                    }
+                    // console.log(this.sprovince)
+                },
+                changeCity(e) {
+                    for(i = 0;i < this.area[this.sprovince].child.length;i++) {
+                        if(this.area[this.sprovince].child[i].name == this.selected2) {
+                            this.scity = i
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

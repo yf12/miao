@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jkScroll</title>
+    <style>
+        div {
+            height: 2000px;
+        }
+    </style>
+</head>
+<body>
+    <div></div>
+
+    <script>
+        document.addEventListener('keyup',function(e) {
+            if(e.key == 'j') {
+                smoothScrollBy(window,100,200)
+            }
+            if(e.key == 'k') {
+                smoothScrollBy(window,-100,200)
+            }
+        })
+
+        // 用duration的时间让window垂直滚动pixel像素
+        // function smoothScrollBy(window,piexl,duration) {
+        //     var startTime = null
+        //     var lastTime = null
+        //     requestAnimationFrame(function a(time) {
+        //         if(startTime == null) {
+        //             startTime = time
+        //         }
+        //         if(lastTime != null) {
+        //             var timeDiff = time - lastTime
+        //         }
+        //         lastTime = time
+        //         var timeRatio = timeDiff / duration
+        //         var piexlRation = timeRatio * piexl
+        //         window.scrollBy(0,piexlRation)
+        //         if(time - startTime < duration) {
+        //             requestAnimationFrame(a)
+        //         }
+        //     })
+        // }
+
+        function smoothScrollBy(window,piexl,duration) {
+            var startTime = null,lastTime = null
+            requestAnimationFrame(function a(time) {
+                if(startTime == null) {
+                    startTime = time
+                }
+                if(lastTime != null) {
+                    var timeDiff = time - lastTime
+                }
+                lastTime = time
+                var timeRatio = timeDiff / duration
+                var piexlRation = timeRatio * piexl
+                
+                window.scrollBy(0,piexlRation)
+                if(time - startTime < duration) {
+                    requestAnimationFrame(a)
+                }
+            })
+        }
+    </script>
+</body>
+</html>

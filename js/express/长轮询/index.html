@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="msgInput">
+    <button onclick="send()">发送</button>
+    <div id="msgList"></div>
+
+    <script>
+        function getNewMsg() {
+            var xhr = new XMLHttpRequest()
+            xhr.open('GET','/msg')
+            xhr.onload = () => {
+                console.log(xhr.responseText)
+                msgList.innerHTML += xhr.responseText + '<br>'
+                getNewMsg()
+            }
+            xhr.send()
+        }
+
+        getNewMsg()
+
+        function send() {
+            var msg = msgInput.value
+            var xhr = new XMLHttpRequest()
+            xhr.open('POST','/msg')
+            xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+            xhr.send('msg=' + msg)
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<script>
+  (function () {
+    let hookStack = []
+
+    window.hookStateMap = new Map()
+    window.hookSetStateMap = new Map()
+
+    let useStateCallIndex = -1
+    let currFuncStateArray = null
+    let currFuncSetStateArray = null
+
+    window.useStateCallIndex = useStateCallIndex
+
+    function hook(f) {
+      hookStack.push(f)
+      if(!hookStateMap.has(f)) {
+        hookStateMap.set(f, [])
+        hookSetStateMap.set(f, [])
+      }
+
+      currFuncStateArray = hookStateMap.get(f)
+      currFuncSetStateArray = hookSetStateMap.get(f)
+
+      useStateCallIndex = -1
+
+      f()
+      hookStack.pop(f)
+    }
+
+    function useState(init) {
+      useStateCallIndex++
+
+      console.log('index', useStateCallIndex)
+      let idx = useStateCallIndex  //防止传入setState函数后index值改变(多次调用useState函数)
+      let f = hookStack[hookStack.length - 1]
+      let stateArray = currFuncStateArray
+      let setStateArray = currFuncSetStateArray
+
+      let setVal = null
+
+      if(idx in setStateArray) {
+        setVal = setStateArray[idx]
+      } else {
+        setVal = function setVal(val) {
+          stateArray[idx] = val
+          hook(f)
+        }
+        setStateArray[idx] = setVal
+      }
+
+      if(idx in stateArray) {
+        return [
+          stateArray[idx],
+          setVal
+        ]
+      } else {
+        stateArray[idx] = init
+        return [
+          init,
+          setVal
+        ]
+      }
+    }
+
+    window.hook = hook
+    window.useState = useState
+
+  }())
+
+  hook(function() {
+    let [count, setCount] = useState(1)
+    console.log(useStateCallIndex)
+
+    hook(function() {
+      
+      let [A, setA] = useState(3)
+      let [B, setB] = useState(5)
+
+      console.log(A, B)
+    })
+
+    let [age, setAge] = useState(2)
+    console.log(count, age)
+  })
+
+</script>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <button>show cats</button>
+    <div>cats</div>
+
+    <script>
+        var btn = document.querySelector('button')
+        var div = document.querySelector('div')
+
+        function get(url,callback) {
+            var xhr = new XMLHttpRequest()
+            xhr.open('get',url)
+            xhr.addEventListener('load',() => {
+                callback(xhr.responseText)
+            })
+            xhr.send()
+        }
+
+        function getImage(url,callback) {
+            var img = document.createElement('img')
+            img.onload = function() {
+                callback(img)
+            }
+            img.src = url
+        }
+
+        class Queue {
+            constructor() {
+                this.tasks = []
+                this.hasRunning = false
+            }
+
+            add(f) {
+                var next
+                if (!this.hasRunning) {
+                    this.hasRunning = true
+                    f(next = () => {
+                        if (this.tasks.length) {
+                            var nextTask = this.tasks.shift()
+                            nextTask(next)
+                        } else {
+                            this.hasRunning = false
+                        }
+                    })
+                } else {
+                    this.tasks.push(f)
+                }
+                return this
+            }
+        }
+
+        class Queue2 {
+            constructor(maxParallel = 1) {
+                this.tasks = []
+                this.runningCount = 0
+                this.maxParallel = maxParallel
+            }
+
+            add(f) {
+                var next
+                if (this.runningCount < this.maxParallel) {
+                    this.runningCount++
+                    f(next = () => {
+                        if (this.tasks.length) {
+                            var nextTask = this.tasks.shift()
+                            nextTask(next)
+                        } else {
+                            this.runningCount--
+                        }
+                    })
+                } else {
+                    this.tasks.push(f)
+                }
+                return this
+            }
+        }
+
+    var base = 'http://xieranmaya.github.io/images/cats'
+    
+    // btn.addEventListener('click',e => {
+    //     get('https://xieranmaya.github.io/images/cats/cats.json',(data) => {
+    //         var ary = JSON.parse(data).slice(20,30)
+    //         var q = new Queue()
+    //         var j = 0
+    //         for(var i = 0;i < ary.length;i++) {   //会先执行结束外层函数add完后再开始执行内层函数
+    //             q.add(next => {
+    //                 getImage(`${base}/${ary[j++].url}`,img => {
+    //                     div.append(img)
+    //                     next()
+    //                 })
+    //             })
+    //         }
+    //     })
+    // })
+
+    // btn.addEventListener('click',e => {
+    //     get('https://xieranmaya.github.io/images/cats/cats.json',(data) => {
+    //         var ary = JSON.parse(data).slice(0,30)
+    //         var q = new Queue2(3)
+    //         var j = 0
+    //         for(var i = 0;i < ary.length;i++) {   //会先执行结束外层函数add完后再开始执行内层函数
+    //             q.add(next => {
+    //                 getImage(`${base}/${ary[j++].url}`,img => {
+    //                     div.append(img)
+    //                     next()
+    //                 })
+    //             })
+    //         }
+    //     })
+    // })
+
+        btn.addEventListener('click',e => {
+            get('https://xieranmaya.github.io/images/cats/cats.json',data => {
+                var ary = JSON.parse(data).slice(0,30)
+                var i = 0
+
+                downloadOne()
+                downloadOne()
+                downloadOne()
+
+                function downloadOne() {
+                    if(i < ary.length) {
+                        getImage(`${base}/${ary[i++].url}`,img => {
+                            div.appendChild(img)
+                            downloadOne()
+                        })
+                    }
+                }
+            }) 
+        })
+
+    </script>
+</body>
+</html>

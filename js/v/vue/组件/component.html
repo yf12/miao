@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <button-counter :start="8" :step="2"></button-counter>
+    </div>
+
+    <script src="vue.js"></script>
+    <script>
+        Vue.component('button-counter', {
+            props: {
+                start: {
+                    default: 0
+                },
+                step: {
+                    default: 1
+                }
+            },
+            template: `
+                <span>
+                    <button @click="dec">-</button>
+                    <span>{{ count }}</span>
+                    <button @click="inc">+</button>
+                </span>
+            `,
+            data() {
+                return {
+                    count: this.start
+                }
+            },
+            methods: {
+                dec() {
+                    this.count -= this.step
+                },
+                inc() {
+                    this.count += this.step
+                }
+            }
+        })
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+
+            }
+        })
+    </script>
+</body>
+</html>

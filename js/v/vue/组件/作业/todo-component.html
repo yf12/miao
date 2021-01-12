@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div id="todo-app">
+        <todo-input v-model="initTodos"></todo-input>
+        <todo-list>
+            <todo-item v-for="todo in todos"></todo-item>
+        </todo-list>
+        <todo-footer>
+            <todo-count></todo-count>
+            <todo-cate-switch></todo-cate-switch>
+            <todo-clear></todo-clear>
+        </todo-footer>
+    </div>
+
+    <script src="vue.js"></script>
+    <script>
+        Vue.component('todo-input', {
+            props: {
+                value: {
+                    default: this.todos
+                }
+            },
+            template: `
+                <div>
+                    <input type="checkbox" v-model="isAllSelected" @click="toggleAll">
+                    <input type="text" @keyup.enter="addTodo">
+                </div>
+            `,
+            methods: {
+                addTodo(e) {
+                    var text = e.target.value.trim()
+                    if(text && e.keyCode == 13) {
+                        this.todos.push({
+                            content: text,
+                            done: false
+                        })
+                        this.$emit('input',this.todos)
+                        e.target.value = ''
+                    }
+                },
+                toggleAll() {
+                    if (this.todos.every(it => it.done)) {
+                        this.todos.forEach(it => it.done = false)
+                    } else {
+                        this.todos.forEach(it => it.done = true)
+                    }
+                    this.$emit('input',this.todos)
+                }
+            },
+            computed: {
+                isAllSelected() {
+                    return this.todos.every(it => it.done)
+                }
+            },
+            watch: {
+                value(val) {
+                    
+                }
+            },
+            data() {
+                return {
+                    todos: this.value
+                }
+            }
+        })
+
+        Vue.component('todo-item', {
+            props: {
+                value: {
+
+                }
+            },
+            template: `
+                <template>
+                    <input type="checkbox">
+                    <span></span>
+                    <input type="text">
+                    <button>delete</button>
+                </template>
+            `,
+            methods: {
+
+            },
+            watch: {
+
+            },
+            data() {
+                return {
+
+                }
+            }
+        })
+
+        Vue.component('todo-list', {
+            props: {
+
+            },
+            template: `
+            `,
+            methods: {
+
+            },
+            watch: {
+
+            },
+            data() {
+                return {
+
+                }
+            }
+        })
+
+        Vue.component('todo-count', {
+            props: {
+
+            },
+            template: `
+            `,
+            methods: {
+
+            },
+            watch: {
+
+            },
+            data() {
+                return {
+
+                }
+            }
+        })
+
+        Vue.component('todo-cate-switch', {
+            props: {
+
+            },
+            template: `
+            `,
+            methods: {
+
+            },
+            watch: {
+
+            },
+            data() {
+                return {
+
+                }
+            }
+        })
+
+        Vue.component('todo-clear', {
+            props: {
+
+            },
+            template: `
+            `,
+            methods: {
+
+            },
+            watch: {
+
+            },
+            data() {
+                return {
+
+                }
+            }
+        })
+
+        Vue.component('todo-footer', {
+            props: {
+
+            },
+            template: `
+            `,
+            methods: {
+
+            },
+            watch: {
+
+            },
+            data() {
+                return {
+
+                }
+            }
+        })
+
+        var app = new Vue({
+            el: '#todo-app',
+            data: {
+                edtingIndex: -1,
+                category: 'all',
+                initTodos: [{
+                    content: 'eat',
+                    done: false
+                }, {
+                    content: 'drink',
+                    done: true,
+                }, {
+                    content: 'sleep',
+                    done: true                    
+                }]
+            },
+            computed: {
+
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<script>   //实现一个new
+    function create() {
+        var obj = new Object()  // 创建一个空的对象
+        var con = [].shift.call(arguments)  // 获得构造函数，arguments中去除第一个参数
+        obj._proto_ = con.prototype  // 链接到原型，obj 可以访问到构造函数原型中的属性
+        var ret = con.apply(obj,arguments)  // 绑定 this 实现继承，obj 可以访问到构造函数中的属性
+        return ret instanceof Object ? ret : obj  // 优先返回构造函数返回的对象
+    }
+
+    function Person(name,age) {
+        this.name = name
+        this.age = age
+    }
+
+    var rein = create(Person,'rein',18)
+</script>
+
+<script>  //间接引用
+    // p.foo = o.foo的返回值是目标函数的引用，所以调用位置是foo()而不是p.foo()或者o.foo()
+    function foo() {
+        console.log( this.a );
+    }
+
+    var a = 2;
+    var o = { a: 3, foo: foo };
+    var p = { a: 4};
+
+    o.foo(); // 3
+    (p.foo = o.foo)(); // 2
+</script>
+
+箭头函数根据外层（函数或者全局）作用域（词法作用域）来决定this
+foo()内部创建的箭头函数会捕获调用时foo()的this。由于foo()的this绑定到obj1，bar(引用箭头函数)的this也会绑定到obj1，箭头函数的绑定无法被修改(new也不行)
+<script>
+    function foo() {
+        // 返回一个箭头函数
+        return (a) => {
+            // this继承自foo()
+            console.log( this.a );
+        };
+    }
+
+    var obj1 = {
+        a: 2
+    };
+
+    var obj2 = {
+        a: 3
+    }
+
+    var bar = foo.call( obj1 );
+    bar.call( obj2 ); // 2，不是3！
+</script>
+
+<script>  //注意foo内函数直接执行时的this指向的是window
+    function foo() {
+        var self = this; // lexical capture of this
+        setTimeout( function() {
+            console.log( self.a ); // self只是继承了foo()函数的this绑定
+        }, 100 );
+    }
+
+    var obj = {
+        a: 2
+    };
+
+    foo.call(obj); // 2
+</script>
+
+代码风格统一问题：如果既有this风格的代码，还会使用 seft = this 或者箭头函数来否定this机制。
+
+只使用词法作用域并完全抛弃错误this风格的代码；
+完全采用this风格，在必要时使用bind(..)，尽量避免使用 self = this 和箭头函数。
+//看不大懂，随便看看吧
+
+<script>  //和上面那个一起看
+    var obj = {
+      a: 3,
+      b: this.a * this.a
+    }
+    console.log(obj.b)
+    
+    undefined   //NaN
+
+    var obj = {
+      a: 3,
+      b: () => this.a * this.a
+    }
+    console.log(obj.b())   //NaN
+
+    var obj = {
+      a: 3,
+      b: function() {return this.a * this.a}
+    }
+    console.log(obj.b())   //9
+
+    var obj = {
+      a: 3,
+      b: (function() {return this.a * this.a})()
+    }
+    console.log(obj.b)   //NaN
+</script>

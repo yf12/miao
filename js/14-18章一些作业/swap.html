@@ -1,0 +1,21 @@
+<script>
+    function swap(node1,node2) {
+        if(isInside(node1,node2) || isInside(node2,node1)) {
+            throw new Error('nodes is contained each other, operation not allowed')
+        }
+
+        var p1 = node1.parentNode
+        var p2 = node2.parentNode
+        var flag1 = document.createTextNode('')
+        var flag2 = document.createTextNode('')
+
+        p1.insertBefore(flag1,node1)
+        p2.insertBefore(flag2,node2)
+
+        p1.insertBefore(node2,flag1)
+        p2.insertBefore(node1,flag2)
+
+        p1.removeChild(flag1)
+        p2.removeChild(flag2)
+    }
+</script>

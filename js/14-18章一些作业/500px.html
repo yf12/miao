@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>500px</title>
+    <style>
+        .copyright-tip {
+            background-color: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 5px;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    
+</body>
+    <img src="https://pretty.imgix.net/wp-content/uploads/2016/12/1000x5255.jpg?auto=format&w=830" alt="">
+
+    <script>
+        var img = document.querySelector('img')
+        var i = 0
+
+        img.addEventListener('contextmenu',e => {
+            // var tips = document.querySelectorAll('.copyright-tip')
+            // for(var t of tips) {
+            //     t.parentElement.removeChild(t)
+            // }
+            e.preventDefault()
+            var tip = document.createElement('span')
+            tip.textContent = i
+            tip.tabIndex = "-1"
+            tip.classList.add('copyright-tip')
+            tip.style.left = e.pageX + 'px'
+            tip.style.top = e.pageY + 'px'
+
+            
+            document.body.appendChild(tip)
+            tip.addEventListener('blur',e => {
+                document.body.removeChild(tip)
+            })
+
+            tip.focus()
+            i++
+        })
+    </script>
+</html>

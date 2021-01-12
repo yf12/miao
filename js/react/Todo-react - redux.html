@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Todo</title>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    <script src="react-router-dom.js"></script>
+    <script src="redux.js"></script>
+    <script src="react-redux.js"></script>
+    <script src="immer.umd.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      var { useContext, useState, useEffect } = React;
+      var { produce } = immer;
+
+      var StoreContext = React.createContext();
+
+      function connect(mapState, mapDispatch) {
+        return function(WrapComp) {
+          return React.forwardRef(function Comp(props, ref) {
+            var store = useContext(StoreContext);
+            var [r, setR] = useState(0);
+
+            useEffect(() => {
+              return store.subscribe(() => {
+                setR(r + 1);
+              });
+            });
+
+            var state = mapState(store.getState());
+            var dispatchs = mapDispatch(store.dispatch);
+
+            var { children, ...props2 } = props;
+            return (
+              <WrapComp ref={ref} {...props2} {...state} {...dispatchs}>
+                {children}
+              </WrapComp>
+            );
+          });
+        };
+      }
+
+      var state = {
+        todos: [
+          {
+            content: "eat",
+            done: false
+          },
+          {
+            content: "drink",
+            done: false
+          },
+          {
+            content: "sleep",
+            done: true
+          }
+        ],
+        editingIndex: -1,
+        category: "all"
+      };
+
+      var mutations = {
+        // addTodo(state, action) {
+        //     return immer.produce(state, state => {
+        //         state.todos.push({
+        //             content: action.todoText,
+        //             done: false
+        //         })
+        //     })
+        // }
+
+        addTodo: produce((state, action) => {
+          state.todos.push({
+            content: action.todoText,
+            done: false
+          });
+        }),
+        deleteTodo: produce((state, action) => {
+          state.todos.splice(action.idx, 1);
+        }),
+        toggleTodoStatus: produce((state, action) => {
+          state.todos[action.idx].done = !state.todos[action.idx].done;
+        }),
+        toggleAllStatus: produce(state => {
+          if (state.todos.every(it => it.done)) {
+            state.todos.forEach(it => {
+              it.done = false;
+            });
+          } else {
+            state.todos.forEach(it => {
+              it.done = true;
+            });
+          }
+        })
+      };
+
+      var store = Redux.createStore((state, action) => {
+        var mutation = mutations[action.type];
+
+        if (mutation) {
+          return mutation(state, action);
+        } else {
+          return state;
+        }
+      }, state);
+
+      const TodoItem = connect(
+        state => {
+          return {};
+        },
+        dispatch => {
+          return {
+            deleteTodo: idx => dispatch({ type: "deleteTodo", idx }),
+            toggleTodoStatus: idx => dispatch({ type: "toggleTodoStatus", idx })
+          };
+        }
+      )(function TodoItem(props) {
+        return (
+          <li>
+            <input
+              type="checkbox"
+              checked={props.todo.done}
+              onChange={() => props.toggleTodoStatus(props.idx)}
+            />
+            <span>{props.todo.content}</span>
+            <button onClick={() => props.deleteTodo(props.idx)}>delete</button>
+          </li>
+        );
+      });
+
+      const TodoList = connect(
+        state => {
+          return {
+            todos: state.todos
+          };
+        },
+        dispatch => {
+          return {};
+        }
+      )(function TodoLlist(props) {
+        return (
+          <ul>
+            {props.todos.map((todo, idx) => (
+              <TodoItem key={todo.content} todo={todo} idx={idx} />
+            ))}
+          </ul>
+        );
+      });
+
+      var TodoInput = connect(
+        state => {
+          return {
+            isAllCompleted: state.todos.every(it => it.done)
+          };
+        },
+        dispatch => ({
+          toggleAllStatus: () => dispatch({ type: "toggleAllStatus" }),
+          addTodo: e => {
+            if (e.keyCode == 13) {
+              dispatch({ type: "addTodo", todoText: e.target.value.trim() });
+              e.target.value = "";
+            }
+          }
+        })
+      )(function TodoInput(props) {
+        return (
+          <div>
+            <input
+              type="checkbox"
+              checked={props.isAllCompleted}
+              onChange={props.toggleAllStatus}
+            />
+            <input type="text" onKeyUp={props.addTodo} />
+          </div>
+        );
+      });
+
+      function TodoApp() {
+        return (
+          <StoreContext.Provider value={store}>
+            <div>
+              <TodoInput />
+              <TodoList />
+            </div>
+          </StoreContext.Provider>
+        );
+      }
+
+      ReactDOM.render(<TodoApp />, document.getElementById("root"));
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this section for a production-ready setup with JSX:
+      https://reactjs.org/docs/add-react-to-a-website.html#add-jsx-to-a-project
+
+      In a larger project, you can use an integrated toolchain that includes JSX instead:
+      https://reactjs.org/docs/create-a-new-react-app.html
+
+      You can also use React without JSX, in which case you can remove Babel:
+      https://reactjs.org/docs/react-without-jsx.html
+    -->
+  </body>
+</html>

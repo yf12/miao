@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>todo</title>
+    <style>
+      body {
+        position: relative;
+      }
+      input.textinput {
+        width: 450px;
+        height: 70px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 1px 1px 5px;
+        position: absolute;
+        top: 120px;
+        left: 550px;
+        font-size: 2rem;
+      }
+      input.complete {
+        position: absolute;
+        top: 120px;
+        left: 500px;
+      }
+      div.container {
+        width: 450px;
+        position: absolute;
+        top: 195px;
+        left: 550px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 1px 1px 5px;
+      }
+      .content {
+        border-bottom: 1px solid;
+        font-size: 2rem;
+        padding: 10px;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" class="textinput" />
+    <input type="checkbox" class="complete" />
+    <div class="container"></div>
+
+    <script>
+      var container = document.querySelector(".container");
+      var input = document.querySelector(".textinput");
+
+      function addToList(inputText) {
+        var div = document.createElement("div");
+        div.setAttribute("class", "content");
+        var input1 = document.createElement("input");
+        input1.type = "checkbox";
+        var input2 = document.createElement("input");
+        input2.type = "radio";
+        input2.setAttribute("class", "deleteline");
+        var textnode = document.createTextNode(inputText);
+        div.appendChild(input1);
+        div.appendChild(textnode);
+        div.appendChild(input2);
+        container.appendChild(div);
+
+        input1.addEventListener("change", e => {
+          div.style.color = "rgb(217, 217, 217)";
+        });
+      }
+
+      function complete() {}
+
+      input.addEventListener("change", e => {
+        value = input.value;
+        addToList(value);
+        input.value = "";
+      });
+    </script>
+  </body>
+</html>

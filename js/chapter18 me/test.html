@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>notebook</title>
+</head>
+<body>
+    <select name="" id="list"></select>
+    <button onclick="addNote()">new</button><br>
+    <textarea name="" id="current" cols="30" rows="10"></textarea>
+
+    <script>
+        var select = document.querySelector('select')
+        var textarea = document.querySelector('textarea')
+
+        function addToList(name) {
+            var option = document.createElement('option')
+            option.textContent = name
+            select.appendChild(option)
+        }
+
+        var notes = JSON.parse(localStorage.getItem('notes')) || {"SOT": "looo"}
+
+        for(var noteName in notes) {
+            addToList(noteName)
+        }
+
+        function saveToStorage() {
+            localStorage.setItem('notes', JSON.stringify(notes))
+        }
+
+        textarea.value = notes[select.name]
+
+        select.addEventListener('change',e => {
+            textarea.value = notes[select.value]
+        })
+
+        textarea.addEventListener('change',e => {
+            notes[select.value] = textarea.value
+            saveToStorage()
+        })
+
+        function addNote() {
+            var noteName = prompt('input')
+            if(!noteName) {
+                return
+            }
+            if(!notes.hasOwnProperty(noteName)) {
+                notes[noteName] = ''
+                addToList(noteName)
+                saveToStorage()
+            }
+            select.value = noteName
+            textarea.value = notes[noteName]
+        }
+    </script>
+</body>
+</html>

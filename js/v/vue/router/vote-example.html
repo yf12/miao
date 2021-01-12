@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <create-vote v-if="creating" @create-success="onCreate"></create-vote>
+        <vote-view v-else :id="id"></vote-view>
+    </div>
+
+    <script src="vue.js"></script>
+    <script src="axios.min.js"></script>
+
+    <script>
+        Vue.component('create-vote', {
+            template: `
+                <div>
+                    <input placeholder="标题" v-model="voteInfo.title">
+                    <button @click="createVote">创建</button>
+                </div>
+            `,
+            data() {
+                return {
+                    voteInfo: {
+                        title: ''
+                    }
+                }
+            },
+            methods: {
+                createVote() {
+                    // axios.post('/create-vote', this.voteInfo)
+                    this.$emit('create-success',6)
+                }
+            }
+        })
+
+        Vue.component('vote-view', {
+            template: `
+                <div>
+                    <h1>hello</h1>
+                </div>
+            `,
+            mounted() {
+
+            }
+        })
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                creating: true,
+                id: null
+            },
+            methods: {
+                onCreate(id) {
+                    this.creating = false
+                    this.id = id
+                }
+            }
+        })
+    </script>
+</body>
+</html>

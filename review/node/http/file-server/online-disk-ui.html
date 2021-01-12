@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <div class="app">
+    当前路径：
+    <input type="text" id="cwd" value="/">
+    <button id="btn" onclick="changeDir()">确定</button>
+    <main id="display"></main>
+  </div>
+
+  <script>
+    let base = 'http://localhost:3100/aaa'
+
+    function get(url) {
+      return new Promise(resolve => {
+        let xhr = new XMLHttpRequest()
+        console.log(url)
+        xhr.open('GET', url)
+        xhr.onload = () => {
+          console.log(1)
+          resolve(xhr.responseText)
+        }
+        xhr.send()
+      })
+    }
+
+    async function changeDir() {
+      let path = cwd.value
+      var files = await get(base + path)
+      document.getElementById('display').innerHTML = files
+    }
+  </script>
+</body>
+</html>

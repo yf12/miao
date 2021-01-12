@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>mouse-touch</title>
+
+    <style>
+        .fire {
+            width: 20px;
+            height: 20px;
+            position: fixed;
+            background-color: mediumpurple;
+        }
+    </style>
+</head>
+<body>
+    <span class="fire"></span>
+    <span class="fire"></span>
+    <span class="fire"></span>
+
+    <script>
+        var cx = 120,cy = 120
+        var fire = document.querySelectorAll('.fire')
+
+        window.addEventListener('mousemove',e => {
+            cx = e.clientX
+            cy = e.clientY
+        })
+
+        requestAnimationFrame(function move(time) {
+            var angle1 = time * 0.005
+            var angle2 = time * 0.005 + 2 * Math.PI / 3
+            var angle3 = time * 0.005 + 4 * Math.PI / 3
+
+            var x = Math.sin(angle1) * 100
+            var y = Math.cos(angle1) * 100
+            fire[0].style.left = cx + x + 'px'
+            fire[0].style.top = cy + y + 'px'
+
+            var x = Math.sin(angle2) * 100
+            var y = Math.cos(angle2) * 100
+            fire[1].style.left = cx + x + 'px'
+            fire[1].style.top = cy + y + 'px'
+
+            var x = Math.sin(angle3) * 100
+            var y = Math.cos(angle3) * 100
+            fire[2].style.left = cx + x + 'px'
+            fire[2].style.top = cy + y + 'px'
+
+            requestAnimationFrame(move)
+        })
+    </script>
+</body>
+</html>

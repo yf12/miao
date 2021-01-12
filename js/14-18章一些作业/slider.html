@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>slider</title>
+    <style>
+        .slider {
+            width: 450px;
+            height: 270px;
+            border: 5px solid;
+            position: relative;
+        }
+        .imgs {
+            width: 100%;
+            height: 100%;
+        }
+        .imgs img {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            transition: 1s opacity;           
+        }
+        .indicators {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+        }
+        .indicators li {
+            display: inline-block;
+            background-color: pink;
+            cursor: pointer;
+        }
+        div.change {
+            width: 35px;
+            height: 50px;
+            background-color: rgb(0,0,0,0.5);
+        }
+
+        div.left {
+            position: absolute;
+            top: 100px;
+        }
+
+        div.right {
+            position: absolute;
+            top: 100px;
+            left: 415px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider">
+        <div class="imgs">
+                <img style="opacity: 1;" src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1690699292,1481547313&fm=26&gp=0.jpg" alt="">
+                <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4292557321,77333123&fm=26&gp=0.jpg" alt="">
+                <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2401583192,3433526582&fm=26&gp=0.jpg" alt="">
+        </div>
+        <ul class="indicators">
+            <li class="active">1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+        <div class="container">
+            <div class="left change"></div>
+            <div class="right change"></div>
+        </div>
+    </div>
+
+    <script>
+        var slider = document.querySelector('.slider')
+        var imgs = document.querySelectorAll('.imgs img')
+        var indicators = document.querySelectorAll('.indicators li')
+        slider.addEventListener('click',e => {
+            var el = e.target
+            if(el.matches('.indicators > li')) {
+                var children = Array.from(el.parentNode.children)
+                var idx = children.indexOf(el)
+                nowi = idx
+                children.forEach(it => it.classList.remove('active'))
+                el.classList.add('active')
+                imgs.forEach(it => it.style.opacity = '0')
+                imgs[idx].style.opacity = '1'
+            }
+
+            if(el.matches('.container .change')) {
+                var children = Array.from(el.parentNode.children)
+                var idx = children.indexOf(el)
+                for(let i = 0;i < indicators.length;i++) {
+                    if(indicators[i].classList.value == 'active') {
+                        var current = i
+                    }
+                }
+                indicators.forEach(it => it.classList.remove('active'))
+                imgs.forEach(it => it.style.opacity = '0')
+                if(idx == 0) {
+                    var newIdx1 = current == 0 ? indicators.length - 1 : current - 1
+                    indicators[newIdx1].classList.add('active')
+                    imgs[newIdx1].style.opacity = '1'
+                    nowi = newIdx1
+                }
+                if(idx == 1) {
+                    var newIdx2 = current == indicators.length - 1 ? 0 : current + 1
+                    indicators[newIdx2].classList.add('active')
+                    imgs[newIdx2].style.opacity = '1'
+                    nowi = newIdx2
+                }
+            }
+        })
+
+        var nowi = 0
+        setInterval(function() {
+            // for(let i = 0;i < indicators.length;i++) {
+            //     if(indicators[i].classList.value == 'active') {
+            //         var nowi = i
+            //     }
+            // }
+            nowi = nowi == indicators.length ? 0 : nowi
+            // if(nowi == indicators.length) nowi = 0
+            indicators.forEach(it => it.classList.remove('active'))
+            imgs.forEach(it => it.style.opacity = '0')
+            indicators[nowi].classList.add('active')
+            imgs[nowi].style.opacity = '1'
+            nowi++
+        },1000)
+    </script>
+</body>
+</html>

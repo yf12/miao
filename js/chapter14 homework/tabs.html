@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tabs</title>
+
+    <style>
+        button.active {
+            background-color: mediumpurple;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div data-tabname="foo">foo</div>
+        <div data-tabname="bar">bar</div>
+        <div data-tabname="baz">baz</div>
+    </div>
+
+    <script>
+        var div = document.querySelector('.container')
+        var tabs = Array.from(div.children)
+        var buttons = []
+        for(let i = tabs.length - 1;i >= 0;i--) {
+            var tab = tabs[i]
+            var button = document.createElement('button')
+            button.textContent = tab.dataset.tabname
+            button.className = 'tab-btn'
+            buttons.unshift(button)
+            tab.style.display = 'none'
+            div.prepend(button)
+        }
+        tabs[0].style.display = 'block'
+        buttons[0].classList.add('active')
+        div.addEventListener('click',e => {
+            if(e.target.matches('div > button')) {
+                var idx = buttons.indexOf(e.target)
+                buttons.forEach(it => it.classList.remove('active'))
+                tabs.forEach(it => it.style.display = 'none')
+                buttons[idx].classList.add('active')
+                tabs[idx].style.display = 'block'
+            }
+        })
+    </script>
+</body>
+</html>

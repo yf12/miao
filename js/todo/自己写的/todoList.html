@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>todo-list</title>
+    <style>
+        body {
+            position: relative;
+        }
+
+        input.textinput {
+            width: 450px;
+            height: 70px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 1px 1px 5px;
+            position: absolute;
+            top: 120px;
+            left: 550px;
+            font-size: 2rem;
+        }
+
+        input.complete {
+            position: absolute;
+            top: 120px;
+            left: 500px;
+        }
+
+        div.container {
+            width: 450px;
+            position: absolute;
+            top: 195px;
+            left: 550px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 1px 1px 5px;
+        }
+
+        .content {
+            border-bottom: 1px solid;
+            font-size: 2rem;
+            padding: 10px;
+            position: relative;
+        }
+
+        .deleteline {
+            position: absolute;
+            right: 5px;
+            top: 24px;
+        }
+
+        .itemlist {
+            width: 450px;
+            height: 45px;
+            line-height: 45px;
+            background-color: #fff;
+            position: relative;
+            font-size: 14px;
+            color: rgb(137, 151, 176);
+        }
+
+        .items {
+            left: 20px;
+            top: 0;
+        }
+
+        .item {
+            position: absolute;
+            height: 27px;
+            top: 7px;
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid rgb(239, 213, 213);
+        }
+
+        .all {
+            width: 35px;
+            left: 200px;
+        }
+
+        .active {
+            width: 50px;
+            left: 255px;
+        }
+
+        .complete {
+            width: 80px;
+            left: 325px;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" class="textinput">
+    <input type="checkbox" class="complete">
+    <div class="container">
+        <div class="onlyitems">
+
+        </div>
+    </div>
+
+    <script>
+        class Todolist {
+            constructor() {
+                this.container = document.querySelector('.container')
+                this.onlyitems = document.querySelector('.onlyitems')
+                this.input = document.querySelector('.textinput')
+                this.whole = document.querySelector('.complete')
+                this.todolist = []
+                this.number = 0
+                this.add()
+                this.whole.addEventListener('change', e => {
+                    if (this.whole.checked) {
+                        this.wholeComplete()
+                    } else if (!this.whole.checked) {
+                        this.wholeUnfinish()
+                    }
+                })
+            }
+
+            addToList(inputText) {
+                var div = document.createElement('div')
+                div.setAttribute('class', 'content')
+                var isComplete = document.createElement('input')
+                isComplete.type = 'checkbox'
+                var isDelte = document.createElement('input')
+                isDelte.type = 'radio'
+                isDelte.setAttribute('class', 'deleteline')
+                var textnode = document.createTextNode(inputText)
+                div.appendChild(isComplete)
+                div.appendChild(textnode)
+                div.appendChild(isDelte)
+                this.todolist.push(div)
+                this.onlyitems.appendChild(div)
+                this.number++
+
+                if (this.todolist.length == 1) {
+                    this.selectItem()
+                }
+
+                this.changeNumber()
+
+                isComplete.addEventListener('change', e => {
+                    if (isComplete.checked) {
+                        this.complete(div, isComplete)
+                    } else if (!isComplete.checked) {
+                        this.unfinish(div, isComplete)
+                    }
+                })
+
+                isDelte.addEventListener('change', e => {
+                    var idx = this.todolist.indexOf(div)
+                    this.todolist = this.todolist.slice(0, idx).concat(this.todolist.slice(idx + 1))
+                    div.parentNode.removeChild(div)
+                    if (!isComplete.checked) {
+                        this.number--
+                    }
+                    this.changeNumber()
+                })
+            }
+
+            changeNumber() {
+                if (this.number == 1) {
+                    this.itemNumber.textContent = '1 item left'
+                }
+                if (this.number == 0) {
+                    if (this.todolist.length == 0) {
+                        this.bottom.parentNode.removeChild(this.bottom)
+                    } else {
+                        this.itemNumber.textContent = '0 item left'
+                    }
+                }
+                if (this.number > 0) {
+                    this.itemNumber.textContent = this.number + ' items left'
+                }
+            }
+
+            wholeComplete() {
+                for (let i = 0; i < this.todolist.length; i++) {
+                    this.complete(this.todolist[i], this.todolist[i].children[0])
+                }
+            }
+
+            wholeUnfinish() {
+                for (let i = 0; i < this.todolist.length; i++) {
+                    this.unfinish(this.todolist[i], this.todolist[i].children[0])
+                }
+            }
+
+            add() {
+                this.input.addEventListener('change', e => {
+                    var value = this.input.value
+                    this.addToList(value)
+                    this.input.value = ''
+                })
+            }
+
+            complete(div, input) {
+                div.style.color = 'rgb(217, 217, 217)'
+                div.style.textDecoration = 'line-through'
+                input.checked = true
+                this.number--
+                this.changeNumber()
+            }
+
+            unfinish(div, input) {
+                div.style.color = 'rgb(0, 0, 0)'
+                div.style.textDecoration = 'none'
+                input.checked = false
+                this.number++
+                this.changeNumber()
+            }
+
+            selectItem() {
+                var item = document.createElement('div')
+                item.setAttribute('class', 'itemlist')
+                for (let i = 0; i < 4; i++) {
+                    var everyitem = document.createElement('span')
+                    everyitem.classList.add('item')
+                    item.appendChild(everyitem)
+                }
+                item.children[0].classList.add('items')
+                item.children[0].textContent = '1 item left'
+                item.children[1].classList.add('all')
+                item.children[1].textContent = 'All'
+                item.children[2].classList.add('active')
+                item.children[2].textContent = 'Active'
+                item.children[3].classList.add('complete')
+                item.children[3].textContent = 'Complete'
+                this.container.appendChild(item)
+                this.itemNumber = item.children[0]
+                this.bottom = item
+                item.addEventListener('click', e => {
+                    if (e.target.matches('.itemlist > .active')) {
+                        for (let i = 0; i < this.todolist.length; i++) {
+                            if (this.todolist[i].children[0].checked) {
+                                this.todolist[i].style.display = 'none'
+                            }
+                        }
+                    }
+                    if (e.target.matches('.itemlist > .all')) {
+                        for (let i = 0; i < this.todolist.length; i++) {
+                            this.todolist[i].style.display = 'block'
+                        }
+                    }
+                    if (e.target.matches('.itemlist > .complete')) {
+                        for (let i = 0; i < this.todolist.length; i++) {
+                            if (!this.todolist[i].children[0].checked) {
+                                this.todolist[i].style.display = 'none'
+                            }
+                        }
+                    }
+                })
+            }
+        }
+
+        var newList = new Todolist()
+    </script>
+</body>
+
+</html>

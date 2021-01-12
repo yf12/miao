@@ -1,0 +1,86 @@
+<script>   //146
+    /**
+     * @param {number} capacity
+     */
+    function ListNode(val,key) {
+        this.val = val
+        this.key = key
+        this.pre = null
+        this.next = null
+    }
+    var LRUCache = function(capacity) {
+        this.capacity = capacity
+        this.map = new Map()
+        this.count = 0
+        this.head = new ListNode()
+        this.tail = new ListNode()
+        this.head.next = this.tail
+        this.tail.pre = this.head
+    };
+
+    /** 
+     * @param {number} key
+     * @return {number}
+     */
+    LRUCache.prototype.get = function(key) {
+        if(this.map.has(key)) {
+            let curNode = this.map.get(key)
+            if(curNode) {
+                let preNode = curNode.pre
+                let nextNode = curNode.next
+                preNode.next = nextNode
+                nextNode.pre = preNode
+                this.appendTail(curNode)
+            }
+            return curNode.val
+        }
+        return -1
+    };
+
+    /** 
+     * @param {number} key 
+     * @param {number} value
+     * @return {void}
+     */
+    LRUCache.prototype.put = function(key, value) {
+        if(this.map.has(key)) {
+            let curNode = this.map.get(key)
+            curNode.val = value
+            let preNode = curNode.pre
+            let nextNode = curNode.next
+            preNode.next = nextNode
+            nextNode.pre = preNode
+            this.appendTail(curNode)
+        } else {
+            if(this.count < this.capacity) {
+                this.count++
+                let newNode = new ListNode(value,key)
+                this.appendTail(newNode)
+                this.map.set(key,newNode)
+            } else {
+                let toDelete = this.head.next
+                let nextHead = toDelete.next
+                this.head.next = nextHead
+                nextHead.pre = this.head
+                this.map.delete(toDelete.key)
+                let newNode = new ListNode(value,key)
+                this.appendTail(newNode)
+                this.map.set(key,newNode)       
+            }
+        }
+    };
+
+    LRUCache.prototype.appendTail = function(node) {
+        node.next = this.tail
+        node.pre = this.tail.pre
+        this.tail.pre.next = node
+        this.tail.pre = node
+    }
+
+    /** 
+     * Your LRUCache object will be instantiated and called as such:
+     * var obj = new LRUCache(capacity)
+     * var param_1 = obj.get(key)
+     * obj.put(key,value)
+     */
+</script>

@@ -1,0 +1,135 @@
+<script>
+  //52
+  var totalNQueens = function(n) {
+    if (n < 1) return 0;
+    let record = [];
+    return process(0, record, n);
+
+    function process(i, record, n) {
+      if (i === n) return 1;
+      let result = 0;
+      for (let j = 0; j < n; j++) {
+        if (isvalid(i, j, record)) {
+          record[i] = j;
+          result += process(i + 1, record, n);
+        }
+      }
+      return result;
+    }
+
+    function isvalid(i, j, record) {
+      for (let k = 0; k < i; k++) {
+        if (j === record[k] || Math.abs(k - i) === Math.abs(record[k] - j)) {
+          return false;
+        }
+      }
+      return true;
+    }
+  };
+</script>
+
+<script>
+  //51
+  var solveNQueens = function(n) {
+    if (n < 1) return 0;
+    let record = [];
+    let result = [];
+
+    return process(0, record, n);
+
+    function process(i, record, n) {
+      if (i === n) {
+        result.push(createArray(record));
+      }
+      for (let j = 0; j < n; j++) {
+        if (isvalid(i, j, record)) {
+          record[i] = j;
+          process(i + 1, record, n);
+        }
+      }
+      return result;
+    }
+
+    function createArray(record) {
+      let queens = [];
+      for (let i = 0; i < n; i++) {
+        let queen = new Array(n).fill(".");
+        queens.push(queen);
+      }
+      record.forEach((element, idx) => {
+        queens[idx][element] = "Q";
+      });
+      return queens.map(queen => queen.join(""));
+    }
+
+    function isvalid(i, j, record) {
+      for (let k = 0; k < i; k++) {
+        if (j === record[k] || Math.abs(k - i) === Math.abs(record[k] - j)) {
+          return false;
+        }
+      }
+      return true;
+    }
+  };
+</script>
+
+<script>
+  var solveSudoku = function(board) {
+    debugger;
+    process(board, 0);
+
+    function process(board, i) {
+      if (i === 81) return true;
+      let row = Math.floor(i / 9);
+      let col = i % 9;
+      if (board[row][col] !== ".") {
+        return process(board, i + 1);
+      }
+      for (let j = 1; j <= 9; j++) {
+        let c = String(j);
+        if (isvalid(board, row, col, c)) {
+          board[row][col] = c;
+          if (process(board, i + 1)) {
+            return true;
+          } else {
+            board[row][col] = ".";
+          }
+        }
+      }
+      return false;
+    }
+
+    function isvalid(board, row, col, c) {
+      for (let i = 0; i < 9; i++) {
+        if (board[row][i] === c) {
+          return false;
+        }
+        if (board[i][col] === c) {
+          return false;
+        }
+        let sqi = Math.floor(i / 3) + Math.floor(row / 3) * 3;
+        let sqj = Math.floor(i % 3) + Math.floor(col / 3) * 3;
+        if (board[sqi][sqj] === c) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+</script>
+
+<script>
+  async function light() {
+    for (let i = 0; i++; ) {
+      await setTimeout(() => {
+        console.log("red");
+      }, 3000);
+      await setTimeout(() => {
+        console.log("yellow");
+      }, 1000);
+      await setTimeout(() => {
+        console.log("green");
+      }, 1000);
+    }
+  }
+</script>

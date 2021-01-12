@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo</title>
+    <style>
+        .completed {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <todo-app></todo-app>
+    </div>
+
+    <script src="vue.js"></script>
+    <script src="vuex.js"></script>
+
+    <script>
+        Vue.component('todo-app', {
+            template: `
+                <div>
+                    <todo-input></todo-input>
+                    <todo-list></todo-list>
+                    <todo-footer></todo-footer>
+                </div>
+            `,
+            data() {
+                return {
+
+                }
+            }
+        })
+
+        Vue.component('todo-input', {
+            template: `
+                <div>
+                    <input type="checkbox" :checked="isToggleSelectAll" @click="toggleSelectAll">
+                    <input type="text" v-model.trim="todoText" @keyup.enter="addTodo">
+                </div>
+            `,
+            computed: {
+                todos() {
+                    return this.$store.state.todos                 
+                },
+                isToggleSelectAll() {
+                    if(this.todos.length == 0) {
+                        return false
+                    } else {
+                        return this.todos.every(it => it.done)
+                    }     
+                }
+            },
+            methods: {
+                addTodo() {
+                    if(this.todoText) {
+                        this.$store.commit('addTodo', this.todoText)
+                        this.todoText = ''
+                    }
+                },
+                toggleSelectAll() {
+                    this.$store.commit('toggleSelectAll')
+                }
+            },
+            data() {
+                return {
+                    todoText: ''
+                }
+            }
+        })
+
+        Vue.component('todo-list', {
+            template: `
+                <ul>
+                    <todo-item
+                      v-for="(todo,index) of todos"
+                      :todo="todo"
+                      :index="index"
+                      :key="index"
+                    >
+                    </todo-item>
+                </ul>
+            `,
+            computed: {
+                todos() {
+                    if(this.$store.state.category == 'all') {
+                        return this.$store.state.todos
+                    }
+                    if(this.$store.state.category == 'active') {
+                        return this.$store.state.todos.filter(it => !it.done)
+                    }
+                    if(this.$store.state.category == 'complete') {
+                        return this.$store.state.todos.filter(it => it.done)
+                    }                    
+                }
+            },
+        })
+
+        Vue.component('todo-item', {
+            props: ['todo','index'],
+            template: `
+                <li>
+                    <input type="checkbox" :checked="todo.done" @click="toggleState"></input>
+                    <span v-if="!isEditing" @dblclick="changeEditing" :class="{completed: todo.done}">{{ todo.content }}</span>
+                    <input type="text" v-if="isEditing" :value="todo.content" autofocus="autofocus" @keyup.esc="cancelEdit" @blur="changeTodo($event,todo)" @keyup.enter="changeTodo($event,todo)">
+                    <button @click="deleteTodo">delete</button>
+                </li>
+            `,
+            computed: {
+                isEditing() {
+                    if(this.$store.state.editingIndex == this.index) {
+                        return true
+                    } else {
+                        return false
+                    }
+                }
+            },
+            methods: {
+                toggleState() {
+                    this.$store.commit('toggleState',this.todo)
+                },
+                deleteTodo() {
+                    this.$store.commit('deleteTodo',this.todo)
+                },
+                changeEditing() {
+                    this.$store.commit('changeEditing',this.index)
+                },
+                cancelEdit() {
+                    this.$store.commit('changeIndexBack')
+                },
+                changeTodo(event,todo) {
+                    this.$store.commit('changeIndexBack')
+                    this.$store.commit('changeTodo',{todo,event})
+                }
+            }
+        })
+
+        Vue.component('todo-footer', {
+            template: `
+                <div>
+                    <todo-count></todo-count>
+                    <todo-state-switch></todo-state-switch>
+                    <todo-clear></todo-clear>
+                </div>
+            `,
+        })
+
+        Vue.component('todo-count', {
+            template: `
+                <span>
+                    {{ leftCount }} item{{ isPlural }} left
+                </span>
+            `,
+            computed: {
+                leftCount() {
+                    return this.$store.getters.leftCount
+                },
+                isPlural() {
+                    return this.leftCount > 1 ? 's' : ''
+                }
+            }
+        })
+
+        Vue.component('todo-state-switch', {
+            template: `
+                <span>
+                    <input type="radio" class="all" :checked="this.$store.state.category == 'all'" @click="switchCategory">All</input>
+                    <input type="radio" class="active" :checked="this.$store.state.category == 'active'" @click="switchCategory">Active</input>
+                    <input type="radio" class="complete" :checked="this.$store.state.category == 'complete'" @click="switchCategory">Complete</input>
+                </span>
+            `,
+            methods: {
+                switchCategory(e) {
+                    this.$store.commit('switchCategory', e.target.classList[0])
+                }
+            }
+        })
+
+        Vue.component('todo-clear', {
+            template: `
+                <button v-show="hasCompleted" @click="clearCompleted">
+                    clear completed
+                </button>
+            `,
+            computed: {
+                hasCompleted() {
+                    return this.$store.state.todos.filter(it => it.done).length > 0
+                }
+            },
+            methods: {
+                clearCompleted() {
+                    this.$store.commit('clearCompleted')
+                }
+            }
+        })
+
+        ;(function() {
+            var store = new Vuex.Store({
+                state: {
+                    todos: [{
+                        content: 'eat',
+                        done: false
+                    }, {
+                        content: 'drink',
+                        done: false
+                    },{
+                        content: 'sleep',
+                        done: true
+                    }],
+                    editingIndex: -1,
+                    category: 'all'
+                },
+                getters: {
+                    leftCount(state) {
+                        return state.todos.filter(it => !it.done).length
+                    }
+                },
+                mutations: {
+                    addTodo(state,content) {
+                        state.todos.push({
+                            content: content,
+                            done: false
+                        })
+                    },
+                    toggleSelectAll(state) {
+                        if(state.todos.every(it => it.done)) {
+                            state.todos.forEach(it => {
+                                it.done = false
+                            })
+                        } else {
+                            state.todos.forEach(it => {
+                                it.done = true
+                            })
+                        }
+                    },
+                    toggleState(state, todo) {
+                        todo.done = !todo.done
+                    },
+                    deleteTodo(state, todo) {
+                        state.todos = state.todos.filter(it => it != todo)
+                    },
+                    switchCategory(state,category) {
+                        if(category == 'all') {
+                            state.category = 'all'
+                        }
+                        if(category == 'active') {
+                            state.category = 'active'
+                        }
+                        if(category == 'complete') {
+                            state.category = 'complete'
+                        }
+                    },
+                    clearCompleted(state) {
+                        state.todos = state.todos.filter(it => !it.done)
+                    },
+                    changeEditing(state,index) {
+                        state.editingIndex = index
+                    },
+                    changeIndexBack(state) {
+                        state.editingIndex = -1
+                    },
+                    changeTodo(state, map) {
+                        map.todo.content = map.event.target.value.trim()
+                    }
+                }
+            })
+
+            var app = new Vue({
+                el:'#app',
+                store: store
+            })
+        }())
+    </script>
+</body>
+</html>
